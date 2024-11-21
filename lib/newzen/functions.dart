@@ -58,7 +58,19 @@ class functions extends StatelessWidget {
                 ),
               ],
             ),
-
+            // "미생물 관리" 카드
+            _buildFeatureCard(
+              "미생물 관리", // 카드 제목
+              "", // 카드 설명
+              Icons.arrow_forward_ios, // 오른쪽 화살표 아이콘
+              Color(0xFFFEF7FF), // 카드 배경 색상
+                  () {
+                // 카드 클릭 시 manageInfoPage로 이동
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => Info()),
+                );
+              },
+            ),
             const SizedBox(height: 45), // 카드 간 간격
 
             // "소모품 정보" 카드
