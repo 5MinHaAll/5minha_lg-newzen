@@ -135,6 +135,8 @@ class _DetectionState extends State<Detection> {
         res = await Tflite.loadModel(
           model: "assets/mobilenet_v1_1.0_224.tflite",
           labels: "assets/mobilenet_v1_1.0_224.txt",
+          // model: "assets/food_detect.tflite",
+          // labels: "assets/food_labelmap.txt",
         );
         break;
 

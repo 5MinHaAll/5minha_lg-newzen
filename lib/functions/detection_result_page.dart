@@ -18,6 +18,12 @@ class DetectionResultPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final object = detectedObjects[index];
           return ListTile(
+            leading: Icon(
+              object['processable'] == '처리 가능'
+                  ? Icons.check_circle_outline
+                  : Icons.cancel_outlined,
+              color: object['processable'] == '처리 가능' ? Colors.green : Colors.red,
+            ),
             title: Text('Object: ${object['label']}'),
             subtitle: Text('Confidence: ${object['confidence']}%'),
           );

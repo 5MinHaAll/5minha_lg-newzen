@@ -1,16 +1,16 @@
 ???
-Bread
-Pancake
-Waffle
-Bagel
-Muffin
-Doughnut
-Hamburger
-Pizza
-Sandwich
-Hot dog
-French fries
-Apple
-Orange
-Banana
-Grape
+bread
+pancake
+waffle
+bagel
+muffin
+doughnut
+hamburger
+pizza
+sandwich
+hot dog
+french fries
+apple
+orange
+banana
+grape

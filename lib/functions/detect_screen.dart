@@ -79,6 +79,7 @@ class _DetectScreenState extends State<DetectScreen> {
   int _imageWidth = 0;
 
   setRecognitions(recognitions, imageHeight, imageWidth) {
+
     setState(() {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
