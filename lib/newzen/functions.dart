@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../functions/detect_main.dart';
 import '../functions/info.dart';
 
 class functions extends StatelessWidget {
@@ -16,6 +17,47 @@ class functions extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch, // 자식 위젯을 수평으로 늘림
           children: [
             const SizedBox(height: 45), // 카드 간 간격
+
+            // "미생물 관리" 카드
+            Stack(
+              children: [
+                _buildFeatureCard(
+                  "미생물 관리", // 카드 제목
+                  "", // 카드 설명
+                  Icons.arrow_forward_ios, // 오른쪽 화살표 아이콘
+                  Color(0xFFFEF7FF), // 카드 배경 색상
+                      () {
+                    // 카드 클릭 시 manageInfoPage로 이동
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Info()),
+                    );
+                  },
+                ),
+                Positioned(
+                  bottom: 8.0,
+                  right: 8.0,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // 버튼 클릭 이벤트 처리
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Detection()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.pink, // 버튼 배경색
+                      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    child: Text(
+                      "처리 가능한 음식물",
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             // "미생물 관리" 카드
             _buildFeatureCard(
               "미생물 관리", // 카드 제목
