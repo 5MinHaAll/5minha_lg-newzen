@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
+import 'login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginPage(), // 최초 페이지를 LoginPage로 설정
+      home: const Login(), // 최초 페이지를 Login으로 설정
+      debugShowCheckedModeBanner: false, // 디버그 배너 제거
     );
   }
 }
