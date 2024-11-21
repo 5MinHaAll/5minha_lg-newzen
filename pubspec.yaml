@@ -20,6 +20,7 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
+  sdk: 3.5.3
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -38,6 +39,17 @@ dependencies:
   camera: ^0.10.3+2
   flutter_tflite: ^1.0.1
   flutter_svg: ^2.0.0
+  flutter_svg: ^2.0.0
+#  tflite_flutter: ^0.9.1
+#  tflite_flutter_helper: ^0.3.1
+#  camera: ^0.11.0+2
+#  image: ^3.3.0
+#  cupertino_icons: ^0.1.3
+  camera: ^0.10.0
+  tflite_flutter: ^0.11.0
+  tflite_flutter_helper_plus: ^0.0.2
+  image: ^3.3.0
+  path_provider: ^2.0.14
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +82,9 @@ flutter:
     - assets/mobilenet_v1_1.0_224.tflite
     - assets/mobilenet_v1_1.0_224.txt
     - assets/posenet_mv1_075_float_from_checkpoints.tflite
+    - assets/models/food_detect.tflite
+    - assets/models/food_labelmap.txt
+    - assets/models/yes_no_food_info.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
