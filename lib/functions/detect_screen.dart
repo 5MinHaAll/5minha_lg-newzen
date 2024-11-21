@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:object_detection/functions/bndbox.dart';
-import 'package:object_detection/functions/camera.dart';
+import 'bndbox.dart';
+import 'camera.dart';
 import 'dart:math' as math;
 
 class DetectScreen extends StatefulWidget {
