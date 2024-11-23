@@ -4,6 +4,7 @@ import 'dart:async'; // Timer를 위해 추가
 import '../data/generate_data.dart';
 import 'package:flutter/material.dart';
 import '../data/save_data.dart';
+import 'device_operation.dart';
 import 'functions.dart'; // 유용한 기능 페이지 import
 
 class DeviceOn extends StatefulWidget {
@@ -14,6 +15,12 @@ class DeviceOn extends StatefulWidget {
 }
 
 class _DeviceOnState extends State<DeviceOn> {
+  // FAB 버튼 상태 변수
+  bool _isExpanded = false;
+
+  // DeviceOperation 객체 생성
+  DeviceOperation deviceOperation = DeviceOperation();
+
   // 현재 활성화된 모드
   String? _activeMode;
 
@@ -22,8 +29,8 @@ class _DeviceOnState extends State<DeviceOn> {
   Map<String, dynamic>? _outputTankData;
 
   // RandomDataService 객체
-  final RandomDataService potting_soil = RandomDataService();    // 배양토
-  final RandomDataService mixing_tank = RandomDataService();      // 교반통
+  final RandomDataService potting_soil = RandomDataService(); // 배양토
+  final RandomDataService mixing_tank = RandomDataService(); // 교반통
 
   // 부산물
   RandomDataService output_tank = RandomDataService();
@@ -46,54 +53,37 @@ class _DeviceOnState extends State<DeviceOn> {
   // 일정 시간마다 데이터를 갱신하는 타이머 설정
   void _startPeriodicUpdates() {
     final initialPottingSoliData = potting_soil.generatePottingSoilData();
-    final initialMixingData = mixing_tank.generateMixingTankData();
+    final initialMixingData = mixing_tank.generateMixingTankData(
+        isOperating: deviceOperation.isOperating);
+
     setState(() {
       _PottingSoilData = initialPottingSoliData;
       _mixingTankData = initialMixingData;
     });
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       try {
+        // 로그로 상태를 확인
+        print("deviceOperation.isOperating: ${deviceOperation.isOperating}");
+
         // 데이터 갱신
         final pottingSoilData = await potting_soil.generatePottingSoilData();
-        final mixingData = await mixing_tank.generateMixingTankData();
+        final mixingData = await mixing_tank.generateMixingTankData(
+            isOperating: deviceOperation.isOperating);
 
         setState(() {
           _PottingSoilData = pottingSoilData;
           _mixingTankData = mixingData;
         });
+        // 로그로 감소된 `_currentVolume` 확인
+        print("_currentVolume: ${mixingData['volume']}");
       } catch (e) {
         print("Error fetching data: $e");
       }
     });
   }
 
-  // void _fetchPottingSoilData(BuildContext context) async {
-  //   try {
-  //     final data = await potting_soil.generatePottingSoilData();
-  //     setState(() {
-  //       _PottingSoilData = data;
-  //     });
-  //     // 데이터를 포함하여 모달 표시
-  //     _showPottingSoilModal(context,data);
-  //   } catch (e) {
-  //     print("Error fetching data: $e");
-  //   }
-  // }
-
-  // void _fetchMixingTankData(BuildContext context) async {
-  //   try {
-  //     final data = await mixing_tank.generateMixingTankData();
-  //     setState(() {
-  //       _mixingTankData = data;
-  //     });
-  //     // 데이터를 포함하여 모달 표시
-  //     _showAgitatorModal(context,data);
-  //   } catch (e) {
-  //     print("Error fetching data: $e");
-  //   }
-  // }
-
-  // FirebaseService firebaseService = FirebaseService();
+  //   // FirebaseService firebaseService = FirebaseService();
 
   // 현재 선택된 탭 (0: 제품, 1: 유용한 기능)
   int _selectedIndex = 0;
@@ -106,47 +96,97 @@ class _DeviceOnState extends State<DeviceOn> {
           "음식물 처리기",
           style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Color(0xFFFEF7FF), // 상단바 배경색
+        backgroundColor: const Color(0xFFFEF7FF), // 상단바 배경색
         elevation: 1,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: _selectedIndex == 0 ? _buildMainContent() : const functions(),
+      body: Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          _selectedIndex == 0 ? _buildMainContent() : const functions(),
+          // 팝업 버튼 (음식물 처리 관련)
+          if (_isExpanded) ...[
+            Transform.translate(
+              offset: const Offset(0, -80), // 첫 번째 버튼 위치
+              child: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = false; // 팝업 닫기
+                    deviceOperation.startOperation(); // 작동 시작
+                  });
+                  print("음식물 1 클릭됨");
+                },
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.food_bank),
+              ),
+            ),
+            Transform.translate(
+              offset: const Offset(0, -140), // 두 번째 버튼 위치
+              child: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = false; // 팝업 닫기
+                    deviceOperation.startOperation(); // 작동 시작
+                  });
+                  print("음식물 2 클릭됨");
+                },
+                backgroundColor: Colors.red,
+                child: const Icon(Icons.fastfood),
+              ),
+            ),
+            Transform.translate(
+              offset: const Offset(0, -200), // 세 번째 버튼 위치
+              child: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = false; // 팝업 닫기
+                    deviceOperation.startOperation(); // 작동 시작
+                  });
+                  print("음식물 3 클릭됨");
+                },
+                backgroundColor: Colors.purple,
+                child: const Icon(Icons.local_dining),
+              ),
+            ),
+          ],
+          // 메인 FAB 버튼
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                _isExpanded = !_isExpanded; // 상태 토글
+              });
+
+              print(_isExpanded ? "팝업 버튼 열림" : "팝업 버튼 닫힘");
+            },
+            backgroundColor: _isExpanded ? Colors.red : Colors.green,
+            child: Icon(
+              _isExpanded ? Icons.close : Icons.menu, // 상태에 따라 아이콘 변경
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: _buildBottomNavigationBar(),
-      backgroundColor: Color(0xFFFFFFFF), // 배경색
+      backgroundColor: const Color(0xFFFFFFFF), // 배경색
     );
   }
 
   // 메인 콘텐츠
   Widget _buildMainContent() {
     // 배양토 상태 계산
-    String PottingSoilTemperatureStatus =
-        _PottingSoilData?['temperatureStatus'] ?? "알 수 없음";
-    String PottingSoilHumidityStatus =
-        _PottingSoilData?['humidityStatus'] ?? "알 수 없음";
-    String PottingSoilPhStatus = _PottingSoilData?['phStatus'] ?? "알 수 없음";
-
-    bool PottingSoilIsNormal = PottingSoilTemperatureStatus == "보통" &&
-        PottingSoilHumidityStatus == "보통" &&
-        PottingSoilPhStatus == "보통";
+    bool PottingSoilIsNormal = _PottingSoilData?['status'] ?? "알 수 없음";
 
     String PottingSoilStatus = PottingSoilIsNormal ? "정상" : "비정상";
     Color PottingSoilColor = PottingSoilIsNormal ? Colors.green : Colors.red;
 
     // 교반통 상태 계산
-    String mixingTankTemperatureStatus =
-        _mixingTankData?['temperatureStatus'] ?? "알 수 없음";
-    String mixingTankHumidityStatus =
-        _mixingTankData?['humidityStatus'] ?? "알 수 없음";
-
-    bool mixingTankIsNormal = mixingTankTemperatureStatus == "보통" &&
-        mixingTankHumidityStatus == "보통";
+    bool mixingTankIsNormal = _mixingTankData?['status'] ?? "알 수 없음";
 
     String mixingTankStatus = mixingTankIsNormal ? "정상" : "비정상";
     Color mixingTankColor = mixingTankIsNormal ? Colors.green : Colors.red;
 
     // 부산물통 용량 상태
     final String _byproductCapacity = "35%";
-
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -160,7 +200,8 @@ class _DeviceOnState extends State<DeviceOn> {
                 CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.grey[200],
-                  child: const Icon(Icons.recycling, size: 50, color: Colors.teal),
+                  child:
+                      const Icon(Icons.recycling, size: 50, color: Colors.teal),
                 ),
                 const SizedBox(height: 10),
                 const Text(
@@ -176,8 +217,21 @@ class _DeviceOnState extends State<DeviceOn> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildStatusCard("작동 상태", "ON", Colors.teal),
-              _buildStatusCard("발효중 경과 시간", "00:30", Colors.orange),
+              _buildStatusCard(
+                "작동 상태",
+                deviceOperation.isOperating ? "ON" : "OFF", // 상태에 따라 텍스트 변경
+                deviceOperation.isOperating
+                    ? Colors.green
+                    : Colors.red, // 상태에 따른 색상 변경
+                showStopButton: deviceOperation.isOperating, // 정지 버튼을 보여줄지 결정
+                deviceOperation: deviceOperation, // DeviceOperation 객체 전달
+              ),
+              _buildStatusCard(
+                "발효중 경과 시간",
+                deviceOperation.getElapsedTime(),
+                Colors.orange,
+                showStopButton: deviceOperation.isOperating,
+              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -189,7 +243,7 @@ class _DeviceOnState extends State<DeviceOn> {
               _buildToggleButton("절전", Icons.energy_savings_leaf, Colors.teal),
               _buildToggleButton("제습", Icons.waves, Colors.orange),
               _buildToggleButton("탈취", Icons.cleaning_services, Colors.red),
-              _buildToggleButton("배양", Icons.biotech, Colors.grey),
+              _buildToggleButton("배양", Icons.biotech, Colors.pinkAccent),
             ],
           ),
           const SizedBox(height: 20),
@@ -231,13 +285,15 @@ class _DeviceOnState extends State<DeviceOn> {
                 "배양토 상태",
                 PottingSoilStatus,
                 PottingSoilColor,
-                    () => _showPottingSoilModal(context,_PottingSoilData!),  // 데이터를 포함하여 모달 표시
+                () => _showPottingSoilModal(
+                    context, _PottingSoilData!), // 데이터를 포함하여 모달 표시
               ),
               _buildInfoBox(
                 "교반통 상태",
                 mixingTankStatus,
                 mixingTankColor,
-                    () => _showAgitatorModal(context,_mixingTankData!),     // 데이터를 포함하여 모달 표시
+                () => _showAgitatorModal(
+                    context, _mixingTankData!), // 데이터를 포함하여 모달 표시
               ),
             ],
           ),
@@ -246,13 +302,14 @@ class _DeviceOnState extends State<DeviceOn> {
     );
   }
 
-  // 토글 버튼 빌더
+  // 작동 모드 선택 토글 버튼 빌더
   Widget _buildToggleButton(String label, IconData icon, Color color) {
     final bool isActive = _activeMode == label; // 현재 모드와 비교하여 활성화 여부 결정
     return GestureDetector(
       onTap: () {
         setState(() {
-          _activeMode = label; // 클릭한 버튼을 활성화 상태로 변경
+          // 현재 상태가 활성화 상태면 null로 비활성화, 그렇지 않으면 활성화
+          _activeMode = isActive ? null : label;
         });
       },
       child: Container(
@@ -306,8 +363,14 @@ class _DeviceOnState extends State<DeviceOn> {
     );
   }
 
-  // 상태 카드
-  Widget _buildStatusCard(String title, String value, Color color) {
+  // 작동 상태 카드 + 발효중 경과 시간
+  Widget _buildStatusCard(
+    String title,
+    String value,
+    Color color, {
+    required bool showStopButton,
+    DeviceOperation? deviceOperation,
+  }) {
     return Expanded(
       child: Card(
         elevation: 3,
@@ -316,9 +379,26 @@ class _DeviceOnState extends State<DeviceOn> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text(
-                title,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              // "작동 상태" 텍스트를 버튼처럼 동작하도록 변경
+              GestureDetector(
+                onTap: () {
+                  if (showStopButton && deviceOperation != null) {
+                    if (deviceOperation.isOperating) {
+                      deviceOperation.resetOperation(); // 작동 중지
+                    } else {
+                      deviceOperation.startOperation(); // 작동 시작
+                    }
+                    setState(() {}); // UI 갱신
+                  }
+                },
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline, // 텍스트에 밑줄 추가 (선택 사항)
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               Text(
@@ -337,7 +417,8 @@ class _DeviceOnState extends State<DeviceOn> {
   }
 
   // 정보 박스 빌더
-  Widget _buildInfoBox(String title, String value, Color color, VoidCallback? onTap) {
+  Widget _buildInfoBox(
+      String title, String value, Color color, VoidCallback? onTap) {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
@@ -354,7 +435,8 @@ class _DeviceOnState extends State<DeviceOn> {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
@@ -376,7 +458,8 @@ class _DeviceOnState extends State<DeviceOn> {
   void _showPottingSoilModal(BuildContext context, Map<String, dynamic> data) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // 화면 비율 제어 활성화
+      isScrollControlled: true,
+      // 화면 비율 제어 활성화
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
@@ -424,8 +507,8 @@ class _DeviceOnState extends State<DeviceOn> {
                     data['temperatureStatus'] == "보통"
                         ? Colors.green
                         : data['temperatureStatus'] == "높음"
-                        ? Colors.red
-                        : Colors.lightBlue,
+                            ? Colors.red
+                            : Colors.lightBlue,
                     screenWidth,
                   ),
                   SizedBox(height: screenHeight * 0.02), // 동적 높이 간격
@@ -437,8 +520,8 @@ class _DeviceOnState extends State<DeviceOn> {
                     data['humidityStatus'] == "보통"
                         ? Colors.green
                         : data['humidityStatus'] == "높음"
-                        ? Colors.red
-                        : Colors.lightBlue,
+                            ? Colors.red
+                            : Colors.lightBlue,
                     screenWidth,
                   ),
                   SizedBox(height: screenHeight * 0.02),
@@ -450,8 +533,8 @@ class _DeviceOnState extends State<DeviceOn> {
                     data['phStatus'] == "보통"
                         ? Colors.green
                         : data['phStatus'] == "높음"
-                        ? Colors.red
-                        : Colors.lightBlue,
+                            ? Colors.red
+                            : Colors.lightBlue,
                     screenWidth,
                   ),
                 ],
@@ -467,7 +550,8 @@ class _DeviceOnState extends State<DeviceOn> {
   void _showAgitatorModal(BuildContext context, Map<String, dynamic> data) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // 화면 비율 제어 활성화
+      isScrollControlled: true,
+      // 화면 비율 제어 활성화
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
@@ -494,7 +578,7 @@ class _DeviceOnState extends State<DeviceOn> {
                   ),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(Icons.close,size: screenWidth * 0.06),
+                    icon: Icon(Icons.close, size: screenWidth * 0.06),
                   ),
                 ],
               ),
@@ -511,10 +595,9 @@ class _DeviceOnState extends State<DeviceOn> {
                       data['temperatureStatus'] == "보통"
                           ? Colors.green
                           : data['temperatureStatus'] == "높음"
-                          ? Colors.red
-                          : Colors.lightBlue,
-                      screenWidth
-                  ),
+                              ? Colors.red
+                              : Colors.lightBlue,
+                      screenWidth),
                   const SizedBox(height: 16),
                   _buildModalRow(
                       "습도",
@@ -524,10 +607,9 @@ class _DeviceOnState extends State<DeviceOn> {
                       data['humidityStatus'] == "보통"
                           ? Colors.green
                           : data['humidityStatus'] == "높음"
-                          ? Colors.red
-                          : Colors.lightBlue,
-                      screenWidth
-                  ),
+                              ? Colors.red
+                              : Colors.lightBlue,
+                      screenWidth),
                   const SizedBox(height: 16),
                   _buildModalRow(
                       "높이",
@@ -537,10 +619,9 @@ class _DeviceOnState extends State<DeviceOn> {
                       data['volumeStatus'] == "보통"
                           ? Colors.green
                           : data['volumeStatus'] == "높음"
-                          ? Colors.red
-                          : Colors.lightBlue,
-                      screenWidth
-                  ),
+                              ? Colors.red
+                              : Colors.lightBlue,
+                      screenWidth),
                 ],
               ),
             ],
@@ -550,8 +631,8 @@ class _DeviceOnState extends State<DeviceOn> {
     );
   }
 
-
-  Widget _buildModalRow(String label, String value, IconData icon, String status, Color color, double screenWidth) {
+  Widget _buildModalRow(String label, String value, IconData icon,
+      String status, Color color, double screenWidth) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -601,4 +682,3 @@ class _DeviceOnState extends State<DeviceOn> {
     );
   }
 }
-
