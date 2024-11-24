@@ -4,6 +4,7 @@ import 'dart:async'; // Timer를 위해 추가
 import '../data/generate_data.dart';
 import 'package:flutter/material.dart';
 import '../data/save_data.dart';
+import 'custom_alert.dart';
 import 'device_operation.dart';
 import 'functions.dart'; // 유용한 기능 페이지 import
 
@@ -63,9 +64,6 @@ class _DeviceOnState extends State<DeviceOn> {
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       try {
-        // 로그로 상태를 확인
-        print("deviceOperation.isOperating: ${deviceOperation.isOperating}");
-
         // 데이터 갱신
         final pottingSoilData = await potting_soil.generatePottingSoilData();
         final mixingData = await mixing_tank.generateMixingTankData(
@@ -75,8 +73,7 @@ class _DeviceOnState extends State<DeviceOn> {
           _PottingSoilData = pottingSoilData;
           _mixingTankData = mixingData;
         });
-        // 로그로 감소된 `_currentVolume` 확인
-        print("_currentVolume: ${mixingData['volume']}");
+
       } catch (e) {
         print("Error fetching data: $e");
       }
@@ -88,6 +85,7 @@ class _DeviceOnState extends State<DeviceOn> {
   // 현재 선택된 탭 (0: 제품, 1: 유용한 기능)
   int _selectedIndex = 0;
 
+  // 시뮬레이션 FAB 버튼
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,49 +104,73 @@ class _DeviceOnState extends State<DeviceOn> {
           _selectedIndex == 0 ? _buildMainContent() : const functions(),
           // 팝업 버튼 (음식물 처리 관련)
           if (_isExpanded) ...[
+            // 처리 가능한 음식 버튼
             Transform.translate(
               offset: const Offset(0, -80), // 첫 번째 버튼 위치
               child: FloatingActionButton(
                 onPressed: () {
                   setState(() {
                     _isExpanded = false; // 팝업 닫기
+                    // 처리 가능한 음식 로직
+                    mixing_tank.increaseVolume(10.0); // Volume을 10 증가
+                    _mixingTankData = mixing_tank.generateMixingTankData(
+                        isOperating: deviceOperation.isOperating); // 변경된 값 반영
                     deviceOperation.startOperation(); // 작동 시작
                   });
-                  print("음식물 1 클릭됨");
+                  print("처리 가능한 음식 클릭됨");
                 },
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.green,
                 child: const Icon(Icons.food_bank),
               ),
             ),
+            // 처리 불가능한 음식 버튼
             Transform.translate(
-              offset: const Offset(0, -140), // 두 번째 버튼 위치
+              offset: const Offset(0, -140), // 버튼 위치
               child: FloatingActionButton(
                 onPressed: () {
-                  setState(() {
-                    _isExpanded = false; // 팝업 닫기
-                    deviceOperation.startOperation(); // 작동 시작
-                  });
-                  print("음식물 2 클릭됨");
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomAlert(
+                        title: "경고", // 동적으로 변경 가능
+                        content: "이 음식물은 처리할 수 없습니다.", // 동적으로 변경 가능
+                        onConfirm: () {
+                          // 확인 버튼 클릭 시 동작
+                          print("경고창 닫힘");
+                        },
+                      );
+                    },
+                  );
                 },
-                backgroundColor: Colors.red,
-                child: const Icon(Icons.fastfood),
+                backgroundColor: Colors.grey,
+                child: const Icon(Icons.block), // 처리 불가능한 음식 아이콘
               ),
             ),
+            // 처리 가능한 음식 버튼
             Transform.translate(
               offset: const Offset(0, -200), // 세 번째 버튼 위치
               child: FloatingActionButton(
                 onPressed: () {
                   setState(() {
                     _isExpanded = false; // 팝업 닫기
+                    // 처리 가능한 음식 로직
+                    mixing_tank.increaseVolume(20.0); // Volume을 20 증가
+                    _mixingTankData = mixing_tank.generateMixingTankData(
+                        isOperating: deviceOperation.isOperating); // 변경된 값 반영
                     deviceOperation.startOperation(); // 작동 시작
+                    // 무게 변화 확인 및 작동 중지 체크
+                    mixing_tank.checkAndStopOperation(() {
+                      deviceOperation.stopOperation(); // 작동 중지
+                    });
                   });
-                  print("음식물 3 클릭됨");
+                  print("처리 가능한 음식 클릭됨");
                 },
-                backgroundColor: Colors.purple,
-                child: const Icon(Icons.local_dining),
+                backgroundColor: Colors.green,
+                child: const Icon(Icons.restaurant_menu),
               ),
             ),
           ],
+
           // 메인 FAB 버튼
           FloatingActionButton(
             onPressed: () {
@@ -280,20 +302,19 @@ class _DeviceOnState extends State<DeviceOn> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // 랜덤 데이터 생성
               _buildInfoBox(
                 "배양토 상태",
                 PottingSoilStatus,
                 PottingSoilColor,
                 () => _showPottingSoilModal(
-                    context, _PottingSoilData!), // 데이터를 포함하여 모달 표시
+                    context),
               ),
               _buildInfoBox(
                 "교반통 상태",
                 mixingTankStatus,
                 mixingTankColor,
                 () => _showAgitatorModal(
-                    context, _mixingTankData!), // 데이터를 포함하여 모달 표시
+                    context),
               ),
             ],
           ),
@@ -455,11 +476,10 @@ class _DeviceOnState extends State<DeviceOn> {
   }
 
   //배양토 상태 모달창
-  void _showPottingSoilModal(BuildContext context, Map<String, dynamic> data) {
+  void _showPottingSoilModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      // 화면 비율 제어 활성화
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
@@ -468,90 +488,107 @@ class _DeviceOnState extends State<DeviceOn> {
         final double screenHeight = MediaQuery.of(context).size.height;
         final double screenWidth = MediaQuery.of(context).size.width;
 
-        return Container(
-          height: screenHeight * 0.5, // 화면 높이의 절반
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 제목
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "배양토 상태",
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.05, // 화면 너비 기반으로 동적 크기
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(
-                      Icons.close,
-                      size: screenWidth * 0.06, // 아이콘 크기 동적 설정
-                    ),
-                  ),
-                ],
-              ),
-              const Divider(),
+        // Timer 변수 (모달 내부)
+        Timer? modalTimer;
 
-              // 모달 내용: 온도, 습도, pH 상태
-              Column(
+        // 모달 상태 관리
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter modalSetState) {
+            // 모달 안의 값이 주기적으로 업데이트되도록 타이머 설정
+            modalTimer ??= Timer.periodic(const Duration(seconds: 1), (timer) {
+              modalSetState(() {
+                _PottingSoilData = potting_soil.generatePottingSoilData();
+              });
+            });
+
+            return Container(
+              height: screenHeight * 0.5,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildModalRow(
-                    "온도",
-                    "${data['temperature']}°C",
-                    Icons.mood,
-                    data['temperatureStatus'],
-                    data['temperatureStatus'] == "보통"
-                        ? Colors.green
-                        : data['temperatureStatus'] == "높음"
-                            ? Colors.red
-                            : Colors.lightBlue,
-                    screenWidth,
+                  // 제목
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "배양토 상태",
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.05,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          modalTimer?.cancel(); // 타이머 중지
+                          Navigator.of(context).pop(); // 모달 닫기
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          size: screenWidth * 0.06,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: screenHeight * 0.02), // 동적 높이 간격
-                  _buildModalRow(
-                    "습도",
-                    "${data['humidity']}%",
-                    Icons.warning,
-                    data['humidityStatus'],
-                    data['humidityStatus'] == "보통"
-                        ? Colors.green
-                        : data['humidityStatus'] == "높음"
+                  const Divider(),
+
+                  // 모달 내용: 온도, 습도, pH 상태
+                  Column(
+                    children: [
+                      _buildModalRow(
+                        "온도",
+                        "${_PottingSoilData?['temperature']}°C",
+                        Icons.mood,
+                        _PottingSoilData?['temperatureStatus'],
+                        _PottingSoilData?['temperatureStatus'] == "보통"
+                            ? Colors.green
+                            : _PottingSoilData?['temperatureStatus'] == "높음"
                             ? Colors.red
                             : Colors.lightBlue,
-                    screenWidth,
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  _buildModalRow(
-                    "pH",
-                    "${data['ph']}",
-                    Icons.mood_bad,
-                    data['phStatus'],
-                    data['phStatus'] == "보통"
-                        ? Colors.green
-                        : data['phStatus'] == "높음"
+                        screenWidth,
+                      ),
+                      SizedBox(height: screenHeight * 0.02),
+                      _buildModalRow(
+                        "습도",
+                        "${_PottingSoilData?['humidity']}%",
+                        Icons.warning,
+                        _PottingSoilData?['humidityStatus'],
+                        _PottingSoilData?['humidityStatus'] == "보통"
+                            ? Colors.green
+                            : _PottingSoilData?['humidityStatus'] == "높음"
                             ? Colors.red
                             : Colors.lightBlue,
-                    screenWidth,
+                        screenWidth,
+                      ),
+                      SizedBox(height: screenHeight * 0.02),
+                      _buildModalRow(
+                        "pH",
+                        "${_PottingSoilData?['ph']}",
+                        Icons.mood_bad,
+                        _PottingSoilData?['phStatus'],
+                        _PottingSoilData?['phStatus'] == "보통"
+                            ? Colors.green
+                            : _PottingSoilData?['phStatus'] == "높음"
+                            ? Colors.red
+                            : Colors.lightBlue,
+                        screenWidth,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
   }
 
   // 교반통 상태 모달창
-  void _showAgitatorModal(BuildContext context, Map<String, dynamic> data) {
+  void _showAgitatorModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      // 화면 비율 제어 활성화
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
@@ -560,72 +597,92 @@ class _DeviceOnState extends State<DeviceOn> {
         final double screenHeight = MediaQuery.of(context).size.height;
         final double screenWidth = MediaQuery.of(context).size.width;
 
-        return Container(
-          height: screenHeight * 0.5, // 화면 높이의 절반
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 제목
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "교반통 상태",
-                    style: TextStyle(
-                        fontSize: screenWidth * 0.05, // 화면 너비 기반으로 동적 크기
-                        fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(Icons.close, size: screenWidth * 0.06),
-                  ),
-                ],
-              ),
-              const Divider(),
+        // Timer 변수 (모달 내부)
+        Timer? modalTimer;
 
-              // 모달 내용: 온도, 습도 상태
-              Column(
+        // 모달 상태 관리
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter modalSetState) {
+            // 모달 안의 값이 주기적으로 업데이트되도록 타이머 설정
+            modalTimer ??= Timer.periodic(const Duration(seconds: 1), (timer) {
+              modalSetState(() {
+                _mixingTankData = mixing_tank.generateMixingTankData(
+                    isOperating: deviceOperation.isOperating);
+              });
+            });
+
+            return Container(
+              height: screenHeight * 0.5,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildModalRow(
-                      "온도",
-                      "${data['temperature']}°C",
-                      Icons.mood,
-                      data['temperatureStatus'],
-                      data['temperatureStatus'] == "보통"
-                          ? Colors.green
-                          : data['temperatureStatus'] == "높음"
+                  // 제목
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "교반통 상태",
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.05,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          modalTimer?.cancel(); // 타이머 중지
+                          Navigator.of(context).pop(); // 모달 닫기
+                        },
+                        icon: Icon(Icons.close, size: screenWidth * 0.06),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+
+                  // 모달 내용: 온도, 습도 상태
+                  Column(
+                    children: [
+                      _buildModalRow(
+                          "온도",
+                          "${_mixingTankData?['temperature']}°C",
+                          Icons.mood,
+                          _mixingTankData?['temperatureStatus'],
+                          _mixingTankData?['temperatureStatus'] == "보통"
+                              ? Colors.green
+                              : _mixingTankData?['temperatureStatus'] == "높음"
                               ? Colors.red
                               : Colors.lightBlue,
-                      screenWidth),
-                  const SizedBox(height: 16),
-                  _buildModalRow(
-                      "습도",
-                      "${data['humidity']}%",
-                      Icons.warning,
-                      data['humidityStatus'],
-                      data['humidityStatus'] == "보통"
-                          ? Colors.green
-                          : data['humidityStatus'] == "높음"
+                          screenWidth),
+                      const SizedBox(height: 16),
+                      _buildModalRow(
+                          "습도",
+                          "${_mixingTankData?['humidity']}%",
+                          Icons.warning,
+                          _mixingTankData?['humidityStatus'],
+                          _mixingTankData?['humidityStatus'] == "보통"
+                              ? Colors.green
+                              : _mixingTankData?['humidityStatus'] == "높음"
                               ? Colors.red
                               : Colors.lightBlue,
-                      screenWidth),
-                  const SizedBox(height: 16),
-                  _buildModalRow(
-                      "높이",
-                      "${data['volume']}",
-                      Icons.mood_bad,
-                      data['volumeStatus'],
-                      data['volumeStatus'] == "보통"
-                          ? Colors.green
-                          : data['volumeStatus'] == "높음"
+                          screenWidth),
+                      const SizedBox(height: 16),
+                      _buildModalRow(
+                          "높이",
+                          "${_mixingTankData?['volume']}",
+                          Icons.mood_bad,
+                          _mixingTankData?['volumeStatus'],
+                          _mixingTankData?['volumeStatus'] == "보통"
+                              ? Colors.green
+                              : _mixingTankData?['volumeStatus'] == "높음"
                               ? Colors.red
                               : Colors.lightBlue,
-                      screenWidth),
+                          screenWidth),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
