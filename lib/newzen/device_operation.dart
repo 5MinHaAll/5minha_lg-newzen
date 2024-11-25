@@ -13,7 +13,7 @@ class DeviceOperation {
     if (isOperating) return; // 이미 작동 중이면 무시
     isOperating = true;
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       elapsedTime++;
     });
   }

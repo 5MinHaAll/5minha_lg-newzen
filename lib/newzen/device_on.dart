@@ -42,6 +42,7 @@ class _DeviceOnState extends State<DeviceOn> {
   @override
   void initState() {
     super.initState();
+    print("initState 시작");
     _startPeriodicUpdates(); // 화면 시작 시 타이머 시작
   }
 
@@ -55,25 +56,26 @@ class _DeviceOnState extends State<DeviceOn> {
   void _startPeriodicUpdates() {
     final initialPottingSoliData = potting_soil.generatePottingSoilData();
     final initialMixingData = mixing_tank.generateMixingTankData(
-        isOperating: deviceOperation.isOperating);
+        isOperating: deviceOperation.isOperating, context: context);
 
     setState(() {
       _PottingSoilData = initialPottingSoliData;
       _mixingTankData = initialMixingData;
     });
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
       try {
         // 데이터 갱신
         final pottingSoilData = await potting_soil.generatePottingSoilData();
         final mixingData = await mixing_tank.generateMixingTankData(
-            isOperating: deviceOperation.isOperating);
+            isOperating: deviceOperation.isOperating,
+            deviceOperation: deviceOperation,
+            context: context);
 
         setState(() {
           _PottingSoilData = pottingSoilData;
           _mixingTankData = mixingData;
         });
-
       } catch (e) {
         print("Error fetching data: $e");
       }
@@ -104,7 +106,7 @@ class _DeviceOnState extends State<DeviceOn> {
           _selectedIndex == 0 ? _buildMainContent() : const functions(),
           // 팝업 버튼 (음식물 처리 관련)
           if (_isExpanded) ...[
-            // 처리 가능한 음식 버튼
+            // 음식1 버튼 (처리 가능)
             Transform.translate(
               offset: const Offset(0, -80), // 첫 번째 버튼 위치
               child: FloatingActionButton(
@@ -112,9 +114,12 @@ class _DeviceOnState extends State<DeviceOn> {
                   setState(() {
                     _isExpanded = false; // 팝업 닫기
                     // 처리 가능한 음식 로직
-                    mixing_tank.increaseVolume(10.0); // Volume을 10 증가
+                    mixing_tank.increaseVolume(50.0); // Volume을 10 증가
+                    mixing_tank.setDecreaseRate(0.5);
                     _mixingTankData = mixing_tank.generateMixingTankData(
-                        isOperating: deviceOperation.isOperating); // 변경된 값 반영
+                        isOperating: deviceOperation.isOperating,
+                        deviceOperation: deviceOperation, // 객체 전달;
+                        context: context); // 변경된 값 반영
                     deviceOperation.startOperation(); // 작동 시작
                   });
                   print("처리 가능한 음식 클릭됨");
@@ -123,7 +128,7 @@ class _DeviceOnState extends State<DeviceOn> {
                 child: const Icon(Icons.food_bank),
               ),
             ),
-            // 처리 불가능한 음식 버튼
+            // 음식2 버튼 (처리 불가능)
             Transform.translate(
               offset: const Offset(0, -140), // 버튼 위치
               child: FloatingActionButton(
@@ -146,7 +151,7 @@ class _DeviceOnState extends State<DeviceOn> {
                 child: const Icon(Icons.block), // 처리 불가능한 음식 아이콘
               ),
             ),
-            // 처리 가능한 음식 버튼
+            // 음식3 버튼 (처리 가능)
             Transform.translate(
               offset: const Offset(0, -200), // 세 번째 버튼 위치
               child: FloatingActionButton(
@@ -155,13 +160,12 @@ class _DeviceOnState extends State<DeviceOn> {
                     _isExpanded = false; // 팝업 닫기
                     // 처리 가능한 음식 로직
                     mixing_tank.increaseVolume(20.0); // Volume을 20 증가
+                    mixing_tank.setDecreaseRate(2.5);
                     _mixingTankData = mixing_tank.generateMixingTankData(
-                        isOperating: deviceOperation.isOperating); // 변경된 값 반영
+                        isOperating: deviceOperation.isOperating,
+                        deviceOperation: deviceOperation,
+                        context: context); // 변경된 값 반영
                     deviceOperation.startOperation(); // 작동 시작
-                    // 무게 변화 확인 및 작동 중지 체크
-                    mixing_tank.checkAndStopOperation(() {
-                      deviceOperation.stopOperation(); // 작동 중지
-                    });
                   });
                   print("처리 가능한 음식 클릭됨");
                 },
@@ -306,15 +310,13 @@ class _DeviceOnState extends State<DeviceOn> {
                 "배양토 상태",
                 PottingSoilStatus,
                 PottingSoilColor,
-                () => _showPottingSoilModal(
-                    context),
+                () => _showPottingSoilModal(context),
               ),
               _buildInfoBox(
                 "교반통 상태",
                 mixingTankStatus,
                 mixingTankColor,
-                () => _showAgitatorModal(
-                    context),
+                () => _showAgitatorModal(context),
               ),
             ],
           ),
@@ -495,7 +497,9 @@ class _DeviceOnState extends State<DeviceOn> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter modalSetState) {
             // 모달 안의 값이 주기적으로 업데이트되도록 타이머 설정
-            modalTimer ??= Timer.periodic(const Duration(seconds: 1), (timer) {
+            modalTimer ??=
+                Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+              print("모달 타이머 실행");
               modalSetState(() {
                 _PottingSoilData = potting_soil.generatePottingSoilData();
               });
@@ -543,8 +547,8 @@ class _DeviceOnState extends State<DeviceOn> {
                         _PottingSoilData?['temperatureStatus'] == "보통"
                             ? Colors.green
                             : _PottingSoilData?['temperatureStatus'] == "높음"
-                            ? Colors.red
-                            : Colors.lightBlue,
+                                ? Colors.red
+                                : Colors.lightBlue,
                         screenWidth,
                       ),
                       SizedBox(height: screenHeight * 0.02),
@@ -556,8 +560,8 @@ class _DeviceOnState extends State<DeviceOn> {
                         _PottingSoilData?['humidityStatus'] == "보통"
                             ? Colors.green
                             : _PottingSoilData?['humidityStatus'] == "높음"
-                            ? Colors.red
-                            : Colors.lightBlue,
+                                ? Colors.red
+                                : Colors.lightBlue,
                         screenWidth,
                       ),
                       SizedBox(height: screenHeight * 0.02),
@@ -569,8 +573,8 @@ class _DeviceOnState extends State<DeviceOn> {
                         _PottingSoilData?['phStatus'] == "보통"
                             ? Colors.green
                             : _PottingSoilData?['phStatus'] == "높음"
-                            ? Colors.red
-                            : Colors.lightBlue,
+                                ? Colors.red
+                                : Colors.lightBlue,
                         screenWidth,
                       ),
                     ],
@@ -604,15 +608,18 @@ class _DeviceOnState extends State<DeviceOn> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter modalSetState) {
             // 모달 안의 값이 주기적으로 업데이트되도록 타이머 설정
-            modalTimer ??= Timer.periodic(const Duration(seconds: 1), (timer) {
+            modalTimer ??=
+                Timer.periodic(const Duration(milliseconds: 1000), (timer) {
               modalSetState(() {
                 _mixingTankData = mixing_tank.generateMixingTankData(
-                    isOperating: deviceOperation.isOperating);
+                    isOperating: deviceOperation.isOperating,
+                    deviceOperation: deviceOperation,
+                    context: context);
               });
             });
 
             return Container(
-              height: screenHeight * 0.5,
+              height: screenHeight * 0.6,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -639,44 +646,89 @@ class _DeviceOnState extends State<DeviceOn> {
                   ),
                   const Divider(),
 
-                  // 모달 내용: 온도, 습도 상태
+                  // 모달 내용: 온도, 습도, 높이 상태
                   Column(
                     children: [
                       _buildModalRow(
-                          "온도",
-                          "${_mixingTankData?['temperature']}°C",
-                          Icons.mood,
-                          _mixingTankData?['temperatureStatus'],
-                          _mixingTankData?['temperatureStatus'] == "보통"
-                              ? Colors.green
-                              : _mixingTankData?['temperatureStatus'] == "높음"
-                              ? Colors.red
-                              : Colors.lightBlue,
-                          screenWidth),
+                        "온도",
+                        "${_mixingTankData?['temperature']}°C",
+                        Icons.mood,
+                        _mixingTankData?['temperatureStatus'],
+                        _mixingTankData?['temperatureStatus'] == "보통"
+                            ? Colors.green
+                            : _mixingTankData?['temperatureStatus'] == "높음"
+                                ? Colors.red
+                                : Colors.lightBlue,
+                        screenWidth,
+                      ),
                       const SizedBox(height: 16),
                       _buildModalRow(
-                          "습도",
-                          "${_mixingTankData?['humidity']}%",
-                          Icons.warning,
-                          _mixingTankData?['humidityStatus'],
-                          _mixingTankData?['humidityStatus'] == "보통"
-                              ? Colors.green
-                              : _mixingTankData?['humidityStatus'] == "높음"
-                              ? Colors.red
-                              : Colors.lightBlue,
-                          screenWidth),
+                        "습도",
+                        "${_mixingTankData?['humidity']}%",
+                        Icons.warning,
+                        _mixingTankData?['humidityStatus'],
+                        _mixingTankData?['humidityStatus'] == "보통"
+                            ? Colors.green
+                            : _mixingTankData?['humidityStatus'] == "높음"
+                                ? Colors.red
+                                : Colors.lightBlue,
+                        screenWidth,
+                      ),
                       const SizedBox(height: 16),
                       _buildModalRow(
-                          "높이",
-                          "${_mixingTankData?['volume']}",
-                          Icons.mood_bad,
-                          _mixingTankData?['volumeStatus'],
-                          _mixingTankData?['volumeStatus'] == "보통"
-                              ? Colors.green
-                              : _mixingTankData?['volumeStatus'] == "높음"
-                              ? Colors.red
-                              : Colors.lightBlue,
-                          screenWidth),
+                        "높이",
+                        "${_mixingTankData?['volume']}",
+                        Icons.mood_bad,
+                        _mixingTankData?['volumeStatus'],
+                        _mixingTankData?['volumeStatus'] == "보통"
+                            ? Colors.green
+                            : _mixingTankData?['volumeStatus'] == "높음"
+                                ? Colors.red
+                                : Colors.lightBlue,
+                        screenWidth,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // 증가 및 감소 버튼
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          modalSetState(() {
+                            mixing_tank.decreaseVolume(10.0); // 10 감소
+                            _mixingTankData =
+                                mixing_tank.generateMixingTankData(
+                                    isOperating: deviceOperation.isOperating,
+                                    deviceOperation: deviceOperation,
+                                    context: context);
+                          });
+                        },
+                        child: const Text("감소"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          modalSetState(() {
+                            mixing_tank.increaseVolume(10.0); // 10 증가
+                            _mixingTankData =
+                                mixing_tank.generateMixingTankData(
+                                    isOperating: deviceOperation.isOperating,
+                                    deviceOperation: deviceOperation,
+                                    context: context);
+                          });
+                        },
+                        child: const Text("증가"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
