@@ -1,12 +1,14 @@
 import 'dart:core';
 import 'dart:async'; // Timer를 위해 추가
 
+import 'package:newzen/newzen/byproduct_manager.dart';
+
 import '../data/generate_data.dart';
 import 'package:flutter/material.dart';
 import '../data/save_data.dart';
 import 'custom_alert.dart';
 import 'device_operation.dart';
-import 'functions.dart'; // 유용한 기능 페이지 import
+import 'functions.dart';
 
 class DeviceOn extends StatefulWidget {
   const DeviceOn({Key? key}) : super(key: key);
@@ -25,16 +27,16 @@ class _DeviceOnState extends State<DeviceOn> {
   // 현재 활성화된 모드
   String? _activeMode;
 
+  // 부산물통 객체 생성
+  late final ByproductManager byproductManager;
+
+  // 배양토 상태, 교반통 상태
   Map<String, dynamic>? _PottingSoilData;
   Map<String, dynamic>? _mixingTankData;
-  Map<String, dynamic>? _outputTankData;
 
   // RandomDataService 객체
   final RandomDataService potting_soil = RandomDataService(); // 배양토
   final RandomDataService mixing_tank = RandomDataService(); // 교반통
-
-  // 부산물
-  RandomDataService output_tank = RandomDataService();
 
   // Timer 변수
   Timer? _timer;
@@ -44,6 +46,8 @@ class _DeviceOnState extends State<DeviceOn> {
     super.initState();
     print("initState 시작");
     _startPeriodicUpdates(); // 화면 시작 시 타이머 시작
+    // 객체 생성 시 부산물 초기 용량 설정
+    byproductManager = ByproductManager(byproductCapacity: 35.0);
   }
 
   @override
@@ -75,6 +79,14 @@ class _DeviceOnState extends State<DeviceOn> {
         setState(() {
           _PottingSoilData = pottingSoilData;
           _mixingTankData = mixingData;
+
+          // 부산물 용량 증가 처리
+          if (_mixingTankData?["shouldIncreaseByproduct"] == true) {
+            // print("트루입니다!!!");
+            print(mixing_tank.getAmount());
+            byproductManager.increaseCapacity(context,
+                increment: mixing_tank.getAmount() * 0.1); // 증가값
+          }
         });
       } catch (e) {
         print("Error fetching data: $e");
@@ -103,7 +115,9 @@ class _DeviceOnState extends State<DeviceOn> {
       body: Stack(
         alignment: Alignment.bottomRight,
         children: [
+          // 메인 콘텐츠
           _selectedIndex == 0 ? _buildMainContent() : const functions(),
+
           // 팝업 버튼 (음식물 처리 관련)
           if (_isExpanded) ...[
             // 음식1 버튼 (처리 가능)
@@ -114,7 +128,8 @@ class _DeviceOnState extends State<DeviceOn> {
                   setState(() {
                     _isExpanded = false; // 팝업 닫기
                     // 처리 가능한 음식 로직
-                    mixing_tank.increaseVolume(50.0); // Volume을 10 증가
+                    mixing_tank.increaseVolume(50.0); // Volume을 50 증가
+                    mixing_tank.setAmount(50.0);
                     mixing_tank.setDecreaseRate(0.5);
                     _mixingTankData = mixing_tank.generateMixingTankData(
                         isOperating: deviceOperation.isOperating,
@@ -160,12 +175,17 @@ class _DeviceOnState extends State<DeviceOn> {
                     _isExpanded = false; // 팝업 닫기
                     // 처리 가능한 음식 로직
                     mixing_tank.increaseVolume(20.0); // Volume을 20 증가
+                    mixing_tank.setAmount(20.0);
                     mixing_tank.setDecreaseRate(2.5);
+
+                    // 교반통 데이터 갱신
                     _mixingTankData = mixing_tank.generateMixingTankData(
                         isOperating: deviceOperation.isOperating,
                         deviceOperation: deviceOperation,
-                        context: context); // 변경된 값 반영
-                    deviceOperation.startOperation(); // 작동 시작
+                        context: context);
+
+                    // 작동 시작
+                    deviceOperation.startOperation();
                   });
                   print("처리 가능한 음식 클릭됨");
                 },
@@ -176,12 +196,13 @@ class _DeviceOnState extends State<DeviceOn> {
           ],
 
           // 메인 FAB 버튼
+
+          // 메인 FAB 버튼
           FloatingActionButton(
             onPressed: () {
               setState(() {
                 _isExpanded = !_isExpanded; // 상태 토글
               });
-
               print(_isExpanded ? "팝업 버튼 열림" : "팝업 버튼 닫힘");
             },
             backgroundColor: _isExpanded ? Colors.red : Colors.green,
@@ -211,9 +232,6 @@ class _DeviceOnState extends State<DeviceOn> {
     String mixingTankStatus = mixingTankIsNormal ? "정상" : "비정상";
     Color mixingTankColor = mixingTankIsNormal ? Colors.green : Colors.red;
 
-    // 부산물통 용량 상태
-    final String _byproductCapacity = "35%";
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -239,7 +257,7 @@ class _DeviceOnState extends State<DeviceOn> {
           ),
           const SizedBox(height: 20),
 
-          // 작동 상태, 반응통 정리 시간
+          // 작동 상태, 발효중 경과 시간
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -276,26 +294,73 @@ class _DeviceOnState extends State<DeviceOn> {
 
           // 부산물통 용량 상태
           Container(
-            width: double.infinity,
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               color: Colors.teal[50],
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // 제목
                 const Text(
                   "부산물통 용량 상태",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  _byproductCapacity,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.teal,
+                const SizedBox(height: 10),
+
+                // Progress bar
+                SizedBox(
+                  height: 15, // Progress bar 두께 설정
+                  child: LinearProgressIndicator(
+                    value: byproductManager.byproductCapacity /
+                        100, // Progress 비율 (0.0 ~ 1.0)
+                    backgroundColor: Colors.grey[300],
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      byproductManager.getBarColor(
+                          byproductManager.byproductCapacity), // 색상 결정
+                    ),
                   ),
+                ),
+                const SizedBox(height: 10),
+
+                // 현재 용량 및 제어 버튼
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // 현재 용량 퍼센트 표시
+                    Text(
+                      "${byproductManager.byproductCapacity.toInt()}%", // 정수로 변환하여 퍼센트 표시
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.teal,
+                      ),
+                    ),
+
+                    // 증가/감소 버튼
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              byproductManager.decreaseCapacity(); // 용량 감소
+                            });
+                          },
+                          icon: const Icon(Icons.remove, color: Colors.red),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              byproductManager
+                                  .increaseCapacity(context); // 용량 증가
+                            });
+                          },
+                          icon: const Icon(Icons.add, color: Colors.green),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -322,67 +387,6 @@ class _DeviceOnState extends State<DeviceOn> {
           ),
         ],
       ),
-    );
-  }
-
-  // 작동 모드 선택 토글 버튼 빌더
-  Widget _buildToggleButton(String label, IconData icon, Color color) {
-    final bool isActive = _activeMode == label; // 현재 모드와 비교하여 활성화 여부 결정
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          // 현재 상태가 활성화 상태면 null로 비활성화, 그렇지 않으면 활성화
-          _activeMode = isActive ? null : label;
-        });
-      },
-      child: Container(
-        width: 70,
-        height: 100,
-        decoration: BoxDecoration(
-          color: isActive ? color.withOpacity(0.2) : Colors.grey[200],
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isActive ? color : Colors.grey, width: 2),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 30, color: isActive ? color : Colors.grey),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: isActive ? color : Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // 하단 네비게이션 바
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      onTap: (int index) {
-        setState(() {
-          _selectedIndex = index; // 선택된 탭 업데이트
-        });
-      },
-      selectedItemColor: Colors.teal,
-      unselectedItemColor: Colors.grey,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.devices),
-          label: "제품",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.extension),
-          label: "유용한 기능",
-        ),
-      ],
     );
   }
 
@@ -439,7 +443,44 @@ class _DeviceOnState extends State<DeviceOn> {
     );
   }
 
-  // 정보 박스 빌더
+  // 모든 운영 제어 버튼 - 토글 버튼 빌더
+  Widget _buildToggleButton(String label, IconData icon, Color color) {
+    final bool isActive = _activeMode == label; // 현재 모드와 비교하여 활성화 여부 결정
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          // 현재 상태가 활성화 상태면 null로 비활성화, 그렇지 않으면 활성화
+          _activeMode = isActive ? null : label;
+        });
+      },
+      child: Container(
+        width: 70,
+        height: 100,
+        decoration: BoxDecoration(
+          color: isActive ? color.withOpacity(0.2) : Colors.grey[200],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: isActive ? color : Colors.grey, width: 2),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 30, color: isActive ? color : Colors.grey),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: isActive ? color : Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 배양토 상태, 교반통 상태 - 정보 박스 빌더
   Widget _buildInfoBox(
       String title, String value, Color color, VoidCallback? onTap) {
     return Expanded(
@@ -506,7 +547,7 @@ class _DeviceOnState extends State<DeviceOn> {
             });
 
             return Container(
-              height: screenHeight * 0.5,
+              height: screenHeight * 0.3,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -588,7 +629,7 @@ class _DeviceOnState extends State<DeviceOn> {
     );
   }
 
-  // 교반통 상태 모달창
+  //교반통 상태 모달창
   void _showAgitatorModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -615,11 +656,18 @@ class _DeviceOnState extends State<DeviceOn> {
                     isOperating: deviceOperation.isOperating,
                     deviceOperation: deviceOperation,
                     context: context);
+
+                // 부산물 용량 증가 처리
+                if (_mixingTankData?["shouldIncreaseByproduct"] == true) {
+                  // print("트루입니다!!!");
+                  byproductManager.increaseCapacity(context,
+                      increment: mixing_tank.getAmount() * 0.1); // 증가값
+                }
               });
             });
 
             return Container(
-              height: screenHeight * 0.6,
+              height: screenHeight * 0.3,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -786,6 +834,30 @@ class _DeviceOnState extends State<DeviceOn> {
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  // 하단 네비게이션 바
+  Widget _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: (int index) {
+        setState(() {
+          _selectedIndex = index; // 선택된 탭 업데이트
+        });
+      },
+      selectedItemColor: Colors.teal,
+      unselectedItemColor: Colors.grey,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.devices),
+          label: "제품",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.extension),
+          label: "유용한 기능",
         ),
       ],
     );
