@@ -6,7 +6,7 @@ import 'package:flutter_tflite/flutter_tflite.dart';
 
 import 'dart:math' as math;
 
-import '../models.dart';
+import 'models.dart';
 
 typedef Callback = void Function(List<dynamic> list, int h, int w);
 

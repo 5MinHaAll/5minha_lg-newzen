@@ -1,21 +1,90 @@
-# Object Detection
+# 뉴젠 with LG ThinQ
 
-A Flutter application to detect object using TFLite.  
-Modification of the sample app on this [repo](https://github.com/shaqian/flutter_realtime_detection) 
+> 당신의 상쾌한 주방을 위한, LG전자 음식물처리기(뉴젠) 솔루션
 
-# Packages used
-[Camera](https://pub.dev/packages/camera)  
-[TFLite](https://pub.dev/packages/flutter_tflite)
+## 목차
 
-## Getting Started
+1. [**프로젝트 개요**](#1)
+2. [**기획**](#2)
+3. [**기술 스택**](#3)
+4. [**프로젝트 구성도**](#4)
+5. [**서비스 소개**](#5)
+6. [**의의**](#6)
 
-This project is a starting point for a Flutter application.
+## 1. 프로젝트 개요
+### 진행 기간
+2024.11.07 - 2024.12.05
+<br />
 
-A few resources to get you started if this is your first Flutter project:
+### 팀원 소개
+|                    [김근호](https://github.com/thatisme)           |                   [박윤하](https://github.com/yunha-p)                   |                    [손영균](https://github.com/wcdyg)                     |                  [양도연](https://github.com/torytori)                  |               [엄자연](https://github.com/jayeoni-git)             |
+| :------------------------------------------------------------------------: | :----------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :---------------------------------------------------------------------: | :------------------------------------------------------------------------: |
+|    <img src="./images/kunho.png" width="80px;" height="80px" alt=""/>      |    <img src="./images/yunha.png" width="80px;" height="80px" alt=""/>    |   <img src="./images/yunggune.png" width="80px;" height="80px" alt=""/>   |  <img src="./images/doyeon.png" width="80px;" height="80px" alt=""/>    |    <img src="./images/jayeon.png" width="80px;" height="80px" alt=""/>      |
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<br />
+<div id="1"></div>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 2. 기획
+### 기획 의도
+
+<br />
+
+### 목표
+
+<br />
+
+### 타깃 고객
+
+<br />
+<div id="2"></div>
+
+## 3. 기술 스택
+### 백엔드
+
+<br />
+
+### 프론트엔드
+
+<br />
+
+### 협업
+
+<br />
+<div id="3"></div>
+
+## 4. 프로젝트 구성도
+### 시스템 아키텍처
+
+<br />
+
+### 유스케이스
+
+<br />
+
+### 서비스 흐름도
+
+<br />
+
+### ERD
+
+<br />
+<div id="4"></div>
+
+## 5. 서비스 소개
+### 시연 영상
+
+<br />
+
+### 주요 기능
+
+<br />
+<div id="5"></div>
+
+## 6. 의의
+### 차별점
+
+<br />
+
+### 기대 효과
+<br />
+<div id="6"></div>
