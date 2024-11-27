@@ -6,13 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newzen/features/byproduct/byproduct_manager.dart';
 import '../../data/generate_data.dart';
-import '../../data/save_data.dart';
 import '../../components/custom_alert.dart';
 import '../../features/device/device_operation.dart';
 import '../functions/functions.dart';
 
 class DeviceOn extends StatefulWidget {
-  const DeviceOn({Key? key}) : super(key: key);
+  const DeviceOn({super.key});
 
   @override
   _DeviceOnState createState() => _DeviceOnState();
@@ -66,8 +65,8 @@ class _DeviceOnState extends State<DeviceOn> {
 
     _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
       try {
-        final pottingSoilData = await potting_soil.generatePottingSoilData();
-        final mixingData = await mixing_tank.generateMixingTankData(
+        final pottingSoilData = potting_soil.generatePottingSoilData();
+        final mixingData = mixing_tank.generateMixingTankData(
             isOperating: deviceOperation.isOperating,
             deviceOperation: deviceOperation,
             context: context);
@@ -208,7 +207,7 @@ class _DeviceOnState extends State<DeviceOn> {
           ),
         ],
       ),
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
     );
   }
   // 메인 콘텐츠
@@ -747,11 +746,11 @@ class _DeviceOnState extends State<DeviceOn> {
                                     context: context);
                           });
                         },
-                        child: const Text("감소"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
                         ),
+                        child: const Text("감소"),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -764,11 +763,11 @@ class _DeviceOnState extends State<DeviceOn> {
                                     context: context);
                           });
                         },
-                        child: const Text("증가"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           foregroundColor: Colors.white,
                         ),
+                        child: const Text("증가"),
                       ),
                     ],
                   ),

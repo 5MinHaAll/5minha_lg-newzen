@@ -6,11 +6,11 @@ class CustomAlert extends StatelessWidget {
   final VoidCallback onConfirm; // 확인 버튼 콜백
 
   const CustomAlert({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
     required this.onConfirm,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

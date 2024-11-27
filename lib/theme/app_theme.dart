@@ -5,18 +5,16 @@ import 'app_text.dart';
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: AppColors.primary,
       onPrimary: Colors.white,
       secondary: AppColors.secondary,
       onSecondary: Colors.white,
       tertiary: AppColors.tertiary,
       onTertiary: Colors.white,
-      background: AppColors.secondaryBackground,
-      onBackground: AppColors.primaryText,
       surface: AppColors.primaryBackground,
       onSurface: AppColors.primaryText,
-      surfaceVariant: AppColors.primaryBackground,
+      surfaceContainerHighest: AppColors.primaryBackground,
       onSurfaceVariant: AppColors.secondaryText,
       error: AppColors.error,
       onError: Colors.white,
@@ -24,14 +22,14 @@ class AppTheme {
     ),
     textTheme: AppTypography.getTextTheme(),
     scaffoldBackgroundColor: AppColors.secondaryBackground,
-    cardTheme: CardTheme(
+    cardTheme: const CardTheme(
       color: AppColors.primaryBackground,
       elevation: 0,
     ),
-    listTileTheme: ListTileThemeData(
+    listTileTheme: const ListTileThemeData(
       tileColor: AppColors.primaryBackground,
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
       elevation: 0,

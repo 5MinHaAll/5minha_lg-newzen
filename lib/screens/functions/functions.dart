@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import '../info/info.dart';
 
 class Functions extends StatelessWidget {
-  const Functions({Key? key}) : super(key: key);
+  const Functions({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -29,7 +29,7 @@ class Functions extends StatelessWidget {
                   theme.colorScheme.primaryContainer,
                       () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Info()),
+                      MaterialPageRoute(builder: (context) => const Info()),
                     );
                   },
                 ),

@@ -5,7 +5,7 @@ class AppTypography {
   static const String fontFamily = 'Lg'; // 공통 폰트 패밀리
 
   static TextTheme getTextTheme() {
-    return TextTheme(
+    return const TextTheme(
       // Display Styles
       displayLarge: TextStyle(
         fontFamily: fontFamily,

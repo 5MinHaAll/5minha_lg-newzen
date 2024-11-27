@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Info extends StatefulWidget {
+  const Info({super.key});
+
   @override
   _InfoState createState() =>
       _InfoState();
@@ -30,28 +32,28 @@ class _InfoState
       appBar: AppBar(
         // 뒤로 가기 버튼
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop(); // 이전 화면으로 이동
           },
         ),
-        title: Text("미생물 관리"), // 제목
+        title: const Text("미생물 관리"), // 제목
         actions: [
           IconButton(
-            icon: Icon(Icons.search), // 검색 아이콘
+            icon: const Icon(Icons.search), // 검색 아이콘
             onPressed: () {
               // 검색 기능 추가 가능
             },
           ),
         ],
-        backgroundColor: Color(0xFFFEF7FF), // 상단바 배경색
+        backgroundColor: const Color(0xFFFEF7FF), // 상단바 배경색
         elevation: 0, // 그림자 효과 제거
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.black, // 선택된 탭 텍스트 색상
           unselectedLabelColor: Colors.grey, // 선택되지 않은 탭 텍스트 색상
-          indicatorColor: Color(0xFF65558F), // 선택된 탭 아래 강조선 색상
-          tabs: [
+          indicatorColor: const Color(0xFF65558F), // 선택된 탭 아래 강조선 색상
+          tabs: const [
             Tab(text: "정보"), // 첫 번째 탭
             Tab(text: "음식"), // 두 번째 탭
           ],
@@ -59,7 +61,7 @@ class _InfoState
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
+        children: const [
           // '정보' 탭의 내용
           Center(
             child: Text(
@@ -76,7 +78,7 @@ class _InfoState
           ),
         ],
       ),
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: const Color(0xFFFFFFFF),
     );
   }
 }

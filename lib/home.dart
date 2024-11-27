@@ -5,7 +5,7 @@ import 'screens/device/device_off.dart';
 class Home extends StatefulWidget {
   final String userId; // 로그인된 유저 ID 전달받기
 
-  const Home({Key? key, required this.userId, required String title}) : super(key: key);
+  const Home({super.key, required this.userId, required String title});
 
   @override
   _HomeState createState() => _HomeState();

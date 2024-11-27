@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DeviceOff extends StatelessWidget {
-  const DeviceOff({Key? key}) : super(key: key);
+  const DeviceOff({super.key});
 
   @override
   Widget build(BuildContext context) {
