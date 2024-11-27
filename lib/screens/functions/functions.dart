@@ -1,7 +1,7 @@
 // functions.dart
 
 import 'package:flutter/material.dart';
-import '../functions/info.dart';
+import '../info/info.dart';
 
 class Functions extends StatelessWidget {
   const Functions({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'dart:math';
-import '../newzen/byproduct_manager.dart';
-import '../newzen/device_operation.dart';
+import '../features/byproduct/byproduct_manager.dart';
+import '../features/device/device_operation.dart';
 import 'package:flutter/material.dart';
-import '../newzen/custom_alert.dart'; // CustomAlert가 정의된 파일을 import
+import '../components/custom_alert.dart'; // CustomAlert가 정의된 파일을 import
 
 class RandomDataService {
   final Random _random = Random();

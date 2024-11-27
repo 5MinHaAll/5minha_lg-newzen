@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'custom_alert.dart';
+import '../../components/custom_alert.dart';
 
 class ByproductManager {
   double byproductCapacity;
