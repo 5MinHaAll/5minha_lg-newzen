@@ -17,9 +17,10 @@
 <br />
 
 ### 팀원 소개
-|                    [김근호](https://github.com/thatisme)           |                   [박윤하](https://github.com/yunha-p)                   |                    [손영균](https://github.com/wcdyg)                     |                  [양도연](https://github.com/torytori)                  |               [엄자연](https://github.com/jayeoni-git)             |
-| :------------------------------------------------------------------------: | :----------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :---------------------------------------------------------------------: | :------------------------------------------------------------------------: |
-|    <img src="./images/kunho.png" width="80px;" height="80px" alt=""/>      |    <img src="./images/yunha.png" width="80px;" height="80px" alt=""/>    |   <img src="./images/yunggune.png" width="80px;" height="80px" alt=""/>   |  <img src="./images/doyeon.png" width="80px;" height="80px" alt=""/>    |    <img src="./images/jayeon.png" width="80px;" height="80px" alt=""/>      |
+|                    [김근호](https://github.com/thatisme)           |                   [박윤하](https://github.com/yunha-p)                   |                    [손영균](https://github.com/wcdyg)                     |
+| :------------------------------------------------------------------------: | :----------------------------------------------------------------------: | :-----------------------------------------------------------------------: | 
+|    <img src="./assets/readme/kunho.png" width="80px;" height="80px" alt=""/>      |    <img src="./assets/readme/yunha.png" width="80px;" height="80px" alt=""/>    |   <img src="./assets/readme/yunggune.png" width="80px;" height="80px" alt=""/>   |
+
 
 <br />
 <div id="1"></div>
@@ -30,6 +31,8 @@
 <br />
 
 ### 목표
+<h4>"불쾌한 음식물 처리 경험을 상쾌한 주방 생활로!"</h4>
+뉴젠과 ThinQ의 만남으로, 위생적이고 편리한 미생물 음식물 처리 경험을 제공하여 더욱 쾌적한 주방 생활을 선사합니다.
 
 <br />
 
@@ -54,7 +57,9 @@
 
 ## 4. 프로젝트 구성도
 ### 시스템 아키텍처
-
+<div align=center>
+    <img width="100%" src="./assets/readme/system_arch.png" alt="system architecture">
+</div>
 <br />
 
 ### 유스케이스
