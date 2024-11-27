@@ -265,26 +265,25 @@ class _LoginState extends State<Login> {
 
                 const SizedBox(height: 16),
 
-                // Other Login Option
-                Center(
-                  child: TextButton.icon(
-                    onPressed: () {},
-                    icon: const Text(
-                      '다른 계정으로 로그인',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 14,
-                      ),
-                    ),
-                    label: const Icon(
-                      Icons.chevron_right,
+              // Other Login Options
+              Center(
+                child: TextButton.icon(
+                  onPressed: () {},
+                  icon: const Text(
+                    '다른 계정으로 로그인',
+                    style: TextStyle(
                       color: Colors.black54,
-                      size: 20,
+                      fontSize: 14,
                     ),
                   ),
+                  label: const Icon(
+                    Icons.chevron_right,
+                    color: Colors.black54,
+                    size: 20,
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
