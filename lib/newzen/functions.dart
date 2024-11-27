@@ -1,7 +1,6 @@
 // functions.dart
 
 import 'package:flutter/material.dart';
-import '../functions/detect_main.dart';
 import '../functions/info.dart';
 
 class Functions extends StatelessWidget {
@@ -39,9 +38,6 @@ class Functions extends StatelessWidget {
                   right: 8.0,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Detection()),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.secondary,

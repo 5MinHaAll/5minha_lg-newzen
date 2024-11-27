@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'newzen/device_on.dart';
 import 'newzen/device_off.dart';
 
@@ -50,8 +49,8 @@ class _HomeState extends State<Home> {
               // SVG 이미지를 표시
               Column(
                 children: [
-                  SvgPicture.asset(
-                    "images/lg logo.svg", // SVG 파일 경로
+                  Image.asset(
+                    "images/test.png", // SVG 파일 경로
                     height: 120, // 높이 설정
                   ),
                   const SizedBox(height: 16),
