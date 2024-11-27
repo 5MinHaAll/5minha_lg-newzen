@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/device/device_on.dart';
-import 'screens/device/device_off.dart';
+import 'device/device_on.dart';
+import 'device/device_off.dart';
 
 class Home extends StatefulWidget {
   final String userId; // 로그인된 유저 ID 전달받기

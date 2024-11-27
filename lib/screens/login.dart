@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../home.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,6 +18,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = GoogleFonts.robotoTextTheme(Theme.of(context).textTheme);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -31,16 +34,16 @@ class _LoginState extends State<Login> {
                   alignment: Alignment.centerRight,
                   child: OutlinedButton.icon(
                     onPressed: () {},
-                    icon: const Text(
+                    icon: Text(
                       'Korea, 한국어',
-                      style: TextStyle(
-                        color: Colors.black54,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: Colors.black87,
                         fontSize: 14,
                       ),
                     ),
                     label: const Icon(
                       Icons.keyboard_arrow_down,
-                      color: Colors.black54,
+                      color: Colors.black87,
                       size: 20,
                     ),
                     style: OutlinedButton.styleFrom(
@@ -51,23 +54,27 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-          
-                const SizedBox(
-                    height: 20),
-          
+
+                const SizedBox(height: 20),
+
                 // LG Logo
-                Image.asset(
-                  height: 40,
-                  'assets/images/login/lge_logo_kr.png',
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/login/lge_logo_kr.png',
+                    height: 40,
+                  ),
                 ),
-          
-                const SizedBox(height: 60),
-          
+
+                const SizedBox(height: 40),
+
                 // ID TextField
                 TextField(
                   controller: userIdController,
+                  style: textTheme.bodyLarge,
                   decoration: InputDecoration(
                     hintText: '이메일 아이디 또는 휴대폰 번호',
+                    hintStyle: textTheme.bodyLarge?.copyWith(),
                     border: const UnderlineInputBorder(),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey.shade300),
@@ -79,26 +86,29 @@ class _LoginState extends State<Login> {
                   ),
                   onChanged: (_) => setState(() {}),
                 ),
-          
+
                 const SizedBox(height: 16),
-          
+
                 // Password TextField
                 TextField(
                   controller: passwordController,
                   obscureText: !isPasswordVisible,
+                  style: textTheme.bodyLarge,
                   decoration: InputDecoration(
                     hintText: '비밀번호',
+                    hintStyle: textTheme.bodyLarge?.copyWith(),
                     border: const UnderlineInputBorder(),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey.shade300),
                     ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                        isPasswordVisible
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -110,110 +120,126 @@ class _LoginState extends State<Login> {
                   ),
                   onChanged: (_) => setState(() {}),
                 ),
-          
+
                 const SizedBox(height: 24),
-          
-                // MY LG ID Text
-                const Center(
-                  child: Text(
-                    'MY LG ID',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-          
-                const SizedBox(height: 8),
-          
-                // Divider Line
-                Container(
-                  height: 1,
-                  color: Colors.grey.shade300,
-                ),
-          
-                const SizedBox(height: 24),
-          
+
                 // Login Button
                 ElevatedButton(
-                  onPressed: () {
-                    if (userIdController.text == "test" &&
-                        passwordController.text == "test") {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) => Home(
-                            title: 'Flutter Demo Home Page',
-                            userId: userIdController.text,
-                          ),
-                        ),
-                      );
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const AlertDialog(
-                            content: Text("아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다."),
-                          );
-                        },
-                      );
-                    }
-                  },
+                  onPressed: isFormFilled
+                      ? () {
+                          if (userIdController.text == "test" &&
+                              passwordController.text == "test") {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (_) => Home(
+                                  title: 'Flutter Demo Home Page',
+                                  userId: userIdController.text,
+                                ),
+                              ),
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const AlertDialog(
+                                  content:
+                                      Text("아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다."),
+                                );
+                              },
+                            );
+                          }
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isFormFilled
                         ? const Color(0xFFA50034)
                         : Colors.grey.shade200,
                     foregroundColor:
-                    isFormFilled ? Colors.white : Colors.grey.shade500,
+                        isFormFilled ? Colors.white : Colors.grey.shade700,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     '로그인',
-                    style: TextStyle(
+                    style: textTheme.bodyLarge?.copyWith(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      color: isFormFilled ? Colors.white : Colors.grey.shade700,
                     ),
                   ),
                 ),
-          
-                const SizedBox(height: 16),
-          
-                // Find ID, Reset Password, Sign Up buttons
+
+                const SizedBox(height: 4),
+
+                // Find ID, Reset Password, Sign Up Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "아이디 찾기",
-                        style: TextStyle(color: Colors.black, fontSize: 14),
+                    Text(
+                      "아이디 찾기",
+                      style: textTheme.bodySmall?.copyWith(
+                        fontSize: 13,
                       ),
                     ),
-                    const Text("|", style: TextStyle(color: Colors.grey)),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "비밀번호 재설정",
-                        style: TextStyle(color: Colors.black, fontSize: 14),
+                    Text(
+                      " | ",
+                      style: textTheme.bodySmall?.copyWith(color: Colors.grey),
+                    ),
+                    Text(
+                      "비밀번호 재설정",
+                      style: textTheme.bodySmall?.copyWith(
+                        fontSize: 13,
                       ),
                     ),
-                    const Text("|", style: TextStyle(color: Colors.grey)),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "회원가입",
-                        style: TextStyle(color: Colors.black, fontSize: 14),
+                    Text(
+                      " | ",
+                      style: textTheme.bodySmall?.copyWith(color: Colors.grey),
+                    ),
+                    Text(
+                      "회원가입",
+                      style: textTheme.bodySmall?.copyWith(
+                        color: Colors.black87,
+                        fontSize: 13,
                       ),
                     ),
                   ],
                 ),
-          
+
+                const SizedBox(height: 40),
+
+                // MY LG ID Login Button
+                OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Color(0xFFA50034)),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/login/my_lg_id.png',
+                        height: 16,
+                      ),
+                      Text(
+                        ' 로그인',
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: const Color(0xFFA50034),
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
                 const SizedBox(height: 24),
-          
-                // Social Login Placeholders
+
+                // Social Login Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -236,10 +262,10 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-          
+
                 const SizedBox(height: 16),
-          
-                // Other Login Options
+
+                // Other Login Option
                 Center(
                   child: TextButton.icon(
                     onPressed: () {},
