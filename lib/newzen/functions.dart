@@ -1,33 +1,34 @@
-import 'package:flutter/material.dart';
+// functions.dart
 
+import 'package:flutter/material.dart';
 import '../functions/detect_main.dart';
 import '../functions/info.dart';
 
-class functions extends StatelessWidget {
-  const functions({Key? key}) : super(key: key);
+class Functions extends StatelessWidget {
+  const Functions({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: theme.colorScheme.background,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        // 주요 콘텐츠를 세로 방향으로 배치
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch, // 자식 위젯을 수평으로 늘림
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 45), // 카드 간 간격
+            const SizedBox(height: 45),
 
-            // "미생물 관리" 카드
             Stack(
               children: [
                 _buildFeatureCard(
-                  "미생물 관리", // 카드 제목
-                  "", // 카드 설명
-                  Icons.arrow_forward_ios, // 오른쪽 화살표 아이콘
-                  Color(0xFFFEF7FF), // 카드 배경 색상
+                  context,
+                  "미생물 관리",
+                  "",
+                  Icons.arrow_forward_ios,
+                  theme.colorScheme.primaryContainer,
                       () {
-                    // 카드 클릭 시 manageInfoPage로 이동
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => Info()),
                     );
@@ -38,93 +39,106 @@ class functions extends StatelessWidget {
                   right: 8.0,
                   child: ElevatedButton(
                     onPressed: () {
-                      // 버튼 클릭 이벤트 처리
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Detection()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.pink, // 버튼 배경색
-                      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                      backgroundColor: theme.colorScheme.secondary,
+                      foregroundColor: theme.colorScheme.onSecondary,
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                     child: Text(
                       "처리 가능한 음식물",
-                      style: TextStyle(fontSize: 12.0),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onSecondary,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 45), // 카드 간 간격
+            const SizedBox(height: 45),
 
-            // "소모품 정보" 카드
             _buildFeatureCard(
+              context,
               "소모품 정보",
               "내 제품에 필요한 소모품을 확인해보세요.",
               null,
-              Color(0xFFFEF7FF),
+              theme.colorScheme.primaryContainer,
                   () {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar(); // 현재 스낵바를 즉시 숨김
-                // 클릭 시 스낵바 표시
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('소모품 정보 페이지로 이동합니다.')),
-                );
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: const Text('소모품 정보 페이지로 이동합니다.'),
+                      backgroundColor: theme.colorScheme.secondary,
+                    ),
+                  );
               },
             ),
             const SizedBox(height: 45),
 
-            // "에너지 모니터링" 카드
             _buildFeatureCard(
+              context,
               "에너지 모니터링",
               "전력 사용량",
               Icons.arrow_forward_ios,
-              Color(0xFFDED8E1),
+              theme.colorScheme.secondaryContainer,
                   () {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar(); // 현재 스낵바를 즉시 숨김
-                // 클릭 시 스낵바 표시
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('에너지 모니터링 페이지로 이동합니다.')),
-                );
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: const Text('에너지 모니터링 페이지로 이동합니다.'),
+                      backgroundColor: theme.colorScheme.secondary,
+                    ),
+                  );
               },
             ),
             const SizedBox(height: 45),
 
-            // 두 개의 카드(스마트 진단, 제품 사용설명서)를 가로로 배치
             Row(
               children: [
-                // "스마트 진단" 카드
                 Expanded(
                   child: _buildFeatureCard(
+                    context,
                     "스마트 진단",
                     "최근 진단 결과 없음",
-                    null, // 아이콘 없음
-                    Color(0xFFDED8E1),
+                    null,
+                    theme.colorScheme.secondaryContainer,
                         () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar(); // 현재 스낵바를 즉시 숨김
-                      // 클릭 시 스낵바 표시
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('스마트 진단 페이지로 이동합니다.')),
-                      );
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          SnackBar(
+                            content: const Text('스마트 진단 페이지로 이동합니다.'),
+                            backgroundColor: theme.colorScheme.secondary,
+                          ),
+                        );
                     },
                   ),
                 ),
-                const SizedBox(width: 16), // 카드 간 간격
-                // "제품 사용설명서" 카드
+                const SizedBox(width: 16),
                 Expanded(
                   child: _buildFeatureCard(
+                    context,
                     "제품 사용설명서",
                     "사용법이 궁금하신가요?",
-                    null, // 아이콘 없음
-                    Color(0xFFDED8E1),
+                    null,
+                    theme.colorScheme.secondaryContainer,
                         () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar(); // 현재 스낵바를 즉시 숨김
-                      // 클릭 시 스낵바 표시
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('제품 사용설명서 페이지로 이동합니다.')),
-                      );
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          SnackBar(
+                            content: const Text('제품 사용설명서 페이지로 이동합니다.'),
+                            backgroundColor: theme.colorScheme.secondary,
+                          ),
+                        );
                     },
                   ),
                 ),
@@ -136,48 +150,54 @@ class functions extends StatelessWidget {
     );
   }
 
-  // 카드 위젯 생성 함수
-  Widget _buildFeatureCard(String title, String subtitle, IconData? icon,
-      Color backgroundColor, VoidCallback onTap) {
+  Widget _buildFeatureCard(
+      BuildContext context,
+      String title,
+      String subtitle,
+      IconData? icon,
+      Color backgroundColor,
+      VoidCallback onTap,
+      ) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
-      onTap: onTap, // 카드 클릭 이벤트
+      onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(24.0), // 카드 내부 여백
+        padding: const EdgeInsets.all(24.0),
         decoration: BoxDecoration(
-          color: backgroundColor, // 배경색 투명도 조정
-          // borderRadius: BorderRadius.circular(12), // 둥근 모서리
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start, // 텍스트 위쪽 정렬
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 텍스트 영역
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title, // 카드 제목
-                    style: TextStyle(
-                      fontSize: 18,
+                    title,
+                    style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87, // 텍스트 색상
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: 8), // 텍스트 간격
-                  Text(
-                    subtitle, // 카드 설명
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54, // 설명 텍스트 색상
+                  if (subtitle.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      subtitle,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),
             if (icon != null)
               Icon(
-                icon, // 아이콘 표시 (icon이 null이 아닌 경우에만)
-                color: Colors.black45, // 아이콘 색상
+                icon,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
           ],
         ),
