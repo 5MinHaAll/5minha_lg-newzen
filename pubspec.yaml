@@ -40,16 +40,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/yolov2_tiny.tflite
-    - assets/yolov2_tiny.txt
-    - assets/ssd_mobilenet.tflite
-    - assets/ssd_mobilenet.txt
-    - assets/mobilenet_v1_1.0_224.tflite
-    - assets/mobilenet_v1_1.0_224.txt
-    - assets/posenet_mv1_075_float_from_checkpoints.tflite
-    - assets/models/food_detect.tflite
-    - assets/models/food_labelmap.txt
-    - assets/models/yes_no_food_info.txt
+    - assets/models/
     - assets/fonts/
     - assets/images/
 

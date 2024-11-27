@@ -51,7 +51,7 @@ class CustomAlert extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text("확인"),
+              child: const Text("확인", style: TextStyle(color: Colors.white),),
             ),
           ],
         ),
