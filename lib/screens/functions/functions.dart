@@ -1,8 +1,6 @@
-// functions.dart
-
 import 'package:flutter/material.dart';
-import 'package:newzen/detection_feature/main_screen.dart';
-import '../functions/info.dart';
+import 'package:newzen/features/detection/main_screen.dart';
+import '../info/info.dart';
 
 class Functions extends StatelessWidget {
   const Functions({Key? key}) : super(key: key);
