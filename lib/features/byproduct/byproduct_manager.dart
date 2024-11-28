@@ -9,6 +9,11 @@ class ByproductManager {
   // 생성자를 통해 초기 용량을 설정
   ByproductManager({required this.byproductCapacity});
 
+  void resetByproductCapacity() {
+    byproductCapacity = 35.0; // 초기값으로 설정
+    print("부산물 용량이 초기화되었습니다.");
+  }
+
   // 부산물 용량 증가 함수
   void increaseCapacity(BuildContext context, {double increment = 5.0}) {
     if (byproductCapacity < 100) {

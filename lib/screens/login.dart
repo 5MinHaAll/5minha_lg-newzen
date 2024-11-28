@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'home.dart';
+import 'signup.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -14,6 +16,57 @@ class _LoginState extends State<Login> {
   bool isPasswordVisible = false;
   bool get isFormFilled =>
       userIdController.text.isNotEmpty && passwordController.text.isNotEmpty;
+
+  Future<void> signIn() async {
+    try {
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userIdController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // 사용자 이름 가져오기
+      final userName = userCredential.user?.displayName ?? '사용자';
+
+      print('로그인 성공: ${userCredential.user?.email}, 이름: $userName');
+
+      // Home 화면으로 이동하며 사용자 이름 전달
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => Home(
+            title: 'Flutter Demo Home Page',
+            userId: userIdController.text,
+            userName: userName, // 사용자 이름 전달
+          ),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      print('FirebaseAuthException 발생: ${e.code}, 메시지: ${e.message}');
+      String errorMessage = '로그인 정보를 확인해주세요.\n'
+          '이메일이나 비밀번호가 올바르지 않거나 등록되지 않은 계정입니다.';
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(
+              errorMessage,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +103,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               // LG Logo Placeholder
               Container(
                 height: 40,
@@ -63,9 +114,7 @@ class _LoginState extends State<Login> {
                   child: Text('LG Logo Placeholder'),
                 ),
               ),
-
               const SizedBox(height: 60),
-
               // ID TextField
               TextField(
                 controller: userIdController,
@@ -82,9 +131,7 @@ class _LoginState extends State<Login> {
                 ),
                 onChanged: (_) => setState(() {}),
               ),
-
               const SizedBox(height: 16),
-
               // Password TextField
               TextField(
                 controller: passwordController,
@@ -101,7 +148,9 @@ class _LoginState extends State<Login> {
                   contentPadding: const EdgeInsets.symmetric(vertical: 16),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                      isPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: Colors.grey,
                     ),
                     onPressed: () {
@@ -113,60 +162,16 @@ class _LoginState extends State<Login> {
                 ),
                 onChanged: (_) => setState(() {}),
               ),
-
               const SizedBox(height: 24),
-
-              // MY LG ID Text
-              const Center(
-                child: Text(
-                  'MY LG ID',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              // Divider Line
-              Container(
-                height: 1,
-                color: Colors.grey.shade300,
-              ),
-
-              const SizedBox(height: 24),
-
               // Login Button
               ElevatedButton(
-                onPressed: () {
-                  if (userIdController.text == "test" &&
-                      passwordController.text == "test") {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => Home(
-                          title: 'Flutter Demo Home Page',
-                          userId: userIdController.text,
-                        ),
-                      ),
-                    );
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const AlertDialog(
-                          content: Text("아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다."),
-                        );
-                      },
-                    );
-                  }
-                },
+                onPressed: isFormFilled ? signIn : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isFormFilled
                       ? const Color(0xFFA50034)
                       : Colors.grey.shade200,
                   foregroundColor:
-                  isFormFilled ? Colors.white : Colors.grey.shade500,
+                      isFormFilled ? Colors.white : Colors.grey.shade500,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: const RoundedRectangleBorder(
@@ -181,89 +186,53 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
-
-              // Find ID, Reset Password, Sign Up buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "아이디 찾기",
-                      style: TextStyle(color: Colors.black, fontSize: 14),
+              // Sign Up Button
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const SignUp(),
                     ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey.shade200,
+                  foregroundColor: Colors.grey.shade500,
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
                   ),
-                  const Text("|", style: TextStyle(color: Colors.grey)),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "비밀번호 재설정",
-                      style: TextStyle(color: Colors.black, fontSize: 14),
-                    ),
-                  ),
-                  const Text("|", style: TextStyle(color: Colors.grey)),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "회원가입",
-                      style: TextStyle(color: Colors.black, fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 24),
-
-              // Social Login Placeholders
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: const Center(
-                      child: Text('카카오'),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: const Center(
-                      child: Text('네이버'),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 16),
-
-              // Other Login Options
-              Center(
-                child: TextButton.icon(
-                  onPressed: () {},
-                  icon: const Text(
-                    '다른 계정으로 로그인',
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 14,
-                    ),
-                  ),
-                  label: const Icon(
-                    Icons.chevron_right,
-                    color: Colors.black54,
-                    size: 20,
+                ),
+                child: const Text(
+                  '회원가입',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
+
+              // ElevatedButton(
+              //   onPressed: isFormFilled ? signUp : null,
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: Colors.grey.shade200,
+              //     foregroundColor: Colors.grey.shade500,
+              //     elevation: 0,
+              //     padding: const EdgeInsets.symmetric(vertical: 16),
+              //     shape: const RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.zero,
+              //     ),
+              //   ),
+              //   child: const Text(
+              //     '회원가입',
+              //     style: TextStyle(
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.w500,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

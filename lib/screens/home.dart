@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'screens/device/device_on.dart';
-import 'screens/device/device_off.dart';
+import 'device/device_on.dart';
+import 'device/device_off.dart';
 
 class Home extends StatefulWidget {
   final String userId; // 로그인된 유저 ID 전달받기
+  final String userName; // 로그인된 유저 이름 전달받기
 
-  const Home({Key? key, required this.userId, required String title}) : super(key: key);
+  const Home(
+      {Key? key,
+      required this.userId,
+      required String title,
+      required this.userName})
+      : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -22,8 +28,9 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          "${widget.userId} 홈", // 로그인된 유저의 ID로 표시
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          "${widget.userName} 홈", // 로그인된 유저의 ID로 표시
+          style:
+              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
@@ -85,11 +92,13 @@ class _HomeState extends State<Home> {
                     onIconTap: () {
                       if (isnewzenOn) {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const DeviceOn()),
+                          MaterialPageRoute(
+                              builder: (context) => const DeviceOn()),
                         );
                       } else {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const DeviceOff()),
+                          MaterialPageRoute(
+                              builder: (context) => const DeviceOff()),
                         );
                       }
                     },
@@ -124,7 +133,8 @@ class _HomeState extends State<Home> {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0), // 패딩 조정
+        padding: const EdgeInsets.symmetric(
+            horizontal: 8.0, vertical: 12.0), // 패딩 조정
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -142,7 +152,8 @@ class _HomeState extends State<Home> {
             ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isOn ? Colors.teal : Colors.grey, // 상태에 따른 버튼 색상
+                backgroundColor:
+                    isOn ? Colors.teal : Colors.grey, // 상태에 따른 버튼 색상
                 minimumSize: const Size(80, 36), // 버튼 크기 조정
               ),
               child: Text(

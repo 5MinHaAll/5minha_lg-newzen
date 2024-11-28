@@ -17,6 +17,14 @@ class RandomDataService {
 
   bool _isAlertShown = false; // 알림 표시 상태 관리
 
+  // 초기화 메서드
+  void reset() {
+    _currentVolume = 90.0; // 초기 용량으로 재설정
+    _previousVolume = null; // 이전 용량 초기화
+    _dynamicDecreaseRate = 0.5; // 감소율 초기화
+    print("RandomDataService가 초기화되었습니다.");
+  }
+
   // 감소율 설정 메소드
   void setDecreaseRate(double rate) {
     if (rate < 0) {
