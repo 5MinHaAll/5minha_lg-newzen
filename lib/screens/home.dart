@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/device_card.dart';
 import 'device/device_on.dart';
 import 'device/device_off.dart';
 
@@ -18,150 +19,199 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool isnewzenOn = false; // 미생물 음식물 처리기 상태
-  bool isMicrowaveOn = false; // 전자레인지 상태
+  bool isNewzenOn = false;
+  bool isMicrowaveOn = false;
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          "${widget.userName} 홈", // 로그인된 유저의 ID로 표시
-          style:
-              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: RadialGradient(
+          center: Alignment(-1.0, -1.0), // 좌측 상단
+          radius: 1.0,
+          colors: [
+            Color(0xFFBDD2E3), // 좌측 상단 색상
+            Color(0xFFDAEDF3), // 중앙 색상
+          ],
+          stops: [0.2, 1.0],
         ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add, color: Colors.black),
-            onPressed: () {
-              // 추가 버튼 기능
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.black),
-            onPressed: () {
-              // 알림 버튼 기능
-            },
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Row(
             children: [
-              // SVG 이미지를 표시
-              Column(
-                children: [
-                  Image.asset(
-                    "images/test.png", // SVG 파일 경로
-                    height: 120, // 높이 설정
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    "임시 이미지", // 텍스트를 "임시 이미지"로 변경
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14, color: Colors.black),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              // 미생물 음식물 처리기와 전자레인지 카드
-              GridView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 1.2, // 카드 비율 수정
+              Text(
+                "${widget.userName} 홈",
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
                 ),
-                children: [
-                  _buildDeviceCard(
-                    icon: Icons.recycling,
-                    title: "미생물 음식물 처리기",
-                    isOn: isnewzenOn,
-                    onPressed: () {
-                      setState(() {
-                        isnewzenOn = !isnewzenOn; // 상태 토글
-                      });
-                    },
-                    onIconTap: () {
-                      if (isnewzenOn) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const DeviceOn()),
-                        );
-                      } else {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const DeviceOff()),
-                        );
-                      }
-                    },
-                  ),
-                  _buildDeviceCard(
-                    icon: Icons.microwave,
-                    title: "전자레인지",
-                    isOn: isMicrowaveOn,
-                    onPressed: () {
-                      setState(() {
-                        isMicrowaveOn = !isMicrowaveOn; // 상태 토글
-                      });
-                    },
-                  ),
-                ],
+              ),
+              const Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.black,
+                size: 20,
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  // 기기 카드 빌더
-  Widget _buildDeviceCard({
-    required IconData icon,
-    required String title,
-    required bool isOn,
-    required VoidCallback onPressed,
-    VoidCallback? onIconTap, // 아이콘 클릭 이벤트 추가
-  }) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 8.0, vertical: 12.0), // 패딩 조정
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: onIconTap, // 아이콘 클릭 시 호출
-              child: Icon(icon, size: 40, color: Colors.teal),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add, color: Colors.black),
+              onPressed: () {},
             ),
-            const SizedBox(height: 10),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+            IconButton(
+              icon: const Icon(Icons.notifications_none, color: Colors.black),
+              onPressed: () {},
             ),
-            const Spacer(), // 남은 공간을 밀어줌으로써 버튼의 위치 조정
-            ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    isOn ? Colors.teal : Colors.grey, // 상태에 따른 버튼 색상
-                minimumSize: const Size(80, 36), // 버튼 크기 조정
-              ),
-              child: Text(
-                isOn ? "켜짐" : "꺼짐",
-                style: const TextStyle(fontSize: 14, color: Colors.white),
-              ),
+            IconButton(
+              icon: const Icon(Icons.more_vert, color: Colors.black),
+              onPressed: () {},
             ),
           ],
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 1.2,
+                  children: [
+                    DeviceCard(
+                      icon: 'assets/images/home/newzen.png',
+                      title: '음식물 처리기',
+                      isOn: isNewzenOn,
+                      onTogglePower: () {
+                        setState(() {
+                          isNewzenOn = !isNewzenOn;
+                        });
+                      },
+                      onIconTap: isNewzenOn
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DeviceOn(),
+                                ),
+                              );
+                            }
+                          : null,
+                    ),
+                    DeviceCard(
+                      icon: 'assets/images/home/microwave.png',
+                      title: '전자레인지',
+                      isOn: isMicrowaveOn,
+                      onTogglePower: () {
+                        setState(() {
+                          isMicrowaveOn = !isMicrowaveOn;
+                        });
+                      },
+                      onIconTap: () {},
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  "스마트 루틴",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Color(0xFFFFE8CC),
+                      child: Icon(Icons.timer, color: Colors.orange),
+                    ),
+                    title: Text("루틴 알아보기"),
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                  ),
+                ),
+                const SizedBox(height: 100), // 하단 여백 추가
+              ],
+            ),
+          ),
+        ),
+        floatingActionButton: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 2,
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            shape: const CircleBorder(),
+            onPressed: () {},
+            child: Image.asset(
+              'assets/icons/home/ic_ai_chat.png',
+              width: 24,
+              height: 24,
+            ),
+          ),
+        ),
+        bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Colors.transparent,
+          ),
+          child: Container(
+            color: Colors.transparent,
+            child: BottomNavigationBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.black,
+              unselectedItemColor: Colors.grey,
+              currentIndex: _currentIndex,
+              onTap: (index) => setState(() => _currentIndex = index),
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined),
+                  activeIcon: Icon(Icons.home),
+                  label: '홈',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.explore_outlined),
+                  activeIcon: Icon(Icons.explore),
+                  label: '디스커버',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.bar_chart_outlined),
+                  activeIcon: Icon(Icons.bar_chart),
+                  label: '리포트',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.menu),
+                  label: '메뉴',
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

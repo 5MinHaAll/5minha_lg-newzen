@@ -66,7 +66,7 @@ class RandomDataService {
     _previousVolume ??= _currentVolume;
     // 해당 값에 따라 작동 먹출 수 있음.
     print("이전 값은 $_previousVolume");
-    _currentVolume = (_currentVolume + amount).clamp(0.0, 200.0); // ㅅ0 ~ 200 제한
+    _currentVolume = (_currentVolume + amount).clamp(0.0, 200.0); // 0 ~ 200 제한
   }
 
   // 교반통 상태

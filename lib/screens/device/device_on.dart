@@ -114,39 +114,6 @@ class _DeviceOnState extends State<DeviceOn> {
     });
   }
 
-  // void _startPeriodicUpdates() {
-  //   final initialPottingSoliData = potting_soil.generatePottingSoilData();
-  //   final initialMixingData = mixing_tank.generateMixingTankData(
-  //       isOperating: deviceOperation.isOperating, context: context);
-  //
-  //   setState(() {
-  //     _PottingSoilData = initialPottingSoliData;
-  //     _mixingTankData = initialMixingData;
-  //   });
-  //
-  //   _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
-  //     try {
-  //       final pottingSoilData = await potting_soil.generatePottingSoilData();
-  //       final mixingData = await mixing_tank.generateMixingTankData(
-  //           isOperating: deviceOperation.isOperating,
-  //           deviceOperation: deviceOperation,
-  //           context: context);
-  //
-  //       setState(() {
-  //         _PottingSoilData = pottingSoilData;
-  //         _mixingTankData = mixingData;
-  //
-  //         if (_mixingTankData?["shouldIncreaseByproduct"] == true) {
-  //           byproductManager.increaseCapacity(context,
-  //               increment: mixing_tank.getAmount() * 0.1);
-  //         }
-  //       });
-  //     } catch (e) {
-  //       print("Error fetching data: $e");
-  //     }
-  //   });
-  // }
-
   void _resetState() {
     setState(() {
       // 초기 상태로 재설정
@@ -175,165 +142,6 @@ class _DeviceOnState extends State<DeviceOn> {
       print("화면이 초기화되었습니다.");
     });
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   final theme = Theme.of(context);
-  //
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text(
-  //         "음식물 처리기",
-  //         style: theme.textTheme.titleLarge?.copyWith(
-  //           color: theme.colorScheme.onPrimary,
-  //         ),
-  //       ),
-  //       backgroundColor: theme.colorScheme.primary,
-  //     ),
-  //     body: Column(
-  //       children: [
-  //         Padding(
-  //           padding: const EdgeInsets.all(16.0),
-  //           child: CupertinoSegmentedControl(
-  //             children: _segments,
-  //             groupValue: _selectedIndex,
-  //             onValueChanged: (int index) {
-  //               setState(() {
-  //                 _selectedIndex = index;
-  //               });
-  //             },
-  //             selectedColor: theme.colorScheme.primary,
-  //             unselectedColor: theme.colorScheme.surface,
-  //             borderColor: theme.colorScheme.primary,
-  //             pressedColor: theme.colorScheme.primary.withOpacity(0.1),
-  //           ),
-  //         ),
-  //         Expanded(
-  //           child: Stack(
-  //             children: [
-  //               // 메인 콘텐츠
-  //               _selectedIndex == 0 ? _buildMainContent() : const Functions(),
-  //
-  //               // 위로 나오는 버튼들 (확장 상태)
-  //               if (_isExpanded) ...[
-  //                 Positioned(
-  //                   left: _fabPosition.dx,
-  //                   top: _fabPosition.dy - 60, // 메인 FAB 위로 첫 번째 버튼
-  //                   child: FloatingActionButton(
-  //                     onPressed: () {
-  //                       setState(() {
-  //                         _isExpanded = false;
-  //                         mixing_tank.increaseVolume(50.0);
-  //                         mixing_tank.setAmount(50.0);
-  //                         mixing_tank.setDecreaseRate(0.5);
-  //                         _mixingTankData = mixing_tank.generateMixingTankData(
-  //                           isOperating: deviceOperation.isOperating,
-  //                           deviceOperation: deviceOperation,
-  //                           context: context,
-  //                         );
-  //                         deviceOperation.startOperation();
-  //                       });
-  //                     },
-  //                     backgroundColor: theme.colorScheme.secondary,
-  //                     child: const Icon(Icons.food_bank),
-  //                   ),
-  //                 ),
-  //                 Positioned(
-  //                   left: _fabPosition.dx,
-  //                   top: _fabPosition.dy - 120, // 메인 FAB 위로 두 번째 버튼
-  //                   child: FloatingActionButton(
-  //                     onPressed: () {
-  //                       showDialog(
-  //                         context: context,
-  //                         builder: (BuildContext context) {
-  //                           return CustomAlert(
-  //                             title: "경고",
-  //                             content: "이 음식물은 처리할 수 없습니다.",
-  //                             onConfirm: () {
-  //                               print("경고창 닫힘");
-  //                             },
-  //                           );
-  //                         },
-  //                       );
-  //                     },
-  //                     backgroundColor: Colors.grey,
-  //                     child: const Icon(Icons.block),
-  //                   ),
-  //                 ),
-  //                 Positioned(
-  //                   left: _fabPosition.dx,
-  //                   top: _fabPosition.dy - 180, // 메인 FAB 위로 세 번째 버튼
-  //                   child: FloatingActionButton(
-  //                     onPressed: () {
-  //                       setState(() {
-  //                         _isExpanded = false;
-  //                         mixing_tank.increaseVolume(20.0);
-  //                         mixing_tank.setAmount(20.0);
-  //                         mixing_tank.setDecreaseRate(2.5);
-  //                         _mixingTankData = mixing_tank.generateMixingTankData(
-  //                           isOperating: deviceOperation.isOperating,
-  //                           deviceOperation: deviceOperation,
-  //                           context: context,
-  //                         );
-  //                         deviceOperation.startOperation();
-  //                       });
-  //                     },
-  //                     backgroundColor: theme.colorScheme.secondary,
-  //                     child: const Icon(Icons.restaurant_menu),
-  //                   ),
-  //                 ),
-  //               ],
-  //
-  //               // 드래그 가능한 메인 FAB
-  //               Positioned(
-  //                 left: _fabPosition.dx,
-  //                 top: _fabPosition.dy,
-  //                 child: GestureDetector(
-  //                   onPanStart: (_) {
-  //                     setState(() {
-  //                       _isDragging = true; // 드래그 시작
-  //                     });
-  //                   },
-  //                   onPanUpdate: (details) {
-  //                     setState(() {
-  //                       _fabPosition += details.delta; // FAB 위치 업데이트
-  //                     });
-  //                   },
-  //                   onPanEnd: (_) {
-  //                     setState(() {
-  //                       _isDragging = false; // 드래그 중 상태 해제
-  //                     });
-  //                   },
-  //                   child: AnimatedContainer(
-  //                     duration: const Duration(milliseconds: 200),
-  //                     curve: Curves.easeInOut,
-  //                     width: _isDragging ? 60 : 56,
-  //                     height: _isDragging ? 60 : 56,
-  //                     child: FloatingActionButton(
-  //                       onPressed: () {
-  //                         setState(() {
-  //                           _isExpanded = !_isExpanded; // 버튼 확장/축소
-  //                         });
-  //                       },
-  //                       backgroundColor: _isExpanded
-  //                           ? theme.colorScheme.error
-  //                           : theme.colorScheme.secondary,
-  //                       child: Icon(
-  //                         _isExpanded ? Icons.close : Icons.menu,
-  //                         color: theme.colorScheme.onSecondary,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //     backgroundColor: theme.colorScheme.background,
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -392,7 +200,7 @@ class _DeviceOnState extends State<DeviceOn> {
                       _isExpanded = false;
                       mixing_tank.increaseVolume(50.0);
                       mixing_tank.setAmount(50.0);
-                      mixing_tank.setDecreaseRate(0.5);
+                      mixing_tank.setDecreaseRate(1);
                       _mixingTankData = mixing_tank.generateMixingTankData(
                         isOperating: deviceOperation.isOperating,
                         deviceOperation: deviceOperation,
@@ -434,9 +242,9 @@ class _DeviceOnState extends State<DeviceOn> {
                   onPressed: () {
                     setState(() {
                       _isExpanded = false;
-                      mixing_tank.increaseVolume(20.0);
-                      mixing_tank.setAmount(20.0);
-                      mixing_tank.setDecreaseRate(2.5);
+                      mixing_tank.increaseVolume(22);
+                      mixing_tank.setAmount(22);
+                      mixing_tank.setDecreaseRate(2);
                       _mixingTankData = mixing_tank.generateMixingTankData(
                         isOperating: deviceOperation.isOperating,
                         deviceOperation: deviceOperation,
@@ -547,23 +355,55 @@ class _DeviceOnState extends State<DeviceOn> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildStatusCard(
-                "작동 상태",
-                deviceOperation.isOperating ? "ON" : "OFF", // 상태에 따라 텍스트 변경
-                deviceOperation.isOperating
-                    ? Colors.green
-                    : Colors.red, // 상태에 따른 색상 변경
-                showStopButton: deviceOperation.isOperating, // 정지 버튼을 보여줄지 결정
-                deviceOperation: deviceOperation, // DeviceOperation 객체 전달
+              // 작동 상태 카드
+              ValueListenableBuilder<int>(
+                valueListenable: deviceOperation.elapsedTime,
+                builder: (context, elapsedTime, child) {
+                  return _buildStatusCard(
+                    "작동 상태",
+                    deviceOperation.isOperating ? "ON" : "OFF",
+                    deviceOperation.isOperating ? Colors.green : Colors.red,
+                    showStopButton: deviceOperation.isOperating,
+                    deviceOperation: deviceOperation,
+                  );
+                },
               ),
-              _buildStatusCard(
-                "발효중 경과 시간",
-                deviceOperation.getElapsedTime(),
-                Colors.orange,
-                showStopButton: deviceOperation.isOperating,
+
+              // 발효중 경과 시간 카드
+              ValueListenableBuilder<int>(
+                valueListenable: deviceOperation.elapsedTime,
+                builder: (context, elapsedTime, child) {
+                  return _buildStatusCard(
+                    "발효중 경과 시간",
+                    deviceOperation.getElapsedTime(),
+                    Colors.orange,
+                    showStopButton: deviceOperation.isOperating,
+                  );
+                },
               ),
             ],
           ),
+
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     _buildStatusCard(
+          //       "작동 상태",
+          //       deviceOperation.isOperating ? "ON" : "OFF", // 상태에 따라 텍스트 변경
+          //       deviceOperation.isOperating
+          //           ? Colors.green
+          //           : Colors.red, // 상태에 따른 색상 변경
+          //       showStopButton: deviceOperation.isOperating, // 정지 버튼을 보여줄지 결정
+          //       deviceOperation: deviceOperation, // DeviceOperation 객체 전달
+          //     ),
+          //     _buildStatusCard(
+          //       "발효중 경과 시간",
+          //       deviceOperation.getElapsedTime(),
+          //       Colors.orange,
+          //       showStopButton: deviceOperation.isOperating,
+          //     ),
+          //   ],
+          // ),
           const SizedBox(height: 20),
 
           // 모든 운영 제어 버튼 (토글 형태)
@@ -922,116 +762,6 @@ class _DeviceOnState extends State<DeviceOn> {
     }
   }
 
-  // void _showPottingSoilModal(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     backgroundColor: Colors.white,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-  //     ),
-  //     builder: (context) {
-  //       final double screenHeight = MediaQuery.of(context).size.height;
-  //       final double screenWidth = MediaQuery.of(context).size.width;
-  //
-  //       // Timer 변수 (모달 내부)
-  //       Timer? modalTimer;
-  //
-  //       // 모달 상태 관리
-  //       return StatefulBuilder(
-  //         builder: (BuildContext context, StateSetter modalSetState) {
-  //           // 모달 안의 값이 주기적으로 업데이트되도록 타이머 설정
-  //           modalTimer ??=
-  //               Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-  //             print("모달 타이머 실행");
-  //             modalSetState(() {
-  //               _PottingSoilData = potting_soil.generatePottingSoilData();
-  //             });
-  //           });
-  //
-  //           return Container(
-  //             height: screenHeight * 0.3,
-  //             padding: const EdgeInsets.all(16.0),
-  //             child: Column(
-  //               mainAxisSize: MainAxisSize.min,
-  //               children: [
-  //                 // 제목
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     Text(
-  //                       "배양토 상태",
-  //                       style: TextStyle(
-  //                         fontSize: screenWidth * 0.05,
-  //                         fontWeight: FontWeight.bold,
-  //                       ),
-  //                     ),
-  //                     IconButton(
-  //                       onPressed: () {
-  //                         modalTimer?.cancel(); // 타이머 중지
-  //                         Navigator.of(context).pop(); // 모달 닫기
-  //                       },
-  //                       icon: Icon(
-  //                         Icons.close,
-  //                         size: screenWidth * 0.06,
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 const Divider(),
-  //
-  //                 // 모달 내용: 온도, 습도, pH 상태
-  //                 Column(
-  //                   children: [
-  //                     _buildModalRow(
-  //                       "온도",
-  //                       "${_PottingSoilData?['temperature']}°C",
-  //                       Icons.mood,
-  //                       _PottingSoilData?['temperatureStatus'],
-  //                       _PottingSoilData?['temperatureStatus'] == "보통"
-  //                           ? Colors.green
-  //                           : _PottingSoilData?['temperatureStatus'] == "높음"
-  //                               ? Colors.red
-  //                               : Colors.lightBlue,
-  //                       screenWidth,
-  //                     ),
-  //                     SizedBox(height: screenHeight * 0.02),
-  //                     _buildModalRow(
-  //                       "습도",
-  //                       "${_PottingSoilData?['humidity']}%",
-  //                       Icons.warning,
-  //                       _PottingSoilData?['humidityStatus'],
-  //                       _PottingSoilData?['humidityStatus'] == "보통"
-  //                           ? Colors.green
-  //                           : _PottingSoilData?['humidityStatus'] == "높음"
-  //                               ? Colors.red
-  //                               : Colors.lightBlue,
-  //                       screenWidth,
-  //                     ),
-  //                     SizedBox(height: screenHeight * 0.02),
-  //                     _buildModalRow(
-  //                       "pH",
-  //                       "${_PottingSoilData?['ph']}",
-  //                       Icons.mood_bad,
-  //                       _PottingSoilData?['phStatus'],
-  //                       _PottingSoilData?['phStatus'] == "보통"
-  //                           ? Colors.green
-  //                           : _PottingSoilData?['phStatus'] == "높음"
-  //                               ? Colors.red
-  //                               : Colors.lightBlue,
-  //                       screenWidth,
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ],
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
-
   //교반통 상태 모달창
   void _toggleAgitatorBottomSheet(BuildContext context) {
     if (_agitatorBottomSheetController != null) {
@@ -1182,164 +912,6 @@ class _DeviceOnState extends State<DeviceOn> {
         ),
       );
     }
-  }
-
-  void _showAgitatorModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-      ),
-      builder: (context) {
-        final double screenHeight = MediaQuery.of(context).size.height;
-        final double screenWidth = MediaQuery.of(context).size.width;
-
-        // Timer 변수 (모달 내부)
-        Timer? modalTimer;
-
-        // 모달 상태 관리
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter modalSetState) {
-            // 모달 안의 값이 주기적으로 업데이트되도록 타이머 설정
-            modalTimer ??=
-                Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-              modalSetState(() {
-                _mixingTankData = mixing_tank.generateMixingTankData(
-                    isOperating: deviceOperation.isOperating,
-                    deviceOperation: deviceOperation,
-                    context: context);
-
-                // 부산물 용량 증가 처리
-                if (_mixingTankData?["shouldIncreaseByproduct"] == true) {
-                  // print("트루입니다!!!");
-                  byproductManager.increaseCapacity(context,
-                      increment: mixing_tank.getAmount() * 0.1); // 증가값
-                }
-              });
-            });
-
-            return Container(
-              height: screenHeight * 0.3,
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // 제목
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "교반통 상태",
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          modalTimer?.cancel(); // 타이머 중지
-                          Navigator.of(context).pop(); // 모달 닫기
-                        },
-                        icon: Icon(Icons.close, size: screenWidth * 0.06),
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-
-                  // 모달 내용: 온도, 습도, 높이 상태
-                  Column(
-                    children: [
-                      _buildModalRow(
-                        "온도",
-                        "${_mixingTankData?['temperature']}°C",
-                        Icons.mood,
-                        _mixingTankData?['temperatureStatus'],
-                        _mixingTankData?['temperatureStatus'] == "보통"
-                            ? Colors.green
-                            : _mixingTankData?['temperatureStatus'] == "높음"
-                                ? Colors.red
-                                : Colors.lightBlue,
-                        screenWidth,
-                      ),
-                      const SizedBox(height: 16),
-                      _buildModalRow(
-                        "습도",
-                        "${_mixingTankData?['humidity']}%",
-                        Icons.warning,
-                        _mixingTankData?['humidityStatus'],
-                        _mixingTankData?['humidityStatus'] == "보통"
-                            ? Colors.green
-                            : _mixingTankData?['humidityStatus'] == "높음"
-                                ? Colors.red
-                                : Colors.lightBlue,
-                        screenWidth,
-                      ),
-                      const SizedBox(height: 16),
-                      _buildModalRow(
-                        "높이",
-                        "${_mixingTankData?['volume']}",
-                        Icons.mood_bad,
-                        _mixingTankData?['volumeStatus'],
-                        _mixingTankData?['volumeStatus'] == "보통"
-                            ? Colors.green
-                            : _mixingTankData?['volumeStatus'] == "높음"
-                                ? Colors.red
-                                : Colors.lightBlue,
-                        screenWidth,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-
-                  // 증가 및 감소 버튼
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          modalSetState(() {
-                            mixing_tank.decreaseVolume(10.0); // 10 감소
-                            _mixingTankData =
-                                mixing_tank.generateMixingTankData(
-                                    isOperating: deviceOperation.isOperating,
-                                    deviceOperation: deviceOperation,
-                                    context: context);
-                          });
-                        },
-                        child: const Text("감소"),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          modalSetState(() {
-                            mixing_tank.increaseVolume(10.0); // 10 증가
-                            _mixingTankData =
-                                mixing_tank.generateMixingTankData(
-                                    isOperating: deviceOperation.isOperating,
-                                    deviceOperation: deviceOperation,
-                                    context: context);
-                          });
-                        },
-                        child: const Text("증가"),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
   }
 
   Widget _buildModalRow(String label, String value, IconData icon,
