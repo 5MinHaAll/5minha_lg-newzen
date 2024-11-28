@@ -1,6 +1,7 @@
 // functions.dart
 
 import 'package:flutter/material.dart';
+import '../../features/detection/yolo_live_screen.dart';
 import '../info/info.dart';
 
 class Functions extends StatelessWidget {
@@ -38,6 +39,9 @@ class Functions extends StatelessWidget {
                   right: 8.0,
                   child: ElevatedButton(
                     onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const YoloLiveScreen()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.secondary,
