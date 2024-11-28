@@ -40,4 +40,5 @@ Bone-fish
 Mussel-shell
 Egg-shell
 Shrimp-shell
+Drink
 Other-waste

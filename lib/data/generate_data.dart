@@ -17,6 +17,14 @@ class RandomDataService {
 
   bool _isAlertShown = false; // 알림 표시 상태 관리
 
+  // 초기화 메서드
+  void reset() {
+    _currentVolume = 90.0; // 초기 용량으로 재설정
+    _previousVolume = null; // 이전 용량 초기화
+    _dynamicDecreaseRate = 0.5; // 감소율 초기화
+    print("RandomDataService가 초기화되었습니다.");
+  }
+
   // 감소율 설정 메소드
   void setDecreaseRate(double rate) {
     if (rate < 0) {
@@ -58,7 +66,7 @@ class RandomDataService {
     _previousVolume ??= _currentVolume;
     // 해당 값에 따라 작동 먹출 수 있음.
     print("이전 값은 $_previousVolume");
-    _currentVolume = (_currentVolume + amount).clamp(0.0, 200.0); // ㅅ0 ~ 200 제한
+    _currentVolume = (_currentVolume + amount).clamp(0.0, 200.0); // 0 ~ 200 제한
   }
 
   // 교반통 상태
