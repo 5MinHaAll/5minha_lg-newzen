@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import '../components/device_card.dart';
 import 'device/device_on.dart';
-import 'device/device_off.dart';
 
+// TODO: "스마트 루틴" 블럭 padding 수정
 class Home extends StatefulWidget {
-  final String userId; // 로그인된 유저 ID 전달받기
-  final String userName; // 로그인된 유저 이름 전달받기
+  final String userId;
+  final String userName;
 
-  const Home(
-      {Key? key,
-      required this.userId,
-      required String title,
-      required this.userName})
-      : super(key: key);
+  const Home({
+    super.key,
+    required this.userId,
+    required this.userName,
+    required String title,
+  });
 
   @override
   _HomeState createState() => _HomeState();
@@ -20,19 +20,23 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isNewzenOn = false;
+  bool isFridgeOn = false;
+  bool isTiiunOn = false;
   bool isMicrowaveOn = false;
   int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return Container(
       decoration: const BoxDecoration(
         gradient: RadialGradient(
-          center: Alignment(-1.0, -1.0), // 좌측 상단
+          center: Alignment(-1.0, -1.0),
           radius: 1.0,
           colors: [
-            Color(0xFFBDD2E3), // 좌측 상단 색상
-            Color(0xFFDAEDF3), // 중앙 색상
+            Color(0xFFBDD2E3),
+            Color(0xFFDAEDF3),
           ],
           stops: [0.2, 1.0],
         ),
@@ -48,11 +52,10 @@ class _HomeState extends State<Home> {
             children: [
               Text(
                 "${widget.userName} 홈",
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: const Color(0xFF4F4F4F),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const Icon(
                 Icons.keyboard_arrow_down,
@@ -77,18 +80,26 @@ class _HomeState extends State<Home> {
           ],
         ),
         body: SafeArea(
+          bottom: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: kBottomNavigationBarHeight + bottomPadding + 32,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GridView.count(
+                GridView(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 1.2,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.2,
+                  ),
                   children: [
                     DeviceCard(
                       icon: 'assets/images/home/newzen.png',
@@ -111,6 +122,28 @@ class _HomeState extends State<Home> {
                           : null,
                     ),
                     DeviceCard(
+                      icon: 'assets/images/home/fridge.png',
+                      title: '냉장고',
+                      isOn: isFridgeOn,
+                      onTogglePower: () {
+                        setState(() {
+                          isFridgeOn = !isFridgeOn;
+                        });
+                      },
+                      onIconTap: isFridgeOn ? () {} : null,
+                    ),
+                    DeviceCard(
+                      icon: 'assets/images/home/tiiun.png',
+                      title: '틔운 미니',
+                      isOn: isTiiunOn,
+                      onTogglePower: () {
+                        setState(() {
+                          isTiiunOn = !isTiiunOn;
+                        });
+                      },
+                      onIconTap: isTiiunOn ? () {} : null,
+                    ),
+                    DeviceCard(
                       icon: 'assets/images/home/microwave.png',
                       title: '전자레인지',
                       isOn: isMicrowaveOn,
@@ -119,11 +152,11 @@ class _HomeState extends State<Home> {
                           isMicrowaveOn = !isMicrowaveOn;
                         });
                       },
-                      onIconTap: () {},
+                      onIconTap: isMicrowaveOn ? () {} : null,
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 0),
                 const Text(
                   "스마트 루틴",
                   style: TextStyle(
@@ -146,7 +179,6 @@ class _HomeState extends State<Home> {
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
                 ),
-                const SizedBox(height: 100), // 하단 여백 추가
               ],
             ),
           ),
@@ -190,6 +222,7 @@ class _HomeState extends State<Home> {
               currentIndex: _currentIndex,
               onTap: (index) => setState(() => _currentIndex = index),
               items: const [
+                // TODO: bottomNavigationBar 아이콘 수정
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home_outlined),
                   activeIcon: Icon(Icons.home),
