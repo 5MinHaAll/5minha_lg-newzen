@@ -467,6 +467,7 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
   CameraImage? cameraImage;
   bool isLoaded = false;
   bool isDetecting = false;
+  bool _isFlashOn = false;
 
   // 라벨링 기준
   final List<String> processable = [
@@ -659,6 +660,17 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
     }).toList();
   }
 
+  void _toggleFlash() async {
+    if (controller == null || !controller!.value.isInitialized) return;
+
+    // 플래시 상태를 토글
+    _isFlashOn = !_isFlashOn;
+    await controller!.setFlashMode(
+      _isFlashOn ? FlashMode.torch : FlashMode.off,
+    );
+    setState(() {});
+  }
+
   @override
   void dispose() {
     controller.dispose();
@@ -696,10 +708,12 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  onPressed: () {
-                    print("Settings clicked");
-                  },
-                  icon: const Icon(Icons.settings, color: Colors.white, size: 30),
+                  onPressed: _toggleFlash,
+                  icon: Icon(
+                    _isFlashOn ? Icons.flash_on : Icons.flash_off,
+                    color: Colors.white,
+                    size: 40,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () async {
