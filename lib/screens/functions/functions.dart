@@ -1,5 +1,7 @@
+// functions.dart
+
 import 'package:flutter/material.dart';
-import 'package:newzen/features/detection/main_screen.dart';
+import '../../features/detection/yolo_live_screen.dart';
 import '../info/info.dart';
 
 class Functions extends StatelessWidget {
@@ -38,7 +40,7 @@ class Functions extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const MainScreen(title: 'YOLO')),
+                        MaterialPageRoute(builder: (context) => const YoloLiveScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

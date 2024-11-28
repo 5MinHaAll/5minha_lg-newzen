@@ -32,6 +32,7 @@ Orange-peel
 Potato
 Shrimp
 High-fiber Vegetables
+Drink
 
 처리불가능:
 Bone
@@ -39,5 +40,4 @@ Bone-fish
 Mussel-shell
 Egg-shell
 Shrimp-shell
-Drink
 Other-waste
