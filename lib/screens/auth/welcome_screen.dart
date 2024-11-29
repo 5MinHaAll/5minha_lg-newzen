@@ -1,67 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:newzen/screens/auth/login.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final String userName;
 
-  const WelcomeScreen({Key? key, required this.userName}) : super(key: key);
+  const WelcomeScreen({
+    super.key,
+    required this.userName,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = GoogleFonts.robotoTextTheme(Theme.of(context).textTheme);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // LG 로고
-            const Padding(
-              padding: EdgeInsets.only(bottom: 40.0),
-              child: Image(
-                image: AssetImage(
-                    'assets/images/login/lge_logo_kr.png'), // LG 로고 이미지
-                height: 80,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // LG Logo
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  'assets/images/login/lge_logo_kr.png',
+                  height: 50,
+                ),
               ),
-            ),
-            // 사용자 이름 환영 메시지
-            Text(
-              '$userName님',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+
+              const Spacer(flex: 1),
+
+              // Welcome Message
+              Center(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          userName,
+                          style: textTheme.titleLarge?.copyWith(
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '님',
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 28),
+                    Text(
+                      '회원가입을 환영합니다.',
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '가입하신 아이디로 LG전자의 다양한 서비스를\n이용할 수 있습니다.',
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            // 환영 메시지
-            const Text(
-              '회원가입을 환영합니다.\n가입하신 아이디로 LG전자의 다양한 서비스를 이용할 수 있습니다.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
+
+              const Spacer(flex: 3),
+
+              // Confirm Button
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFA50034),
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  '확인',
+                  style: textTheme.bodyLarge?.copyWith(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 40),
-            // 확인 버튼
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const Login()),
-                  (route) => false, // 모든 이전 화면 제거
-                ); // 로그인 화면으로 이동
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFA50034),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 80, vertical: 16),
-              ),
-              child: const Text(
-                '확인',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+
+              const SizedBox(height: 32),
+            ],
+          ),
         ),
       ),
     );
