@@ -168,25 +168,35 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
         boxColor = Colors.redAccent;
       }
 
-      return Positioned(
-        left: result["box"][0] * factorX,
-        top: result["box"][1] * factorY + paddingY,
-        width: (result["box"][2] - result["box"][0]) * factorX,
-        height: (result["box"][3] - result["box"][1]) * factorY,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(color: boxColor, width: 2.0),
-          ),
-          child: Text(
-            "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
-            style: const TextStyle(
-              backgroundColor: Colors.black54,
-              color: Colors.white,
-              fontSize: 14.0,
+      return Stack(
+        children: [
+          // 네모 박스
+          Positioned(
+            left: result["box"][0] * factorX,
+            top: result["box"][1] * factorY + paddingY,
+            width: (result["box"][2] - result["box"][0]) * factorX,
+            height: (result["box"][3] - result["box"][1]) * factorY,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(color: boxColor, width: 2.0),
+              ),
             ),
           ),
-        ),
+          // 텍스트 (좌측 상단)
+          Positioned(
+            left: result["box"][0] * factorX,
+            top: result["box"][1] * factorY + paddingY - 20, // 박스 위로 약간 이동
+            child: Text(
+              "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
+              style: const TextStyle(
+                backgroundColor: Colors.black54,
+                color: Colors.white,
+                fontSize: 14.0,
+              ),
+            ),
+          ),
+        ],
       );
     }).toList();
   }

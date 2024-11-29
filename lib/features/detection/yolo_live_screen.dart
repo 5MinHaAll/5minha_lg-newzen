@@ -675,6 +675,7 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: progress indicator로 바꾸기
     final Size size = MediaQuery.of(context).size;
     if (!isLoaded) {
       return const Scaffold(
@@ -694,6 +695,27 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
         ),
         if (yoloResults.isNotEmpty)
           ...displayBoxesAroundRecognizedObjects(size),
+        Positioned(
+          top: 50, // 화면 상단에서의 거리
+          left: 30, // 화면 왼쪽에서의 거리
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context); // 뒤로 가기 동작
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10), // 클릭 영역 확장
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5), // 반투명 배경
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.arrow_back, // 뒤로 가기 아이콘
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+          ),
+        ),
         Positioned(
           bottom: 0,
           left: 0,
