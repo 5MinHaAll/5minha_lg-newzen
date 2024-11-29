@@ -22,6 +22,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   fontWeight: FontWeight.bold,
                 ),
           ),
+          const SizedBox(width: 4),
           const Icon(
             Icons.keyboard_arrow_down,
             size: 20,

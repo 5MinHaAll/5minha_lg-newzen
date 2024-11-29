@@ -195,11 +195,12 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   onPressed: isFormFilled ? signIn : null,
                   style: ElevatedButton.styleFrom(
+                    // TODO: 비활성 상태 스타일 수정 - 배경 shade50, 글자색 200
                     backgroundColor: isFormFilled
                         ? const Color(0xFFA50034)
-                        : Colors.grey.shade200,
+                        : Colors.grey.shade300,
                     foregroundColor:
-                        isFormFilled ? Colors.white : Colors.grey.shade700,
+                        isFormFilled ? Colors.white : Colors.grey.shade600,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
@@ -210,7 +211,7 @@ class _LoginState extends State<Login> {
                     '로그인',
                     style: textTheme.bodyLarge?.copyWith(
                       fontSize: 16,
-                      color: isFormFilled ? Colors.white : Colors.grey.shade700,
+                      color: isFormFilled ? Colors.white : Colors.grey.shade600,
                     ),
                   ),
                 ),
