@@ -1,5 +1,3 @@
-// device_on.dart
-
 import 'dart:core';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +6,7 @@ import 'package:newzen/features/byproduct/byproduct_manager.dart';
 import '../../data/generate_data.dart';
 import '../../components/custom_alert.dart';
 import '../../features/device/device_operation.dart';
+import '../../features/device/demo_fab_manager.dart';
 import '../functions/functions.dart';
 
 class DeviceOn extends StatefulWidget {
@@ -28,11 +27,12 @@ class _DeviceOnState extends State<DeviceOn> {
   final RandomDataService mixing_tank = RandomDataService();
   Timer? _timer;
   int _selectedIndex = 0;
+  final DemoFabManager _demoFabManager = DemoFabManager();
 
   ScrollController _scrollController = ScrollController();
-
-  Offset _fabPosition = const Offset(300, 600); // 초기 FAB 위치
-  bool _isDragging = false; // 드래그 여부
+// TODO: 삭제해보기
+  // Offset _fabPosition = const Offset(300, 600); // 초기 FAB 위치
+  // bool _isDragging = false; // 드래그 여부
 
   // Persistent Bottom Sheet Controllers
   PersistentBottomSheetController? _bottomSheetController;
@@ -56,17 +56,22 @@ class _DeviceOnState extends State<DeviceOn> {
     _startPeriodicUpdates();
     byproductManager = ByproductManager(byproductCapacity: 35.0);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final screenSize = MediaQuery.of(context).size;
-      setState(() {
-        // FAB를 화면 우측 하단에 배치하며, 여유 공간 16픽셀 추가
-        _fabPosition = Offset(
-          screenSize.width - 72, // FAB 크기(56) + 여유 공간(16)
-          screenSize.height - 100, // FAB 크기(56) + AppBar 높이와 여유 공간
-        );
-      });
+      _demoFabManager.initializeFabPosition(context);
+      setState(() {});
     });
   }
 
+  //     final screenSize = MediaQuery.of(context).size;
+  //     setState(() {
+  //       // FAB를 화면 우측 하단에 배치하며, 여유 공간 16픽셀 추가
+  //       _fabPosition = Offset(
+  //         screenSize.width - 72, // FAB 크기(56) + 여유 공간(16)
+  //         screenSize.height - 100, // FAB 크기(56) + AppBar 높이와 여유 공간
+  //       );
+  //     });
+  //   });
+  // }
+  //
   @override
   void dispose() {
     _timer?.cancel();
@@ -120,7 +125,7 @@ class _DeviceOnState extends State<DeviceOn> {
       _activeMode = null;
       _selectedIndex = 0;
 
-      // `DeviceOperation` 및 데이터 초기화
+      // DeviceOperation 및 데이터 초기화
       deviceOperation.resetOperation();
       potting_soil.reset(); // 배양토 데이터 초기화
       mixing_tank.reset(); // 교반통 데이터 초기화
@@ -131,6 +136,10 @@ class _DeviceOnState extends State<DeviceOn> {
 
       _PottingSoilData = initialPottingSoliData;
       _mixingTankData = initialMixingData;
+
+      // FAB 위치 초기화
+      _demoFabManager.initializeFabPosition(context);
+
       // 부산물 관리자 초기화
       byproductManager.resetByproductCapacity();
 
@@ -183,124 +192,147 @@ class _DeviceOnState extends State<DeviceOn> {
               ),
             ],
           ),
-          backgroundColor: theme.colorScheme.background,
+          backgroundColor: theme.colorScheme.surface,
         ),
 
         // FAB와 관련된 위젯은 별도의 Stack으로 배치
-        Stack(
-          children: [
-            if (_isExpanded) ...[
-              Positioned(
-                left: _fabPosition.dx,
-                top: _fabPosition.dy - 60, // 메인 FAB 위로 첫 번째 버튼
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      _isExpanded = false;
-                      mixing_tank.increaseVolume(50.0);
-                      mixing_tank.setAmount(50.0);
-                      mixing_tank.setDecreaseRate(1);
-                      _mixingTankData = mixing_tank.generateMixingTankData(
-                        isOperating: deviceOperation.isOperating,
-                        deviceOperation: deviceOperation,
-                        context: context,
-                      );
-                      deviceOperation.startOperation();
-                    });
-                  },
-                  backgroundColor: theme.colorScheme.secondary,
-                  child: const Icon(Icons.food_bank),
-                ),
-              ),
-              Positioned(
-                left: _fabPosition.dx,
-                top: _fabPosition.dy - 120, // 메인 FAB 위로 두 번째 버튼
-                child: FloatingActionButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CustomAlert(
-                          title: "경고",
-                          content: "이 음식물은 처리할 수 없습니다.",
-                          onConfirm: () {
-                            print("경고창 닫힘");
-                          },
-                        );
-                      },
-                    );
-                  },
-                  backgroundColor: Colors.grey,
-                  child: const Icon(Icons.block),
-                ),
-              ),
-              Positioned(
-                left: _fabPosition.dx,
-                top: _fabPosition.dy - 180, // 메인 FAB 위로 세 번째 버튼
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      _isExpanded = false;
-                      mixing_tank.increaseVolume(22);
-                      mixing_tank.setAmount(22);
-                      mixing_tank.setDecreaseRate(2);
-                      _mixingTankData = mixing_tank.generateMixingTankData(
-                        isOperating: deviceOperation.isOperating,
-                        deviceOperation: deviceOperation,
-                        context: context,
-                      );
-                      deviceOperation.startOperation();
-                    });
-                  },
-                  backgroundColor: theme.colorScheme.secondary,
-                  child: const Icon(Icons.restaurant_menu),
-                ),
-              ),
-            ],
-
-            // 드래그 가능한 메인 FAB
-            Positioned(
-              left: _fabPosition.dx,
-              top: _fabPosition.dy,
-              child: GestureDetector(
-                onPanStart: (_) {
-                  setState(() {
-                    _isDragging = true; // 드래그 시작
-                  });
-                },
-                onPanUpdate: (details) {
-                  setState(() {
-                    _fabPosition += details.delta; // FAB 위치 업데이트
-                  });
-                },
-                onPanEnd: (_) {
-                  setState(() {
-                    _isDragging = false; // 드래그 중 상태 해제
-                  });
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut,
-                  width: _isDragging ? 60 : 56,
-                  height: _isDragging ? 60 : 56,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        _isExpanded = !_isExpanded; // 버튼 확장/축소
-                      });
-                    },
-                    backgroundColor: _isExpanded
-                        ? theme.colorScheme.error
-                        : theme.colorScheme.secondary,
-                    child: Icon(
-                      _isExpanded ? Icons.close : Icons.menu,
-                      color: theme.colorScheme.onSecondary,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+        // Stack(
+        //   children: [
+        //     if (_isExpanded) ...[
+        //       Positioned(
+        //         left: _fabPosition.dx,
+        //         top: _fabPosition.dy - 60, // 메인 FAB 위로 첫 번째 버튼
+        //         child: FloatingActionButton(
+        //           onPressed: () {
+        //             setState(() {
+        //               _isExpanded = false;
+        //               mixing_tank.increaseVolume(50.0);
+        //               mixing_tank.setAmount(50.0);
+        //               mixing_tank.setDecreaseRate(1);
+        //               _mixingTankData = mixing_tank.generateMixingTankData(
+        //                 isOperating: deviceOperation.isOperating,
+        //                 deviceOperation: deviceOperation,
+        //                 context: context,
+        //               );
+        //               deviceOperation.startOperation();
+        //             });
+        //           },
+        //           backgroundColor: theme.colorScheme.secondary,
+        //           child: const Icon(Icons.food_bank),
+        //         ),
+        //       ),
+        //       Positioned(
+        //         left: _fabPosition.dx,
+        //         top: _fabPosition.dy - 120, // 메인 FAB 위로 두 번째 버튼
+        //         child: FloatingActionButton(
+        //           onPressed: () {
+        //             showDialog(
+        //               context: context,
+        //               builder: (BuildContext context) {
+        //                 return CustomAlert(
+        //                   title: "경고",
+        //                   content: "이 음식물은 처리할 수 없습니다.",
+        //                   onConfirm: () {
+        //                     print("경고창 닫힘");
+        //                   },
+        //                 );
+        //               },
+        //             );
+        //           },
+        //           backgroundColor: Colors.grey,
+        //           child: const Icon(Icons.block),
+        //         ),
+        //       ),
+        //       Positioned(
+        //         left: _fabPosition.dx,
+        //         top: _fabPosition.dy - 180, // 메인 FAB 위로 세 번째 버튼
+        //         child: FloatingActionButton(
+        //           onPressed: () {
+        //             setState(() {
+        //               _isExpanded = false;
+        //               mixing_tank.increaseVolume(22);
+        //               mixing_tank.setAmount(22);
+        //               mixing_tank.setDecreaseRate(2);
+        //               _mixingTankData = mixing_tank.generateMixingTankData(
+        //                 isOperating: deviceOperation.isOperating,
+        //                 deviceOperation: deviceOperation,
+        //                 context: context,
+        //               );
+        //               deviceOperation.startOperation();
+        //             });
+        //           },
+        //           backgroundColor: theme.colorScheme.secondary,
+        //           child: const Icon(Icons.restaurant_menu),
+        //         ),
+        //       ),
+        //     ],
+        //
+        //     // 드래그 가능한 메인 FAB
+        //     Positioned(
+        //       left: _fabPosition.dx,
+        //       top: _fabPosition.dy,
+        //       child: GestureDetector(
+        //         onPanStart: (_) {
+        //           setState(() {
+        //             _isDragging = true; // 드래그 시작
+        //           });
+        //         },
+        //         onPanUpdate: (details) {
+        //           setState(() {
+        //             _fabPosition += details.delta; // FAB 위치 업데이트
+        //           });
+        //         },
+        //         onPanEnd: (_) {
+        //           setState(() {
+        //             _isDragging = false; // 드래그 중 상태 해제
+        //           });
+        //         },
+        //         child: AnimatedContainer(
+        //           duration: const Duration(milliseconds: 200),
+        //           curve: Curves.easeInOut,
+        //           width: _isDragging ? 60 : 56,
+        //           height: _isDragging ? 60 : 56,
+        //           child: FloatingActionButton(
+        //             onPressed: () {
+        //               setState(() {
+        //                 _isExpanded = !_isExpanded; // 버튼 확장/축소
+        //               });
+        //             },
+        //             backgroundColor: _isExpanded
+        //                 ? theme.colorScheme.error
+        //                 : theme.colorScheme.secondary,
+        //             child: Icon(
+        //               _isExpanded ? Icons.close : Icons.menu,
+        //               color: theme.colorScheme.onSecondary,
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // TODO: 여기 삽입?
+        _demoFabManager.buildFabLayout(
+          context,
+          onVolumeIncrease: (amount) {
+            setState(() {
+              mixing_tank.increaseVolume(amount);
+              mixing_tank.setAmount(amount);
+              mixing_tank.setDecreaseRate(amount == 50.0 ? 1 : 2);
+              _mixingTankData = mixing_tank.generateMixingTankData(
+                isOperating: deviceOperation.isOperating,
+                deviceOperation: deviceOperation,
+                context: context,
+              );
+              deviceOperation.startOperation();
+            });
+          },
+          theme: theme,
+          onToggleExpanded: () {
+            setState(() {
+              _demoFabManager.toggleExpanded();
+            });
+          },
         ),
       ],
     );
