@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../components/device_card.dart';
 import 'device/device_on.dart';
+import '../components/appbar_home.dart';
+import '../components/bottom_nav_bar.dart';
 
-// TODO: "스마트 루틴" 블럭 padding 수정
 class Home extends StatefulWidget {
   final String userId;
   final String userName;
@@ -25,6 +26,12 @@ class _HomeState extends State<Home> {
   bool isMicrowaveOn = false;
   int _currentIndex = 0;
 
+  void _onNavTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
@@ -45,40 +52,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.transparent,
         extendBody: true,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: Row(
-            children: [
-              Text(
-                "${widget.userName} 홈",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: const Color(0xFF4F4F4F),
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.black,
-                size: 20,
-              ),
-            ],
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add, color: Colors.black),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.notifications_none, color: Colors.black),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.more_vert, color: Colors.black),
-              onPressed: () {},
-            ),
-          ],
-        ),
+        appBar: HomeAppBar(userName: widget.userName),
         body: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
@@ -207,44 +181,9 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-        bottomNavigationBar: Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Colors.transparent,
-          ),
-          child: Container(
-            color: Colors.transparent,
-            child: BottomNavigationBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: Colors.black,
-              unselectedItemColor: Colors.grey,
-              currentIndex: _currentIndex,
-              onTap: (index) => setState(() => _currentIndex = index),
-              items: const [
-                // TODO: bottomNavigationBar 아이콘 수정
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined),
-                  activeIcon: Icon(Icons.home),
-                  label: '홈',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.explore_outlined),
-                  activeIcon: Icon(Icons.explore),
-                  label: '디스커버',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.bar_chart_outlined),
-                  activeIcon: Icon(Icons.bar_chart),
-                  label: '리포트',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.menu),
-                  label: '메뉴',
-                ),
-              ],
-            ),
-          ),
+        bottomNavigationBar: HomeBottomNavBar(
+          currentIndex: _currentIndex,
+          onTap: _onNavTap,
         ),
       ),
     );
