@@ -60,7 +60,7 @@ class _HomeState extends State<Home> {
               left: 16,
               right: 16,
               top: 16,
-              bottom: kBottomNavigationBarHeight + bottomPadding + 32,
+              bottom: kBottomNavigationBarHeight + bottomPadding + 16,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,9 +70,9 @@ class _HomeState extends State<Home> {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 1.2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 1.3,
                   ),
                   children: [
                     DeviceCard(
@@ -144,15 +144,26 @@ class _HomeState extends State<Home> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const ListTile(
-                    leading: CircleAvatar(
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    leading: const CircleAvatar(
                       backgroundColor: Color(0xFFFFE8CC),
                       child: Icon(Icons.timer, color: Colors.orange),
                     ),
-                    title: Text("루틴 알아보기"),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                    title: const Text("루틴 알아보기"),
+                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   ),
                 ),
+                // TODO: 3d_man 이미지 삽입해보기
+                // // 3d_man 이미지
+                // const SizedBox(height: 0),
+                // Image.asset(
+                //   'assets/images/home/3d_man.png',
+                //   width: double.infinity,
+                //   fit: BoxFit.cover,
+                // ),
               ],
             ),
           ),
