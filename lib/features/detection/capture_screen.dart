@@ -3,8 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
-import 'dialog_fullscreen.dart';
-import 'label_result_screen.dart';
+import 'dialog_full_screen.dart';
 
 class DetectionResultScreen extends StatefulWidget {
   final String imagePath;
@@ -85,7 +84,7 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
     };
 
     // 라벨링 기준
-    final List<String> processable = [
+    final List<String> yesFood = [
       "Apple",
       "Banana",
       "Bread",
@@ -113,7 +112,7 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
       "Pancake",
     ];
 
-    final List<String> caution = [
+    final List<String> cautionFood = [
       "Apple-core",
       "Banana-peel",
       "Orange-peel",
@@ -122,7 +121,7 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
       "High-fiber Vegetables",
     ];
 
-    final List<String> nonProcessable = [
+    final List<String> noFood = [
       "Bone",
       "Bone-fish",
       "Mussel-shell",
@@ -134,11 +133,11 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
 
     for (var result in yoloResults) {
       final tag = result['tag'];
-      if (processable.contains(tag)) {
+      if (yesFood.contains(tag)) {
         categorizedLabels["처리 가능"]?.add(tag);
-      } else if (caution.contains(tag)) {
+      } else if (cautionFood.contains(tag)) {
         categorizedLabels["주의"]?.add(tag);
-      } else if (nonProcessable.contains(tag)) {
+      } else if (noFood.contains(tag)) {
         categorizedLabels["처리 불가능"]?.add(tag);
       }
     }
@@ -169,25 +168,55 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
         boxColor = Colors.redAccent;
       }
 
-      return Positioned(
-        left: result["box"][0] * factorX,
-        top: result["box"][1] * factorY + paddingY,
-        width: (result["box"][2] - result["box"][0]) * factorX,
-        height: (result["box"][3] - result["box"][1]) * factorY,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(color: boxColor, width: 2.0),
-          ),
-          child: Text(
-            "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
-            style: const TextStyle(
-              backgroundColor: Colors.black54,
-              color: Colors.white,
-              fontSize: 14.0,
+      // return Positioned(
+      //   left: result["box"][0] * factorX,
+      //   top: result["box"][1] * factorY + paddingY,
+      //   width: (result["box"][2] - result["box"][0]) * factorX,
+      //   height: (result["box"][3] - result["box"][1]) * factorY,
+      //   child: Container(
+      //     decoration: BoxDecoration(
+      //       borderRadius: BorderRadius.circular(10.0),
+      //       border: Border.all(color: boxColor, width: 2.0),
+      //     ),
+      //     child: Text(
+      //       "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
+      //       style: const TextStyle(
+      //         backgroundColor: Colors.black54,
+      //         color: Colors.white,
+      //         fontSize: 14.0,
+      //       ),
+      //     ),
+      //   ),
+      // );
+      return Stack(
+        children: [
+          // 네모 박스
+          Positioned(
+            left: result["box"][0] * factorX,
+            top: result["box"][1] * factorY + paddingY,
+            width: (result["box"][2] - result["box"][0]) * factorX,
+            height: (result["box"][3] - result["box"][1]) * factorY,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(color: boxColor, width: 2.0),
+              ),
             ),
           ),
-        ),
+          // 텍스트 (좌측 상단)
+          Positioned(
+            left: result["box"][0] * factorX,
+            top: result["box"][1] * factorY + paddingY - 20, // 박스 위로 약간 이동
+            child: Text(
+              "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
+              style: const TextStyle(
+                backgroundColor: Colors.black54,
+                color: Colors.white,
+                fontSize: 14.0,
+              ),
+            ),
+          ),
+        ],
       );
     }).toList();
   }
