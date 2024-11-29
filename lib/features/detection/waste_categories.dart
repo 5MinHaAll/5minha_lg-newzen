@@ -1,5 +1,3 @@
-// waste_categories.dart
-
 const wasteCategories = {
   "processable": [
     {"name": "Apple", "name_ko": "사과", "status": "처리 가능"},
