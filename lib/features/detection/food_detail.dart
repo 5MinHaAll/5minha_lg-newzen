@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 import 'waste_categories.dart';
 
 class FoodDetail extends StatelessWidget {
@@ -107,10 +108,10 @@ class FoodDetail extends StatelessWidget {
             categoryGuidelines['title'] as String? ?? "상세 정보",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: category == "처리 가능"
-                      ? Colors.green
+                      ? AppColors.success
                       : category == "주의"
-                          ? Colors.orange
-                          : Colors.red,
+                          ? AppColors.error
+                          : AppColors.warning,
                   fontWeight: FontWeight.bold,
                 ),
           ),
@@ -193,6 +194,7 @@ class FoodDetail extends StatelessWidget {
                     "상세 정보",
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
+                          color: AppColors.secondaryText,
                         ),
                   ),
                   const SizedBox(height: 24),
@@ -202,14 +204,18 @@ class FoodDetail extends StatelessWidget {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
                         Text(
                           koreanName,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    color: AppColors.primaryText,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 4),
@@ -217,7 +223,7 @@ class FoodDetail extends StatelessWidget {
                           foodInfo?["category"] ?? "",
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: Colors.grey[600],
+                                    color: AppColors.secondaryText,
                                   ),
                           textAlign: TextAlign.center,
                         ),
@@ -226,7 +232,7 @@ class FoodDetail extends StatelessWidget {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: Colors.grey[100],
+                            color: AppColors.primaryBackground,
                             shape: BoxShape.circle,
                           ),
                           child: ClipOval(
@@ -249,10 +255,10 @@ class FoodDetail extends StatelessWidget {
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: category == "처리 가능"
-                                        ? Colors.green
+                                        ? AppColors.success
                                         : category == "주의"
-                                            ? Colors.orange
-                                            : Colors.red,
+                                            ? AppColors.warning
+                                            : AppColors.error,
                                     fontWeight: FontWeight.bold,
                                   ),
                           textAlign: TextAlign.center,
@@ -262,7 +268,7 @@ class FoodDetail extends StatelessWidget {
                           categoryGuidelines?['subtitle'] as String? ?? "",
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Colors.grey[600],
+                                    color: AppColors.secondaryText,
                                   ),
                           textAlign: TextAlign.center,
                         ),
@@ -287,7 +293,7 @@ class FoodDetail extends StatelessWidget {
                                           .textTheme
                                           .bodyMedium
                                           ?.copyWith(
-                                            color: const Color(0xFF0096AA),
+                                            color: AppColors.info,
                                           ),
                                       textAlign:
                                           TextAlign.left, // 텍스트 자체도 좌측 정렬

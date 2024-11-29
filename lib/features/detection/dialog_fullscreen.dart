@@ -37,7 +37,7 @@ class DialogFullscreen extends StatelessWidget {
           "name": foodName,
           "name_ko": "음료/국물",
           "category": "액체류",
-          "status": category,
+          "  ": category,
         };
       }
 
@@ -148,7 +148,7 @@ class DialogFullscreen extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onBackground,
               ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 8),
