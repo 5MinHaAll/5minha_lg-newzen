@@ -24,26 +24,50 @@ class DialogFullscreen extends StatelessWidget {
   }
 
   Map<String, dynamic> _getFoodInfo(String foodName, String category) {
-    final categoryKey = _getCategoryKey(category);
-    final List<Map<String, dynamic>> categoryList =
-        List<Map<String, dynamic>>.from(
-            (wasteCategories[categoryKey] as List<dynamic>).map((item) =>
-                Map<String, dynamic>.from(item as Map<String, dynamic>)));
+    try {
+      final categoryKey = _getCategoryKey(category);
+      final List<Map<String, dynamic>> categoryList =
+          List<Map<String, dynamic>>.from(
+              (wasteCategories[categoryKey] as List<dynamic>).map((item) =>
+                  Map<String, dynamic>.from(item as Map<String, dynamic>)));
 
-    return categoryList.firstWhere(
-      (food) => food["name"] == foodName,
-      orElse: () => {
+      // Drink인 경우 특별 처리
+      if (foodName == "Drink") {
+        return {
+          "name": foodName,
+          "name_ko": "음료/국물",
+          "category": "액체류",
+          "status": category,
+        };
+      }
+
+      return categoryList.firstWhere(
+        (food) => food["name"] == foodName,
+        orElse: () => {
+          "name": foodName,
+          "name_ko": foodName,
+          "category": categoryKey == "processable"
+              ? "처리 가능"
+              : categoryKey == "caution"
+                  ? "주의 필요"
+                  : "처리 불가",
+          "status": category,
+        },
+      );
+    } catch (e) {
+      debugPrint('Error in _getFoodInfo: $e');
+      return {
         "name": foodName,
         "name_ko": foodName,
+        "category": "기타",
         "status": category,
-      },
-    );
+      };
+    }
   }
 
   Widget _buildFoodItem(
       BuildContext context, String foodName, String category) {
     final foodInfo = _getFoodInfo(foodName, category);
-    final bool needsDetail = category == "주의" || category == "처리 불가능";
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -90,20 +114,18 @@ class DialogFullscreen extends StatelessWidget {
                         : Colors.red,
               ),
         ),
-        trailing: needsDetail
-            ? const Icon(Icons.chevron_right, color: Colors.grey)
-            : null,
-        onTap: needsDetail
-            ? () {
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  builder: (context) =>
-                      FoodDetail(foodName: foodName, category: category),
-                );
-              }
-            : null,
+        trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            isScrollControlled: true,
+            builder: (context) => FoodDetail(
+              foodName: foodName,
+              category: category,
+            ),
+          );
+        },
       ),
     );
   }
@@ -133,7 +155,6 @@ class DialogFullscreen extends StatelessWidget {
         itemCount: labels.length,
         itemBuilder: (context, index) {
           final category = labels.keys.elementAt(index);
-          // 중복 제거를 위해 Set으로 변환 후 다시 List로 변환
           final foodList = labels[category]?.toSet().toList() ?? [];
 
           if (foodList.isEmpty) return const SizedBox.shrink();
