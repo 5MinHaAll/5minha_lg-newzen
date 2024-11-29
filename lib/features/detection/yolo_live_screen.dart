@@ -185,8 +185,6 @@
 //   }
 // }
 
-
-
 // import 'package:camera/camera.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_vision/flutter_vision.dart';
@@ -444,14 +442,12 @@
 //   }
 // }
 
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dialog_fullscreen.dart';
-import 'label_result_screen.dart';
 import 'detection_result_screen.dart';
+import 'dialog_helper.dart';
 
 class YoloLiveScreen extends StatefulWidget {
   const YoloLiveScreen({super.key});
@@ -557,8 +553,8 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
 
   Future<void> _pickImageFromGallery() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-        source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       Navigator.push(
@@ -696,7 +692,8 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
             controller,
           ),
         ),
-        if (yoloResults.isNotEmpty)...displayBoxesAroundRecognizedObjects(size),
+        if (yoloResults.isNotEmpty)
+          ...displayBoxesAroundRecognizedObjects(size),
         Positioned(
           bottom: 0,
           left: 0,
@@ -719,7 +716,8 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
                   onTap: () async {
                     if (isDetecting) {
                       await stopDetection(); // 탐지를 멈추고
-                      showLabelResultDialog(context, categorizedLabels); // 라벨링 결과 다이얼로그 표시
+                      showLabelResultDialog(
+                          context, categorizedLabels); // 라벨링 결과 다이얼로그 표시
                     } else {
                       startDetection(); // 탐지 시작
                     }

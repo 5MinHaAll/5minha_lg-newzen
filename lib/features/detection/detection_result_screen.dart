@@ -3,8 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
-import 'dialog_fullscreen.dart';
-import 'label_result_screen.dart';
+import 'dialog_helper.dart';
 
 class DetectionResultScreen extends StatefulWidget {
   final String imagePath;
