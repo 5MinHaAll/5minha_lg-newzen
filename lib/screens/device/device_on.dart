@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newzen/features/byproduct/byproduct_manager.dart';
 import '../../data/generate_data.dart';
-import '../../data/save_data.dart';
 import '../../components/custom_alert.dart';
 import '../../features/device/device_operation.dart';
 import '../functions/functions.dart';

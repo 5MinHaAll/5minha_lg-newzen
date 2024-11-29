@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newzen/screens/login.dart';
+import 'package:newzen/screens/auth/login.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final String userName;

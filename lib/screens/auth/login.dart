@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'home.dart';
+import '../home.dart';
 import 'signup.dart';
 
 class Login extends StatefulWidget {
