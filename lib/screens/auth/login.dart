@@ -114,7 +114,7 @@ class _LoginState extends State<Login> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Image.asset(
-                    'assets/images/login/lge_logo_kr_new.png',
+                    'assets/images/auth/lge_logo_kr.png',
                     height: 40,
                   ),
                 ),
@@ -295,7 +295,7 @@ class _LoginState extends State<Login> {
                         height: 13,
                         child: Center(
                           child: Image.asset(
-                            'assets/images/login/my_lg_id.png',
+                            'assets/images/auth/my_lg_id.png',
                             fit: BoxFit.fitHeight,
                           ),
                         ),
@@ -321,7 +321,7 @@ class _LoginState extends State<Login> {
                     InkWell(
                       onTap: () {},
                       child: Image.asset(
-                        'assets/images/login/kakao.png',
+                        'assets/images/auth/kakao.png',
                         width: 32,
                         height: 32,
                       ),
@@ -330,7 +330,7 @@ class _LoginState extends State<Login> {
                     InkWell(
                       onTap: () {},
                       child: Image.asset(
-                        'assets/images/login/naver.png',
+                        'assets/images/auth/naver.png',
                         width: 32,
                         height: 32,
                       ),

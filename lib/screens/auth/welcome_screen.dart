@@ -27,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Image.asset(
-                  'assets/images/login/lge_logo_kr_new.png',
+                  'assets/images/login/lge_logo_kr.png',
                   height: 40,
                 ),
               ),

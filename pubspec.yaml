@@ -38,7 +38,7 @@ flutter:
     - assets/images/functions/
     - assets/images/home/
     - assets/images/info/
-    - assets/images/login/
+    - assets/images/auth/
     - assets/icons/device/
     - assets/icons/functions/
     - assets/icons/home/
@@ -53,8 +53,6 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-    - assets/images/
-    - assets/models/
 
   fonts:
     - family: Lg
