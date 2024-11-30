@@ -4,7 +4,7 @@ class AppColors {
   // Brand Colors
   static const Color primary = Color(0xFF0096AA);
   static const Color secondary = Color(0xFFA50034);
-  static const Color tertiary = Color(0xFF405675);
+  static const Color tertiary = Color(0xFF556273);
   static const Color alternate = Color(0xFFE6E6E6);
 
   // Utility Colors

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import '../../components/appbar_tab.dart';
 
-class Info extends StatefulWidget {
+class InfoMicrobe extends StatefulWidget {
+  const InfoMicrobe({Key? key}) : super(key: key);
+
   @override
-  _InfoState createState() =>
-      _InfoState();
+  _InfoMicrobeState createState() => _InfoMicrobeState();
 }
 
-class _InfoState
-    extends State<Info>
+class _InfoMicrobeState extends State<InfoMicrobe>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -27,35 +28,22 @@ class _InfoState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // 뒤로 가기 버튼
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop(); // 이전 화면으로 이동
-          },
-        ),
-        title: Text("미생물 관리"), // 제목
+      appBar: TabAppBar(
+        title: "미생물 관리",
+        tabController: _tabController,
+        tabs: const ["정보", "음식"],
+        // backgroundColor: const Color(0xFFFEF7FF),
         actions: [
           IconButton(
-            icon: Icon(Icons.search), // 검색 아이콘
+            icon: const Icon(Icons.search),
             onPressed: () {
-              // 검색 기능 추가 가능
+              // 검색 기능
             },
           ),
         ],
-        backgroundColor: Color(0xFFFEF7FF), // 상단바 배경색
-        elevation: 0, // 그림자 효과 제거
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: Colors.black, // 선택된 탭 텍스트 색상
-          unselectedLabelColor: Colors.grey, // 선택되지 않은 탭 텍스트 색상
-          indicatorColor: Color(0xFF65558F), // 선택된 탭 아래 강조선 색상
-          tabs: [
-            Tab(text: "정보"), // 첫 번째 탭
-            Tab(text: "음식"), // 두 번째 탭
-          ],
-        ),
+        tabColor: Colors.black,
+        unselectedTabColor: Colors.grey,
+        indicatorColor: const Color(0xFF65558F),
       ),
       body: TabBarView(
         controller: _tabController,

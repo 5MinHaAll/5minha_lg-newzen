@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../components/appbar_default.dart';
+import '../../theme/app_colors.dart';
 import 'food_detail.dart';
 import 'waste_categories.dart';
 
@@ -134,21 +136,34 @@ class DialogFullscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        elevation: 0,
-        leading: IconButton(
+      // appBar: AppBar(
+      //   backgroundColor: Theme.of(context).colorScheme.background,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.close),
+      //     onPressed: () => Navigator.of(context).pop(),
+      //     color: Theme.of(context).colorScheme.onBackground,
+      //   ),
+      //   title: Text(
+      //     '음식 스캔 결과',
+      //     style: Theme.of(context).textTheme.titleLarge?.copyWith(
+      //           color: Theme.of(context).colorScheme.onBackground,
+      //         ),
+      //   ),
+      //   centerTitle: false,
+      // ),
+      // appBar: DefaultAppBar(
+      //   title: '음식 스캔 결과',
+      //   backgroundColor: Theme.of(context).colorScheme.background,
+      //   textColor: Theme.of(context).colorScheme.onBackground,
+      //   titleSpacing: 0, // centerTitle: false 효과를 위해 titleSpacing 조정
+      appBar: DefaultAppBar(
+        title: "음식 스캔 결과",
+        customLeading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
-          color: Theme.of(context).colorScheme.onBackground,
+          color: AppColors.tertiaryText,
         ),
-        title: Text(
-          '음식 스캔 결과',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-        ),
-        centerTitle: false,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 8),

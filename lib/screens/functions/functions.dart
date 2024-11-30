@@ -1,8 +1,7 @@
-// functions.dart
-
 import 'package:flutter/material.dart';
 import '../../features/detection/yolo_live_screen.dart';
-import '../info/info.dart';
+import 'info_food.dart';
+import 'info_microbe.dart';
 
 class Functions extends StatelessWidget {
   const Functions({Key? key}) : super(key: key);
@@ -29,7 +28,9 @@ class Functions extends StatelessWidget {
                   theme.colorScheme.primaryContainer,
                   () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Info()),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const InfoFood()), // Info -> InfoFood, const 추가
                     );
                   },
                 ),
@@ -70,15 +71,9 @@ class Functions extends StatelessWidget {
               null,
               theme.colorScheme.primaryContainer,
               () {
-                // TODO: snackbar 삭제
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: const Text('미생물 정보 페이지를 확인합니다.'),
-                      backgroundColor: theme.colorScheme.secondary,
-                    ),
-                  );
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const InfoMicrobe()),
+                );
               },
             ),
             const SizedBox(height: 45),
@@ -89,14 +84,7 @@ class Functions extends StatelessWidget {
               null,
               theme.colorScheme.primaryContainer,
               () {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: const Text('소모품 정보 페이지로 이동합니다.'),
-                      backgroundColor: theme.colorScheme.secondary,
-                    ),
-                  );
+                // TODO: 웹링크 추가
               },
             ),
             const SizedBox(height: 45),
@@ -106,16 +94,7 @@ class Functions extends StatelessWidget {
               "전력 사용량",
               Icons.arrow_forward_ios,
               theme.colorScheme.secondaryContainer,
-              () {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: const Text('에너지 모니터링 페이지로 이동합니다.'),
-                      backgroundColor: theme.colorScheme.secondary,
-                    ),
-                  );
-              },
+              () {},
             ),
             const SizedBox(height: 45),
             _buildFeatureCard(
@@ -125,14 +104,7 @@ class Functions extends StatelessWidget {
               Icons.arrow_forward_ios,
               theme.colorScheme.secondaryContainer,
               () {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: const Text('신청 페이지로 이동합니다.'),
-                      backgroundColor: theme.colorScheme.secondary,
-                    ),
-                  );
+                // TODO: 웹링크 추가
               },
             ),
             const SizedBox(height: 45),
@@ -144,17 +116,8 @@ class Functions extends StatelessWidget {
                     "스마트 진단",
                     "최근 진단 결과 없음",
                     null,
-                    theme.colorScheme.secondaryContainer,
-                    () {
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          SnackBar(
-                            content: const Text('스마트 진단 페이지로 이동합니다.'),
-                            backgroundColor: theme.colorScheme.secondary,
-                          ),
-                        );
-                    },
+                    theme.colorScheme.primaryContainer,
+                    () {},
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -166,14 +129,7 @@ class Functions extends StatelessWidget {
                     null,
                     theme.colorScheme.secondaryContainer,
                     () {
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          SnackBar(
-                            content: const Text('제품 사용설명서 페이지로 이동합니다.'),
-                            backgroundColor: theme.colorScheme.secondary,
-                          ),
-                        );
+                      // TODO: 웹링크 추가
                     },
                   ),
                 ),

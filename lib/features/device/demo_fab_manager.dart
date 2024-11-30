@@ -119,6 +119,7 @@ class DemoFabManager extends ChangeNotifier {
     BuildContext context, {
     required Function(double) onVolumeIncrease,
     required ThemeData theme,
+    required ValueKey<int> key,
   }) {
     return StatefulBuilder(
       builder: (context, setState) {

@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newzen/features/byproduct/byproduct_manager.dart';
+import '../../components/appbar_default.dart';
 import '../../data/generate_data.dart';
 import '../../features/device/device_operation.dart';
 import '../../features/device/demo_fab_manager.dart';
+import '../../theme/app_colors.dart';
 import '../functions/functions.dart';
 
 class DeviceOn extends StatefulWidget {
@@ -143,14 +145,10 @@ class _DeviceOnState extends State<DeviceOn> {
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(
-            title: Text(
-              "음식물 처리기",
-              style: theme.textTheme.titleLarge?.copyWith(
-                color: theme.colorScheme.onPrimary,
-              ),
-            ),
-            backgroundColor: theme.colorScheme.primary,
+          appBar: DefaultAppBar(
+            title: "음식물 처리기",
+            backgroundColor: AppColors.secondaryBackground,
+            fontWeight: FontWeight.bold,
           ),
           body: Column(
             children: [
@@ -180,23 +178,47 @@ class _DeviceOnState extends State<DeviceOn> {
           backgroundColor: theme.colorScheme.surface,
         ),
 
-        // FAB
-        _demoFabManager.buildFabLayout(
-          context,
-          onVolumeIncrease: (amount) {
-            setState(() {
-              mixing_tank.increaseVolume(amount);
-              mixing_tank.setAmount(amount);
-              mixing_tank.setDecreaseRate(amount == 50.0 ? 1 : 2);
-              _mixingTankData = mixing_tank.generateMixingTankData(
-                isOperating: deviceOperation.isOperating,
-                deviceOperation: deviceOperation,
-                context: context,
-              );
-              deviceOperation.startOperation();
-            });
+        // FAB with animation
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300), // 올라오는 시간 유지
+          reverseDuration: const Duration(milliseconds: 500), // 내려가는 시간 늘림
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            final offsetAnimation = Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOut,
+            ));
+
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              ),
+            );
           },
-          theme: theme,
+          child: _selectedIndex == 0
+              ? _demoFabManager.buildFabLayout(
+                  key: const ValueKey<int>(1),
+                  context,
+                  onVolumeIncrease: (amount) {
+                    setState(() {
+                      mixing_tank.increaseVolume(amount);
+                      mixing_tank.setAmount(amount);
+                      mixing_tank.setDecreaseRate(amount == 50.0 ? 1 : 2);
+                      _mixingTankData = mixing_tank.generateMixingTankData(
+                        isOperating: deviceOperation.isOperating,
+                        deviceOperation: deviceOperation,
+                        context: context,
+                      );
+                      deviceOperation.startOperation();
+                    });
+                  },
+                  theme: theme,
+                )
+              : const SizedBox.shrink(key: ValueKey<int>(2)),
         ),
       ],
     );

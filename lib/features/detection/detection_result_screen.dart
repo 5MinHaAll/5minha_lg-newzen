@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
+import '../../components/appbar_default.dart';
 import 'detection_label.dart';
 import 'dialog_helper.dart';
 
@@ -166,8 +167,8 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("스캔 결과"),
+      appBar: DefaultAppBar(
+        title: "스캔 결과",
       ),
       body: SafeArea(
         child: Stack(

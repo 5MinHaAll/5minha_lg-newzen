@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text.dart';
 
-class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
+class TabAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Color? backgroundColor;
   final Color? textColor;
@@ -12,17 +12,27 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final double? titleSpacing;
   final Widget? customLeading;
+  final TabController tabController;
+  final List<String> tabs;
+  final Color? tabColor;
+  final Color? unselectedTabColor;
+  final Color? indicatorColor;
 
-  const DefaultAppBar({
+  const TabAppBar({
     super.key,
     required this.title,
+    required this.tabController,
+    required this.tabs,
     this.backgroundColor,
     this.textColor,
     this.useGoogleFonts = false,
     this.fontWeight = FontWeight.bold,
     this.actions,
-    this.titleSpacing = 0, // 기본값 NavigationToolbar.kMiddleSpacing (16.0)
+    this.titleSpacing = 0,
     this.customLeading,
+    this.tabColor,
+    this.unselectedTabColor,
+    this.indicatorColor,
   });
 
   @override
@@ -48,14 +58,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: getTitleStyle(),
       ),
       backgroundColor: backgroundColor ?? AppColors.secondaryBackground,
-      titleSpacing: titleSpacing, // 타이틀 spacing 설정
-      // leading: Navigator.canPop(context)
-      //     ? IconButton(
-      //         icon: const Icon(Icons.arrow_back),
-      //         onPressed: () => Navigator.of(context).pop(),
-      //         color: textColor ?? AppColors.tertiaryText,
-      //       )
-      //     : null,
+      titleSpacing: titleSpacing,
       leading: customLeading ??
           (Navigator.canPop(context)
               ? IconButton(
@@ -66,11 +69,24 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
               : null),
       actions: actions,
       iconTheme: IconThemeData(
-        color: textColor ?? AppColors.primaryText,
+        color: textColor ?? AppColors.tertiaryText,
+      ),
+      bottom: TabBar.secondary(
+        controller: tabController,
+        labelColor: AppColors.primaryText,
+        unselectedLabelColor: AppColors.tertiaryText,
+        indicatorColor: AppColors.primaryText,
+        dividerColor: const Color(0xFFCAD0DC),
+        labelStyle: AppTypography.getTextTheme().titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+        unselectedLabelStyle: AppTypography.getTextTheme().titleMedium,
+        tabs: tabs.map((tab) => Tab(text: tab)).toList(),
       ),
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      const Size.fromHeight(kToolbarHeight + 48); // AppBar 높이 + TabBar 높이
 }
