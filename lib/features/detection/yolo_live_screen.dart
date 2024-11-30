@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:newzen/features/detection/detection_label.dart';
 import 'detection_result_screen.dart';
 import 'dialog_helper.dart';
 
@@ -21,53 +22,9 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
   bool isDetecting = false;
   bool _isFlashOn = false;
 
-  // 라벨링 기준
-  final List<String> processable = [
-    "Apple",
-    "Banana",
-    "Bread",
-    "Bun",
-    "Chicken-skin",
-    "Congee",
-    "Cucumber",
-    "Orange",
-    "Pear",
-    "Pear-peel",
-    "Tomato",
-    "Vegetable",
-    "Vegetable-root",
-    "Fish",
-    "Meat",
-    "Egg-hard",
-    "Egg-scramble",
-    "Egg-steam",
-    "Egg-yolk",
-    "Tofu",
-    "Rice",
-    "Noodle",
-    "Pasta",
-    "Mushroom",
-    "Pancake",
-  ];
-
-  final List<String> caution = [
-    "Apple-core",
-    "Banana-peel",
-    "Orange-peel",
-    "Potato",
-    "Shrimp",
-    "High-fiber Vegetables",
-  ];
-
-  final List<String> nonProcessable = [
-    "Bone",
-    "Bone-fish",
-    "Mussel-shell",
-    "Egg-shell",
-    "Shrimp-shell",
-    "Drink",
-    "Other-waste",
-  ];
+  final List<String> processable = yesFood;
+  final List<String> caution = cautionFood;
+  final List<String> nonProcessable = noFood;
 
   // 분류 결과 저장
   Map<String, List<String>> categorizedLabels = {

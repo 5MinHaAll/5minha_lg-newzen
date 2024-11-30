@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
+import 'detection_label.dart';
 import 'dialog_helper.dart';
 
 class DetectionResultScreen extends StatefulWidget {
@@ -83,53 +84,9 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
       "처리 불가능": [],
     };
 
-    // 라벨링 기준
-    final List<String> processable = [
-      "Apple",
-      "Banana",
-      "Bread",
-      "Bun",
-      "Chicken-skin",
-      "Congee",
-      "Cucumber",
-      "Orange",
-      "Pear",
-      "Pear-peel",
-      "Tomato",
-      "Vegetable",
-      "Vegetable-root",
-      "Fish",
-      "Meat",
-      "Egg-hard",
-      "Egg-scramble",
-      "Egg-steam",
-      "Egg-yolk",
-      "Tofu",
-      "Rice",
-      "Noodle",
-      "Pasta",
-      "Mushroom",
-      "Pancake",
-    ];
-
-    final List<String> caution = [
-      "Apple-core",
-      "Banana-peel",
-      "Orange-peel",
-      "Potato",
-      "Shrimp",
-      "High-fiber Vegetables",
-    ];
-
-    final List<String> nonProcessable = [
-      "Bone",
-      "Bone-fish",
-      "Mussel-shell",
-      "Egg-shell",
-      "Shrimp-shell",
-      "Drink",
-      "Other-waste",
-    ];
+    final List<String> processable = yesFood;
+    final List<String> caution = cautionFood;
+    final List<String> nonProcessable = noFood;
 
     for (var result in yoloResults) {
       final tag = result['tag'];
