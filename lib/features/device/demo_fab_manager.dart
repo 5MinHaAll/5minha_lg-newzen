@@ -1,7 +1,19 @@
-// features/device/demo_fab_manager.dart
-
 import 'package:flutter/material.dart';
 import '../../components/custom_alert.dart';
+
+class FabItem {
+  final String imagePath;
+  final String tooltip;
+  final VoidCallback onPressed;
+  final Offset position;
+
+  FabItem({
+    required this.imagePath,
+    required this.tooltip,
+    required this.onPressed,
+    required this.position,
+  });
+}
 
 class DemoFabManager extends ChangeNotifier {
   late Size _screenSize;
@@ -12,10 +24,8 @@ class DemoFabManager extends ChangeNotifier {
   bool _isExpanded = false;
   bool _isDragging = false;
 
-  // Getters
-  Offset get fabPosition => _fabPosition;
-  bool get isExpanded => _isExpanded;
-  bool get isDragging => _isDragging;
+  final double _fabSize = 56.0;
+  final double _spacing = 100.0;
 
   void initializeFabPosition(BuildContext context) {
     _screenSize = MediaQuery.of(context).size;
@@ -23,8 +33,83 @@ class DemoFabManager extends ChangeNotifier {
     _safeAreaBottom = MediaQuery.of(context).padding.bottom;
 
     _fabPosition = Offset(
-      _screenSize.width - 72,
-      _screenSize.height - 100,
+      _screenSize.width - _fabSize - 16,
+      _screenSize.height - _fabSize - _safeAreaBottom - 16,
+    );
+    _isExpanded = false;
+  }
+
+  Widget _buildStyledFab({
+    required VoidCallback onPressed,
+    required Widget child,
+    required Color backgroundColor,
+    required double size,
+    String? tooltip,
+    bool isExpanded = false,
+  }) {
+    Widget fab = Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border:
+            isExpanded ? Border.all(color: Colors.grey[300]!, width: 1) : null,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: FloatingActionButton(
+        onPressed: onPressed,
+        backgroundColor: backgroundColor,
+        elevation: 0,
+        shape: const CircleBorder(),
+        child: child,
+      ),
+    );
+
+    if (tooltip != null) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0), // tooltip과 버튼 사이 간격 추가
+        child: Tooltip(
+          message: tooltip,
+          preferBelow: false,
+          verticalOffset: 32, // tooltip이 버튼으로부터 더 멀리 표시되도록 조정
+          child: fab,
+        ),
+      );
+    }
+
+    return fab;
+  }
+
+  void _showSnackBar(
+      BuildContext context, String type, Function(double) onVolumeIncrease) {
+    double amount = type == '일반 음식물' ? 50.0 : 22.0;
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$type을 투입했습니다.'),
+        action: SnackBarAction(
+          label: '취소',
+          onPressed: () {
+            // 투입 취소 로직
+            onVolumeIncrease(-amount); // 투입한 양만큼 감소
+          },
+        ),
+        duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+          bottom: _safeAreaBottom + 16,
+          left: 16,
+          right: 16,
+        ),
+      ),
     );
   }
 
@@ -35,59 +120,59 @@ class DemoFabManager extends ChangeNotifier {
   }) {
     return StatefulBuilder(
       builder: (context, setState) {
+        List<FabItem> fabItems = [
+          FabItem(
+            imagePath: 'assets/images/device/fab_hamburger.png',
+            tooltip: '일반 음식물',
+            onPressed: () {
+              setState(() {
+                _isExpanded = false;
+                onVolumeIncrease(50.0);
+                _showSnackBar(context, '일반 음식물', onVolumeIncrease);
+              });
+            },
+            position: Offset(-_spacing * 1.2, 0),
+          ),
+          FabItem(
+            imagePath: 'assets/images/device/fab_gum.png',
+            tooltip: '투입 불가',
+            onPressed: () => _showWarningDialog(context),
+            position: Offset(-_spacing * 0.85, -_spacing * 0.85),
+          ),
+          FabItem(
+            imagePath: 'assets/images/device/fab_pasta.png',
+            tooltip: '소량 음식물',
+            onPressed: () {
+              setState(() {
+                _isExpanded = false;
+                onVolumeIncrease(22.0);
+                _showSnackBar(context, '소량 음식물', onVolumeIncrease);
+              });
+            },
+            position: Offset(0, -_spacing * 1.2),
+          ),
+        ];
+
         return Stack(
           children: [
             if (_isExpanded) ...[
-              Positioned(
-                left: _fabPosition.dx,
-                top: _fabPosition.dy - 60,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      _isExpanded = false;
-                      onVolumeIncrease(50.0);
-                    });
-                  },
-                  backgroundColor: theme.colorScheme.secondary,
-                  child: const Icon(Icons.food_bank),
+              for (var item in fabItems)
+                Positioned(
+                  left: _fabPosition.dx + item.position.dx,
+                  top: _fabPosition.dy + item.position.dy,
+                  child: _buildStyledFab(
+                    size: _fabSize,
+                    onPressed: item.onPressed,
+                    backgroundColor: Colors.white,
+                    child: Image.asset(
+                      item.imagePath,
+                      width: 32,
+                      height: 32,
+                    ),
+                    tooltip: item.tooltip,
+                    isExpanded: true,
+                  ),
                 ),
-              ),
-              Positioned(
-                left: _fabPosition.dx,
-                top: _fabPosition.dy - 120,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CustomAlert(
-                          title: "경고",
-                          content: "이 음식물은 처리할 수 없습니다.",
-                          onConfirm: () {
-                            print("경고창 닫힘");
-                          },
-                        );
-                      },
-                    );
-                  },
-                  backgroundColor: Colors.grey,
-                  child: const Icon(Icons.block),
-                ),
-              ),
-              Positioned(
-                left: _fabPosition.dx,
-                top: _fabPosition.dy - 180,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      _isExpanded = false;
-                      onVolumeIncrease(22.0);
-                    });
-                  },
-                  backgroundColor: theme.colorScheme.secondary,
-                  child: const Icon(Icons.restaurant_menu),
-                ),
-              ),
             ],
             Positioned(
               left: _fabPosition.dx,
@@ -102,16 +187,15 @@ class DemoFabManager extends ChangeNotifier {
                   setState(() {
                     final newPosition = _fabPosition + details.delta;
 
-                    // X축 제한
-                    double constrainedX = newPosition.dx
-                        .clamp(0, _screenSize.width - (_isDragging ? 60 : 56));
+                    double constrainedX = newPosition.dx.clamp(
+                      _spacing,
+                      _screenSize.width - _fabSize,
+                    );
 
-                    // Y축 제한
                     double constrainedY = newPosition.dy.clamp(
-                        _safeAreaTop + kToolbarHeight,
-                        _screenSize.height -
-                            (_isDragging ? 60 : 56) -
-                            _safeAreaBottom);
+                      _safeAreaTop + kToolbarHeight + _spacing,
+                      _screenSize.height - _fabSize - _safeAreaBottom,
+                    );
 
                     _fabPosition = Offset(constrainedX, constrainedY);
                   });
@@ -124,26 +208,42 @@ class DemoFabManager extends ChangeNotifier {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInOut,
-                  width: _isDragging ? 60 : 56,
-                  height: _isDragging ? 60 : 56,
-                  child: FloatingActionButton(
+                  width: _isDragging ? _fabSize + 4 : _fabSize,
+                  height: _isDragging ? _fabSize + 4 : _fabSize,
+                  child: _buildStyledFab(
+                    size: _fabSize,
                     onPressed: () {
                       setState(() {
                         _isExpanded = !_isExpanded;
                       });
                     },
-                    backgroundColor: _isExpanded
-                        ? theme.colorScheme.error
-                        : theme.colorScheme.secondary,
+                    backgroundColor:
+                        _isExpanded ? theme.colorScheme.error : Colors.white,
                     child: Icon(
                       _isExpanded ? Icons.close : Icons.menu,
-                      color: theme.colorScheme.onSecondary,
+                      color: _isExpanded ? Colors.white : Colors.black,
+                      size: 28,
                     ),
                   ),
                 ),
               ),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  void _showWarningDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlert(
+          title: "경고",
+          content: "이 음식물은 처리할 수 없습니다.",
+          onConfirm: () {
+            print("경고창 닫힘");
+          },
         );
       },
     );
