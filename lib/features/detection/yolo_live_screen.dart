@@ -146,6 +146,14 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
     double factorY = screen.height / (cameraImage?.width ?? 1);
 
     return yoloResults.map((result) {
+      Color boxColor;
+      if (processable.contains(result['tag'])) {
+        boxColor = Colors.greenAccent;
+      } else if (caution.contains(result['tag'])) {
+        boxColor = Colors.orangeAccent;
+      } else {
+        boxColor = Colors.redAccent;
+      }
       return Positioned(
         left: result["box"][0] * factorX,
         top: result["box"][1] * factorY,
@@ -154,7 +162,7 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            border: Border.all(color: Colors.pink, width: 2.0),
+            border: Border.all(color: boxColor, width: 2.0),
           ),
           child: Text(
             "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",

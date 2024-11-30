@@ -101,6 +101,9 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
   }
 
   List<Widget> displayYOLODetectionOverImage(Size screen) {
+    final List<String> processable = yesFood;
+    final List<String> caution = cautionFood;
+
     if (yoloResults.isEmpty) return [];
 
     double factorX = screen.width / (imageWidth);
@@ -117,9 +120,9 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
 
     return yoloResults.map((result) {
       Color boxColor;
-      if (["Apple", "Banana", "Bread"].contains(result['tag'])) {
+      if (processable.contains(result['tag'])) {
         boxColor = Colors.greenAccent;
-      } else if (["Apple-core", "Banana-peel"].contains(result['tag'])) {
+      } else if (caution.contains(result['tag'])) {
         boxColor = Colors.orangeAccent;
       } else {
         boxColor = Colors.redAccent;
