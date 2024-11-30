@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../components/device_card.dart';
 import 'device/device_on.dart';
+import '../components/appbar_home.dart';
+import '../components/bottom_nav_bar.dart';
 
-// TODO: "스마트 루틴" 블럭 padding 수정
 class Home extends StatefulWidget {
   final String userId;
   final String userName;
@@ -25,6 +26,12 @@ class _HomeState extends State<Home> {
   bool isMicrowaveOn = false;
   int _currentIndex = 0;
 
+  void _onNavTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
@@ -45,40 +52,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.transparent,
         extendBody: true,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: Row(
-            children: [
-              Text(
-                "${widget.userName} 홈",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: const Color(0xFF4F4F4F),
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.black,
-                size: 20,
-              ),
-            ],
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add, color: Colors.black),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.notifications_none, color: Colors.black),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.more_vert, color: Colors.black),
-              onPressed: () {},
-            ),
-          ],
-        ),
+        appBar: HomeAppBar(userName: widget.userName),
         body: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
@@ -86,7 +60,7 @@ class _HomeState extends State<Home> {
               left: 16,
               right: 16,
               top: 16,
-              bottom: kBottomNavigationBarHeight + bottomPadding + 32,
+              bottom: kBottomNavigationBarHeight + bottomPadding + 16,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,9 +70,9 @@ class _HomeState extends State<Home> {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 1.2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 1.3,
                   ),
                   children: [
                     DeviceCard(
@@ -170,15 +144,26 @@ class _HomeState extends State<Home> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const ListTile(
-                    leading: CircleAvatar(
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    leading: const CircleAvatar(
                       backgroundColor: Color(0xFFFFE8CC),
                       child: Icon(Icons.timer, color: Colors.orange),
                     ),
-                    title: Text("루틴 알아보기"),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                    title: const Text("루틴 알아보기"),
+                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   ),
                 ),
+                // TODO: 3d_man 이미지 삽입해보기
+                // // 3d_man 이미지
+                // const SizedBox(height: 0),
+                // Image.asset(
+                //   'assets/images/home/3d_man.png',
+                //   width: double.infinity,
+                //   fit: BoxFit.cover,
+                // ),
               ],
             ),
           ),
@@ -207,44 +192,9 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-        bottomNavigationBar: Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Colors.transparent,
-          ),
-          child: Container(
-            color: Colors.transparent,
-            child: BottomNavigationBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: Colors.black,
-              unselectedItemColor: Colors.grey,
-              currentIndex: _currentIndex,
-              onTap: (index) => setState(() => _currentIndex = index),
-              items: const [
-                // TODO: bottomNavigationBar 아이콘 수정
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined),
-                  activeIcon: Icon(Icons.home),
-                  label: '홈',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.explore_outlined),
-                  activeIcon: Icon(Icons.explore),
-                  label: '디스커버',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.bar_chart_outlined),
-                  activeIcon: Icon(Icons.bar_chart),
-                  label: '리포트',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.menu),
-                  label: '메뉴',
-                ),
-              ],
-            ),
-          ),
+        bottomNavigationBar: HomeBottomNavBar(
+          currentIndex: _currentIndex,
+          onTap: _onNavTap,
         ),
       ),
     );

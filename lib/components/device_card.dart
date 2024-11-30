@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text.dart';
 
 class DeviceCard extends StatelessWidget {
   final String icon;
@@ -18,9 +20,13 @@ class DeviceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       decoration: BoxDecoration(
-        color: isOn ? Colors.white : Colors.white.withOpacity(0.5),
+        color: isOn
+            ? AppColors.primaryBackground
+            : AppColors.primaryBackground.withOpacity(0.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Material(
@@ -31,7 +37,9 @@ class DeviceCard extends StatelessWidget {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                // padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -40,28 +48,23 @@ class DeviceCard extends StatelessWidget {
                       icon,
                       height: 40,
                       width: 40,
-                      errorBuilder: (context, error, stackTrace) => Icon(
-                        Icons.device_unknown,
-                        size: 40,
-                        color: isOn ? Colors.blue : Colors.grey,
-                      ),
                     ),
                     const SizedBox(height: 12),
                     // 디바이스 이름
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                      style: textTheme.titleSmall?.copyWith(
+                        // fontSize: 14,
+                        color: AppColors.secondaryText,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 4),
                     // 전원 상태
                     Text(
                       isOn ? "켜짐" : "꺼짐",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
+                      style: textTheme.titleSmall?.copyWith(
+                        color: AppColors.secondaryText,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],

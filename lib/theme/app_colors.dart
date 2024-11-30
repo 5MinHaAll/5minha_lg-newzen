@@ -9,9 +9,10 @@ class AppColors {
 
   // Utility Colors
   static const Color primaryText = Color(0xFF111111);
-  static const Color secondaryText = Color(0xFF57636C);
-  static const Color primaryBackground = Color(0xFFFFFFFF);    // 카드, 리스트용 흰색
-  static const Color secondaryBackground = Color(0xFFEFF1F5);  // 화면 배경용
+  static const Color secondaryText = Color(0xFF4F4F4F);
+  static const Color tertiaryText = Color(0xFF556273);
+  static const Color primaryBackground = Color(0xFFFFFFFF); // 카드, 리스트용 흰색
+  static const Color secondaryBackground = Color(0xFFEFF1F5); // 화면 배경용
 
   // Accent Colors
   static const Color accent1 = Color(0xFF02A498);

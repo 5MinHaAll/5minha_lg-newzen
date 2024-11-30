@@ -31,10 +31,10 @@ class AppTheme {
     listTileTheme: ListTileThemeData(
       tileColor: AppColors.primaryBackground,
     ),
-    appBarTheme: AppBarTheme(
-      backgroundColor: AppColors.primary,
-      foregroundColor: Colors.white,
-      elevation: 0,
-    ),
+    // appBarTheme: AppBarTheme(
+    //   backgroundColor: AppColors.primary,
+    //   foregroundColor: Colors.white,
+    //   elevation: 0,
+    // ),
   );
 }

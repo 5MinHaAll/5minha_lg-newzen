@@ -1,5 +1,4 @@
 import 'dart:math';
-import '../features/byproduct/byproduct_manager.dart';
 import '../features/device/device_operation.dart';
 import 'package:flutter/material.dart';
 import '../components/custom_alert.dart'; // CustomAlert가 정의된 파일을 import

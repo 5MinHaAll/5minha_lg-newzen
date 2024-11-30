@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'home.dart';
+import '../home.dart';
 import 'signup.dart';
 
 class Login extends StatefulWidget {
@@ -195,22 +195,23 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   onPressed: isFormFilled ? signIn : null,
                   style: ElevatedButton.styleFrom(
+                    // TODO: 비활성 상태 스타일 수정 - 배경 shade50, 글자색 200
                     backgroundColor: isFormFilled
                         ? const Color(0xFFA50034)
-                        : Colors.grey.shade200,
+                        : Colors.grey.shade300,
                     foregroundColor:
-                        isFormFilled ? Colors.white : Colors.grey.shade700,
+                        isFormFilled ? Colors.white : Colors.grey.shade600,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   child: Text(
                     '로그인',
                     style: textTheme.bodyLarge?.copyWith(
                       fontSize: 16,
-                      color: isFormFilled ? Colors.white : Colors.grey.shade700,
+                      color: isFormFilled ? Colors.white : Colors.grey.shade600,
                     ),
                   ),
                 ),
@@ -285,7 +286,7 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
                     border: Border.all(color: const Color(0xFFA50034)),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
