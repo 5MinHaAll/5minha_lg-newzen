@@ -104,8 +104,10 @@ class _DeviceOnState extends State<DeviceOn> {
             context: context);
 
         // ValueNotifier로 데이터 업데이트
-        pottingSoilNotifier.value = pottingSoilData;
-        mixingTankNotifier.value = mixingData;
+        setState(() {
+          pottingSoilNotifier.value = pottingSoilData;
+          mixingTankNotifier.value = mixingData;
+        });
 
         // 부산물 상태 증가 처리
         if (mixingData["shouldIncreaseByproduct"] == true) {
@@ -341,13 +343,15 @@ class _DeviceOnState extends State<DeviceOn> {
   // 메인 콘텐츠
   Widget _buildMainContent() {
     // 배양토 상태 계산
-    bool PottingSoilIsNormal = _PottingSoilData?['status'] ?? "알 수 없음";
+    // bool PottingSoilIsNormal = _PottingSoilData?['status'] ?? "알 수 없음";
+    bool PottingSoilIsNormal = pottingSoilNotifier.value?['status'] ?? "알 수 없음";
 
     String PottingSoilStatus = PottingSoilIsNormal ? "정상" : "비정상";
     Color PottingSoilColor = PottingSoilIsNormal ? Colors.green : Colors.red;
 
     // 교반통 상태 계산
-    bool mixingTankIsNormal = _mixingTankData?['status'] ?? "알 수 없음";
+    // bool mixingTankIsNormal = _mixingTankData?['status'] ?? "알 수 없음";
+    bool mixingTankIsNormal = mixingTankNotifier.value?['status'] ?? "알 수 없음";
 
     String mixingTankStatus = mixingTankIsNormal ? "정상" : "비정상";
     Color mixingTankColor = mixingTankIsNormal ? Colors.green : Colors.red;
