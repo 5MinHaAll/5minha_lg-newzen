@@ -7,7 +7,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "처리 가능",
       "details": "물기를 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "007"
     },
     {
       "name": "Banana",
@@ -15,7 +15,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "처리 가능",
       "details": "껍질을 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "020"
     },
     {
       "name": "Bread",
@@ -23,7 +23,7 @@ const wasteCategories = {
       "category": "가공식품",
       "status": "처리 가능",
       "details": "적정량을 유지하며 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "017"
     },
     {
       "name": "Bun",
@@ -95,7 +95,7 @@ const wasteCategories = {
       "category": "채소",
       "status": "처리 가능",
       "details": "적당한 크기로 잘라 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "001"
     },
     {
       "name": "Vegetable-root",
@@ -175,7 +175,7 @@ const wasteCategories = {
       "category": "면류",
       "status": "처리 가능",
       "details": "국물을 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "009"
     },
     {
       "name": "Pasta",
