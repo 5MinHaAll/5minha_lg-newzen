@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../components/custom_alert.dart';
+import '../../theme/app_colors.dart';
 
 class FabItem {
   final String imagePath;
@@ -25,7 +26,7 @@ class DemoFabManager extends ChangeNotifier {
   bool _isDragging = false;
 
   final double _fabSize = 56.0;
-  final double _spacing = 100.0;
+  final double _spacing = 80.0;
 
   void initializeFabPosition(BuildContext context) {
     _screenSize = MediaQuery.of(context).size;
@@ -94,9 +95,10 @@ class DemoFabManager extends ChangeNotifier {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$type을 투입했습니다.'),
+        content: Text('$type를 투입했습니다.'),
         action: SnackBarAction(
           label: '취소',
+          textColor: AppColors.primary,
           onPressed: () {
             // 투입 취소 로직
             onVolumeIncrease(-amount); // 투입한 양만큼 감소
@@ -128,16 +130,16 @@ class DemoFabManager extends ChangeNotifier {
               setState(() {
                 _isExpanded = false;
                 onVolumeIncrease(50.0);
-                _showSnackBar(context, '일반 음식물', onVolumeIncrease);
+                _showSnackBar(context, '햄버거', onVolumeIncrease);
               });
             },
-            position: Offset(-_spacing * 1.2, 0),
+            position: Offset(-_spacing, 0),
           ),
           FabItem(
             imagePath: 'assets/images/device/fab_gum.png',
             tooltip: '투입 불가',
             onPressed: () => _showWarningDialog(context),
-            position: Offset(-_spacing * 0.85, -_spacing * 0.85),
+            position: Offset(-_spacing * 0.7, -_spacing * 0.7),
           ),
           FabItem(
             imagePath: 'assets/images/device/fab_pasta.png',
@@ -146,10 +148,10 @@ class DemoFabManager extends ChangeNotifier {
               setState(() {
                 _isExpanded = false;
                 onVolumeIncrease(22.0);
-                _showSnackBar(context, '소량 음식물', onVolumeIncrease);
+                _showSnackBar(context, '파스타', onVolumeIncrease);
               });
             },
-            position: Offset(0, -_spacing * 1.2),
+            position: Offset(0, -_spacing),
           ),
         ];
 
@@ -217,13 +219,20 @@ class DemoFabManager extends ChangeNotifier {
                         _isExpanded = !_isExpanded;
                       });
                     },
-                    backgroundColor:
-                        _isExpanded ? theme.colorScheme.error : Colors.white,
-                    child: Icon(
-                      _isExpanded ? Icons.close : Icons.menu,
-                      color: _isExpanded ? Colors.white : Colors.black,
-                      size: 28,
-                    ),
+                    backgroundColor: _isExpanded
+                        ? theme.colorScheme.error
+                        : AppColors.primary,
+                    child: _isExpanded
+                        ? const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 28,
+                          )
+                        : Image.asset(
+                            'assets/images/device/fab_littering.png',
+                            width: 28,
+                            height: 28,
+                          ),
                   ),
                 ),
               ),

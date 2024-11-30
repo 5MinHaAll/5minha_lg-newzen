@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newzen/features/byproduct/byproduct_manager.dart';
 import '../../data/generate_data.dart';
-import '../../components/custom_alert.dart';
 import '../../features/device/device_operation.dart';
 import '../../features/device/demo_fab_manager.dart';
 import '../functions/functions.dart';
@@ -30,11 +29,6 @@ class _DeviceOnState extends State<DeviceOn> {
   final DemoFabManager _demoFabManager = DemoFabManager();
 
   ScrollController _scrollController = ScrollController();
-// TODO: 삭제해보기
-  // Offset _fabPosition = const Offset(300, 600); // 초기 FAB 위치
-  // bool _isDragging = false; // 드래그 여부
-
-  // Persistent Bottom Sheet Controllers
   PersistentBottomSheetController? _bottomSheetController;
   PersistentBottomSheetController? _agitatorBottomSheetController;
   PersistentBottomSheetController? _pottingSoilBottomSheetController; // 추가 선언
@@ -61,17 +55,6 @@ class _DeviceOnState extends State<DeviceOn> {
     });
   }
 
-  //     final screenSize = MediaQuery.of(context).size;
-  //     setState(() {
-  //       // FAB를 화면 우측 하단에 배치하며, 여유 공간 16픽셀 추가
-  //       _fabPosition = Offset(
-  //         screenSize.width - 72, // FAB 크기(56) + 여유 공간(16)
-  //         screenSize.height - 100, // FAB 크기(56) + AppBar 높이와 여유 공간
-  //       );
-  //     });
-  //   });
-  // }
-  //
   @override
   void dispose() {
     _timer?.cancel();
@@ -257,7 +240,7 @@ class _DeviceOnState extends State<DeviceOn> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  "미생물 음식물 처리기",
+                  "음식물 처리기",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -344,7 +327,7 @@ class _DeviceOnState extends State<DeviceOn> {
               children: [
                 // 제목
                 const Text(
-                  "부산물통 용량 상태",
+                  "부산물 수거함 용량",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
@@ -412,7 +395,7 @@ class _DeviceOnState extends State<DeviceOn> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildInfoBox(
-                "배양토 상태",
+                "배양토",
                 PottingSoilStatus,
                 PottingSoilColor,
                 (BuildContext context) =>
@@ -420,7 +403,7 @@ class _DeviceOnState extends State<DeviceOn> {
                 // () => _showPottingSoilModal(context),
               ),
               _buildInfoBox(
-                "교반통 상태",
+                "교반통",
                 mixingTankStatus,
                 mixingTankColor,
                 (BuildContext context) => _toggleAgitatorBottomSheet(context),
@@ -565,7 +548,7 @@ class _DeviceOnState extends State<DeviceOn> {
     );
   }
 
-  //배양토 상태 모달창
+  //배양토 상태 Bottom Sheet
   void _togglePottingSoilBottomSheet(BuildContext context) {
     if (_pottingSoilBottomSheetController != null) {
       // Bottom Sheet 닫기
@@ -600,7 +583,7 @@ class _DeviceOnState extends State<DeviceOn> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "배양토 상태",
+                        "배양토",
                         style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width * 0.05, // 제목 크기
@@ -676,7 +659,7 @@ class _DeviceOnState extends State<DeviceOn> {
     }
   }
 
-  //교반통 상태 모달창
+  //교반통 상태 Bottom Sheet
   void _toggleAgitatorBottomSheet(BuildContext context) {
     if (_agitatorBottomSheetController != null) {
       // Bottom Sheet 닫기
@@ -712,7 +695,7 @@ class _DeviceOnState extends State<DeviceOn> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "교반통 상태",
+                        "교반통",
                         style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width * 0.05, // 제목 크기
@@ -794,11 +777,11 @@ class _DeviceOnState extends State<DeviceOn> {
                           );
                           mixingTankNotifier.value = updatedData; // 데이터 갱신
                         },
-                        child: const Text("감소"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
                         ),
+                        child: const Text("감소"),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -811,11 +794,11 @@ class _DeviceOnState extends State<DeviceOn> {
                           );
                           mixingTankNotifier.value = updatedData; // 데이터 갱신
                         },
-                        child: const Text("증가"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           foregroundColor: Colors.white,
                         ),
+                        child: const Text("증가"),
                       ),
                     ],
                   ),
