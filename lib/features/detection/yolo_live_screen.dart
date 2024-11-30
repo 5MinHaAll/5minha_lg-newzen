@@ -236,7 +236,8 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
     if (!isLoaded) {
       return const Scaffold(
         body: Center(
-          child: Text("Model not loaded, waiting for it"),
+          // child: Text("Model not loaded, waiting for it"),
+          child: CircularProgressIndicator(), // 로딩 애니메이션
         ),
       );
     }
