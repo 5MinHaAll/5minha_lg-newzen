@@ -7,7 +7,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "처리 가능",
       "details": "물기를 제거하고 적정량을 투입하세요.",
-      "imgNumber": "007"
+      "imgNumber": "01"
     },
     {
       "name": "Banana",
@@ -15,7 +15,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "처리 가능",
       "details": "껍질을 제거하고 적정량을 투입하세요.",
-      "imgNumber": "020"
+      "imgNumber": "02"
     },
     {
       "name": "Bread",
@@ -23,7 +23,7 @@ const wasteCategories = {
       "category": "가공식품",
       "status": "처리 가능",
       "details": "적정량을 유지하며 투입하세요.",
-      "imgNumber": "017"
+      "imgNumber": "03"
     },
     {
       "name": "Bun",
@@ -31,7 +31,7 @@ const wasteCategories = {
       "category": "가공식품",
       "status": "처리 가능",
       "details": "적정량을 유지하며 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "04"
     },
     {
       "name": "Chicken-skin",
@@ -39,7 +39,7 @@ const wasteCategories = {
       "category": "육류",
       "status": "처리 가능",
       "details": "기름기를 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "05"
     },
     {
       "name": "Congee",
@@ -47,7 +47,7 @@ const wasteCategories = {
       "category": "곡물",
       "status": "처리 가능",
       "details": "물기를 적당히 조절하여 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "06"
     },
     {
       "name": "Cucumber",
@@ -55,7 +55,7 @@ const wasteCategories = {
       "category": "채소",
       "status": "처리 가능",
       "details": "적당한 크기로 잘라 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "07"
     },
     {
       "name": "Orange",
@@ -63,7 +63,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "처리 가능",
       "details": "껍질을 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "08"
     },
     {
       "name": "Pear",
@@ -71,7 +71,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "처리 가능",
       "details": "물기를 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "09"
     },
     {
       "name": "Pear-peel",
@@ -79,7 +79,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "처리 가능",
       "details": "얇게 벗긴 껍질을 적정량 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "10"
     },
     {
       "name": "Tomato",
@@ -87,7 +87,7 @@ const wasteCategories = {
       "category": "채소",
       "status": "처리 가능",
       "details": "물기를 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "11"
     },
     {
       "name": "Vegetable",
@@ -95,7 +95,7 @@ const wasteCategories = {
       "category": "채소",
       "status": "처리 가능",
       "details": "적당한 크기로 잘라 투입하세요.",
-      "imgNumber": "001"
+      "imgNumber": "12"
     },
     {
       "name": "Vegetable-root",
@@ -103,7 +103,7 @@ const wasteCategories = {
       "category": "채소",
       "status": "처리 가능",
       "details": "깨끗이 씻어서 적당한 크기로 잘라 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "13"
     },
     {
       "name": "Fish",
@@ -111,7 +111,7 @@ const wasteCategories = {
       "category": "수산물",
       "status": "처리 가능",
       "details": "뼈, 내장을 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "14"
     },
     {
       "name": "Meat",
@@ -119,7 +119,7 @@ const wasteCategories = {
       "category": "육류",
       "status": "처리 가능",
       "details": "기름기를 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "15"
     },
     {
       "name": "Egg-hard",
@@ -127,7 +127,7 @@ const wasteCategories = {
       "category": "계란류",
       "status": "처리 가능",
       "details": "껍질을 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "16"
     },
     {
       "name": "Egg-scramble",
@@ -135,7 +135,7 @@ const wasteCategories = {
       "category": "계란류",
       "status": "처리 가능",
       "details": "기름기를 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "17"
     },
     {
       "name": "Egg-steam",
@@ -143,7 +143,7 @@ const wasteCategories = {
       "category": "계란류",
       "status": "처리 가능",
       "details": "껍질을 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "18"
     },
     {
       "name": "Egg-yolk",
@@ -151,7 +151,7 @@ const wasteCategories = {
       "category": "계란류",
       "status": "처리 가능",
       "details": "적정량을 유지하며 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "19"
     },
     {
       "name": "Tofu",
@@ -159,7 +159,7 @@ const wasteCategories = {
       "category": "가공식품",
       "status": "처리 가능",
       "details": "물기를 제거하고 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "20"
     },
     {
       "name": "Rice",
@@ -167,7 +167,7 @@ const wasteCategories = {
       "category": "곡물",
       "status": "처리 가능",
       "details": "적정량을 유지하며 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "21"
     },
     {
       "name": "Noodle",
@@ -175,7 +175,7 @@ const wasteCategories = {
       "category": "면류",
       "status": "처리 가능",
       "details": "국물을 제거하고 적정량을 투입하세요.",
-      "imgNumber": "009"
+      "imgNumber": "22"
     },
     {
       "name": "Pasta",
@@ -183,7 +183,7 @@ const wasteCategories = {
       "category": "면류",
       "status": "처리 가능",
       "details": "소스를 최소화하여 적정량을 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "23"
     },
     {
       "name": "Mushroom",
@@ -191,7 +191,7 @@ const wasteCategories = {
       "category": "채소",
       "status": "처리 가능",
       "details": "깨끗이 씻어서 적당한 크기로 잘라 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "24"
     },
     {
       "name": "Pancake",
@@ -199,7 +199,7 @@ const wasteCategories = {
       "category": "가공식품",
       "status": "처리 가능",
       "details": "적정량을 유지하며 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "25"
     }
   ],
   "caution": [
@@ -209,7 +209,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "주의 필요",
       "details": "잘게 잘라서 소량만 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "26"
     },
     {
       "name": "Banana-peel",
@@ -217,7 +217,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "주의 필요",
       "details": "잘게 잘라서 소량만 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "27"
     },
     {
       "name": "Orange-peel",
@@ -225,7 +225,7 @@ const wasteCategories = {
       "category": "과일",
       "status": "주의 필요",
       "details": "잘게 잘라서 소량만 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "28"
     },
     {
       "name": "Potato",
@@ -233,7 +233,7 @@ const wasteCategories = {
       "category": "채소",
       "status": "주의 필요",
       "details": "잘게 잘라서 소량만 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "29"
     },
     {
       "name": "Shrimp",
@@ -241,7 +241,7 @@ const wasteCategories = {
       "category": "수산물",
       "status": "주의 필요",
       "details": "껍질을 제거하고 소량만 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "30"
     },
     {
       "name": "High-fiber Vegetables",
@@ -249,7 +249,7 @@ const wasteCategories = {
       "category": "채소",
       "status": "주의 필요",
       "details": "잘게 잘라서 소량만 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "31"
     },
     {
       "name": "Drink",
@@ -257,7 +257,7 @@ const wasteCategories = {
       "category": "액체",
       "status": "주의 필요",
       "details": "소량씩 천천히 투입하세요.",
-      "imgNumber": "000"
+      "imgNumber": "32"
     }
   ],
   "nonProcessable": [
@@ -267,7 +267,7 @@ const wasteCategories = {
       "category": "육류",
       "status": "처리 불가",
       "details": "일반 쓰레기로 분리배출하세요.",
-      "imgNumber": "000"
+      "imgNumber": "33"
     },
     {
       "name": "Bone-fish",
@@ -275,7 +275,7 @@ const wasteCategories = {
       "category": "수산물",
       "status": "처리 불가",
       "details": "일반 쓰레기로 분리배출하세요.",
-      "imgNumber": "000"
+      "imgNumber": "34"
     },
     {
       "name": "Mussel-shell",
@@ -283,7 +283,7 @@ const wasteCategories = {
       "category": "수산물",
       "status": "처리 불가",
       "details": "일반 쓰레기로 분리배출하세요.",
-      "imgNumber": "000"
+      "imgNumber": "35"
     },
     {
       "name": "Egg-shell",
@@ -291,7 +291,7 @@ const wasteCategories = {
       "category": "계란류",
       "status": "처리 불가",
       "details": "일반 쓰레기로 분리배출하세요.",
-      "imgNumber": "000"
+      "imgNumber": "36"
     },
     {
       "name": "Shrimp-shell",
@@ -299,7 +299,7 @@ const wasteCategories = {
       "category": "수산물",
       "status": "처리 불가",
       "details": "일반 쓰레기로 분리배출하세요.",
-      "imgNumber": "000"
+      "imgNumber": "37"
     },
     {
       "name": "Other-waste",
@@ -307,16 +307,24 @@ const wasteCategories = {
       "category": "기타",
       "status": "처리 불가",
       "details": "일반 쓰레기로 분리배출하세요.",
-      "imgNumber": "000"
+      "imgNumber": "38"
     }
   ],
   "guidelines": {
     "processable": {
       "title": "투입 가능한 음식물입니다",
       "subtitle": "사람이 먹고 소화할 수 있는 것은 모두 분해 가능",
-      "details": [
-        "1일 적정량을 준수하여 투입해주세요",
-      ],
+      "details": {
+        "01-12": "물기를 제거하고 적정량을 투입하세요.", // 과일, 채소류
+        "13": "깨끗이 씻어서 적당한 크기로 잘라 투입하세요.", // 뿌리채소
+        "14-15": "기름기를 제거하고 적정량을 투입하세요.", // 생선, 고기류
+        "16-19": "껍질을 제거하고 적정량을 투입하세요.", // 계란류
+        "20": "물기를 제거하고 적정량을 투입하세요.", // 두부
+        "21": "적정량을 유지하며 투입하세요.", // 밥
+        "22-23": "국물을 제거하고 적정량을 투입하세요.", // 면류
+        "24": "깨끗이 씻어서 적당한 크기로 잘라 투입하세요.", // 버섯
+        "25": "적정량을 유지하며 투입하세요." // 팬케이크
+      },
       "examples": [
         "과일류, 야채류",
         "익힌 고기/생선류",
@@ -328,18 +336,21 @@ const wasteCategories = {
     "caution": {
       "title": "주의가 필요한 음식물입니다",
       "subtitle": "부피가 크거나 섬유질이 많은 음식은 잘게 잘라서 소량 투입",
-      "details": [
-        "한 번에 많은 양을 넣지 마세요",
-        "다른 음식물과 섞어서 처리하면 더 효과적입니다",
-      ],
+      "details": {
+        "26-28": "잘게 잘라서 소량만 투입하세요.", // 과일 껍질류
+        "29": "잘게 잘라서 소량만 투입하세요.", // 감자
+        "30": "껍질을 제거하고 소량만 투입하세요.", // 새우
+        "31": "잘게 잘라서 소량만 투입하세요.", // 섬유질 많은 채소
+        "32": "소량씩 천천히 투입하세요." // 음료/국물
+      },
       "examples": ["떡, 수박껍질, 바나나 껍질", "무, 배추, 오이, 고구마"]
     },
     "nonProcessable": {
       "title": "투입이 불가능한 음식물입니다",
       "subtitle": "딱딱하거나 분해되지 않는 물질 투입 금지",
-      "details": [
-        "무리한 처리 시 기기 고장의 원인이 됩니다",
-      ],
+      "details": {
+        "33-38": "일반 쓰레기로 분리배출하세요." // 모든 처리 불가 항목
+      },
       "examples": [
         "뼈류 (닭, 돼지, 소 등), 고기/생선 내장, 조개껍데기",
         "식용유, 고지방 음식, 염분 많은 장류",

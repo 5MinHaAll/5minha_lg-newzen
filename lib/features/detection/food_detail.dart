@@ -12,15 +12,64 @@ class FoodDetail extends StatelessWidget {
     super.key,
   });
 
+  String get _effectiveCategory => _findCorrectCategory();
+
+  String _findCorrectCategory() {
+    for (final categoryKey in ['processable', 'caution', 'nonProcessable']) {
+      final categoryList = wasteCategories[categoryKey] as List?;
+      if (categoryList != null) {
+        final found = categoryList.any((food) =>
+            (food['name'] as String).toLowerCase() == foodName.toLowerCase());
+        if (found) {
+          switch (categoryKey) {
+            case 'processable':
+              return '처리 가능';
+            case 'caution':
+              return '주의 필요';
+            case 'nonProcessable':
+              return '처리 불가능';
+          }
+        }
+      }
+    }
+    return category;
+  }
+
+  String _getImagePath(Map<String, dynamic>? foodInfo) {
+    if (foodInfo == null) {
+      debugPrint('foodInfo is null');
+      return '';
+    }
+
+    final imgNumber = foodInfo['imgNumber'] as String?;
+    final name = foodInfo['name'] as String?;
+
+    if (imgNumber == null || name == null) {
+      debugPrint(
+          'imgNumber or name is null. imgNumber: $imgNumber, name: $name');
+      return '';
+    }
+
+    final fileName = name.toLowerCase();
+    final number = imgNumber.padLeft(2, '0');
+    final path = 'assets/images/functions/info_food/$number-$fileName.png';
+    debugPrint('Trying to load image: $path');
+    return path;
+  }
+
   String _getCategoryKey() {
-    switch (category) {
+    debugPrint('Original category: $_effectiveCategory');
+    switch (_effectiveCategory.trim()) {
       case "처리 가능":
         return "processable";
       case "주의":
+      case "주의 필요":
         return "caution";
+      case "처리 불가":
       case "처리 불가능":
         return "nonProcessable";
       default:
+        debugPrint('Category not matched: $_effectiveCategory');
         return "processable";
     }
   }
@@ -28,28 +77,28 @@ class FoodDetail extends StatelessWidget {
   Map<String, dynamic>? _getFoodInfo() {
     try {
       final categoryKey = _getCategoryKey();
-      if (!wasteCategories.containsKey(categoryKey)) {
-        return {"name": foodName, "name_ko": foodName, "status": category};
-      }
+      debugPrint('Category Key: $categoryKey');
 
-      if (foodName == "Drink") {
-        return {
-          "name": foodName,
-          "name_ko": "음료/국물",
-          "category": "액체류",
-          "status": category,
-          "details": "국물이나 음료는 소량씩 천천히 투입하세요."
-        };
+      if (!wasteCategories.containsKey(categoryKey)) {
+        debugPrint('Category not found: $categoryKey');
+        return {"name": foodName, "name_ko": foodName, "status": category};
       }
 
       final categoryList = List<Map<String, dynamic>>.from(
           (wasteCategories[categoryKey] as List)
               .map((item) => Map<String, dynamic>.from(item as Map)));
 
+      debugPrint('Searching for food: $foodName');
+      debugPrint(
+          'Available foods in category: ${categoryList.map((food) => food["name"]).toList()}');
+
       return categoryList.firstWhere(
-        (food) => food["name"] == foodName,
-        orElse: () =>
-            {"name": foodName, "name_ko": foodName, "status": category},
+        (food) =>
+            food["name"].toString().toLowerCase() == foodName.toLowerCase(),
+        orElse: () {
+          debugPrint('Food not found: $foodName');
+          return {"name": foodName, "name_ko": foodName, "status": category};
+        },
       );
     } catch (e) {
       debugPrint('Error in _getFoodInfo: $e');
@@ -57,105 +106,68 @@ class FoodDetail extends StatelessWidget {
     }
   }
 
-  Widget _buildDetailContent(BuildContext context) {
-    try {
-      final categoryKey = _getCategoryKey();
-      final foodInfo = _getFoodInfo();
-
-      // 가이드라인 정보 가져오기
-      final guidelines = wasteCategories['guidelines'];
-      if (guidelines == null) return const SizedBox.shrink();
-
-      final Map<String, dynamic>? categoryGuidelines = (guidelines
-          as Map<String, dynamic>)[categoryKey] as Map<String, dynamic>?;
-      if (categoryGuidelines == null) return const SizedBox.shrink();
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 1. 음식 분류 정보
-          Text(
-            "분류",
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            foodInfo?["category"] ?? "기타",
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          const SizedBox(height: 16),
-
-          // 2. 음식별 상세 설명
-          if (foodInfo?["details"] != null) ...[
-            Text(
-              "처리 방법",
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "• ${foodInfo?["details"]}",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 16),
-          ],
-
-          // 3. 카테고리별 가이드라인 제목과 부제목
-          Text(
-            categoryGuidelines['title'] as String? ?? "상세 정보",
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: category == "처리 가능"
-                      ? AppColors.success
-                      : category == "주의"
-                          ? AppColors.error
-                          : AppColors.warning,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            categoryGuidelines['subtitle'] as String? ?? "",
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
-          ),
-
-          // 4. 주의사항
-          if ((categoryGuidelines['details'] as List?)?.isNotEmpty ??
-              false) ...[
-            const SizedBox(height: 16),
-            Text(
-              "주의사항",
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            ...(categoryGuidelines['details'] as List).map(
-              (detail) => Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  "• $detail",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-            ),
-          ],
-        ],
-      );
-    } catch (e) {
-      debugPrint('Error in _buildDetailContent: $e');
-      return const SizedBox.shrink();
+  String _getGuidelineDetail(Map<String, dynamic>? foodInfo,
+      Map<String, dynamic>? categoryGuidelines) {
+    if (foodInfo == null || categoryGuidelines == null) {
+      debugPrint('foodInfo or categoryGuidelines is null');
+      return "";
     }
+
+    final imgNumber = foodInfo['imgNumber'] as String?;
+    if (imgNumber == null) {
+      debugPrint('imgNumber is null');
+      return foodInfo['details'] ?? "";
+    }
+
+    final detailsMap = categoryGuidelines['details'] as Map<String, dynamic>?;
+    if (detailsMap == null) {
+      debugPrint('detailsMap is null');
+      return foodInfo['details'] ?? "";
+    }
+
+    debugPrint('Looking for details with imgNumber: $imgNumber');
+
+    if (detailsMap.containsKey(imgNumber)) {
+      return detailsMap[imgNumber];
+    }
+
+    for (final key in detailsMap.keys) {
+      final range = key.split('-');
+      try {
+        if (range.length == 2) {
+          final start = int.parse(range[0]);
+          final end = int.parse(range[1]);
+          final current = int.parse(imgNumber);
+          if (current >= start && current <= end) {
+            debugPrint('Found range match: $key for number: $imgNumber');
+            return detailsMap[key];
+          }
+        }
+      } catch (e) {
+        debugPrint('Error parsing number range: $e');
+      }
+    }
+
+    debugPrint('No matching details found, returning original details');
+    return foodInfo['details'] ?? "";
+  }
+
+  List<String> _getExamples(Map<String, dynamic>? foodInfo,
+      Map<String, dynamic>? categoryGuidelines) {
+    if (foodInfo == null || categoryGuidelines == null) {
+      return [];
+    }
+
+    final examples = categoryGuidelines['examples'] as List?;
+    return examples?.cast<String>() ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
     final foodInfo = _getFoodInfo();
     final koreanName = foodInfo?["name_ko"] ?? foodName;
+
+    debugPrint('Food Info: $foodInfo');
 
     final guidelines = wasteCategories['guidelines'];
     final categoryKey = _getCategoryKey();
@@ -164,13 +176,15 @@ class FoodDetail extends StatelessWidget {
             as Map<String, dynamic>?
         : null;
 
+    debugPrint('Category Guidelines: $categoryGuidelines');
+
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.9,
       ),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEFF1F5),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: const BoxDecoration(
+        color: Color(0xFFEFF1F5),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -198,15 +212,13 @@ class FoodDetail extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 24),
-
-                  // 흰색 배경의 컨테이너
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(12),
                     child: Column(
                       children: [
                         Text(
@@ -229,24 +241,22 @@ class FoodDetail extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
                         Container(
-                          width: 120,
-                          height: 120,
+                          width: 48,
+                          height: 48,
                           decoration: BoxDecoration(
                             color: AppColors.primaryBackground,
-                            shape: BoxShape.circle,
                           ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/info/food/$foodName.png',
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Icon(
-                                  Icons.fastfood,
-                                  size: 60,
-                                  color: Colors.grey,
-                                );
-                              },
-                            ),
+                          child: Image.asset(
+                            _getImagePath(foodInfo),
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              debugPrint('Error loading image: $error');
+                              return const Icon(
+                                Icons.fastfood,
+                                size: 48,
+                                color: Colors.grey,
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -263,7 +273,7 @@ class FoodDetail extends StatelessWidget {
                                   ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         Text(
                           categoryGuidelines?['subtitle'] as String? ?? "",
                           style:
@@ -272,34 +282,64 @@ class FoodDetail extends StatelessWidget {
                                   ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 32),
-                        // Details 부분만 좌측 정렬을 위해 Container로 감싸기
-                        if ((categoryGuidelines?['details'] as List?)
-                                ?.isNotEmpty ??
-                            false)
+                        const SizedBox(height: 24),
+                        if (_getGuidelineDetail(foodInfo, categoryGuidelines)
+                            .isNotEmpty)
                           Container(
-                            width: double.infinity, // 전체 너비를 사용
-                            alignment: Alignment.centerLeft, // 내부 콘텐츠를 좌측 정렬
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .start, // Column 내부 항목들을 좌측 정렬
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ...(categoryGuidelines!['details'] as List).map(
-                                  (detail) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 8),
-                                    child: Text(
-                                      "$detail",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            color: AppColors.info,
-                                          ),
-                                      textAlign:
-                                          TextAlign.left, // 텍스트 자체도 좌측 정렬
-                                    ),
-                                  ),
+                                Text(
+                                  "이렇게 처리하세요",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primaryText,
+                                      ),
                                 ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "• ${_getGuidelineDetail(foodInfo, categoryGuidelines)}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: AppColors.secondaryText,
+                                      ),
+                                  softWrap: true,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  "처리 방법이 비슷해요",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primaryText,
+                                      ),
+                                ),
+                                const SizedBox(height: 4),
+                                ..._getExamples(foodInfo, categoryGuidelines)
+                                    .map((example) => Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 0),
+                                          child: Text(
+                                            "• $example",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(
+                                                  color:
+                                                      AppColors.secondaryText,
+                                                ),
+                                            softWrap: true,
+                                          ),
+                                        )),
                               ],
                             ),
                           ),

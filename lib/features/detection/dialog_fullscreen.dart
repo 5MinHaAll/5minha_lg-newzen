@@ -33,13 +33,13 @@ class DialogFullscreen extends StatelessWidget {
               (wasteCategories[categoryKey] as List<dynamic>).map((item) =>
                   Map<String, dynamic>.from(item as Map<String, dynamic>)));
 
-      // Drink인 경우 특별 처리
       if (foodName == "Drink") {
         return {
           "name": foodName,
           "name_ko": "음료/국물",
           "category": "액체류",
-          "  ": category,
+          "status": category,
+          "imgNumber": "32"
         };
       }
 
@@ -54,6 +54,7 @@ class DialogFullscreen extends StatelessWidget {
                   ? "주의 필요"
                   : "처리 불가",
           "status": category,
+          "imgNumber": "00"
         },
       );
     } catch (e) {
@@ -63,60 +64,64 @@ class DialogFullscreen extends StatelessWidget {
         "name_ko": foodName,
         "category": "기타",
         "status": category,
+        "imgNumber": "00"
       };
     }
   }
 
-  Widget _buildFoodItem(
+  Widget _buildFoodItemGroup(
+      BuildContext context, List<String> foodList, String category) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: AppColors.primaryBackground,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: foodList.asMap().entries.map((entry) {
+          final int idx = entry.key;
+          final String foodName = entry.value;
+          final bool isLast = idx == foodList.length - 1;
+
+          return Column(
+            children: [
+              _buildFoodItemContent(context, foodName, category),
+              if (!isLast)
+                const Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Color(0xFFCAD0DC),
+                  indent: 16,
+                  endIndent: 16,
+                ),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildFoodItemContent(
       BuildContext context, String foodName, String category) {
     final foodInfo = _getFoodInfo(foodName, category);
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading: Image.asset(
-          'assets/images/info/food/$foodName.png',
-          width: 40,
-          height: 40,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.fastfood, color: Colors.grey),
-            );
-          },
-        ),
-        title: Text(
-          foodInfo["name_ko"] as String,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        subtitle: Text(
-          category,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: category == "처리 가능"
-                    ? Colors.green
-                    : category == "주의"
-                        ? Colors.orange
-                        : Colors.red,
-              ),
-        ),
-        trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+    String _getImagePath(Map<String, dynamic> foodInfo) {
+      final imgNumber = foodInfo['imgNumber'] as String?;
+      final name = foodInfo['name'] as String?;
+
+      if (imgNumber == null || name == null) {
+        return '';
+      }
+
+      final fileName = name.toLowerCase();
+      final number = imgNumber.padLeft(2, '0');
+      return 'assets/images/functions/info_food/$number-$fileName.png';
+    }
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
         onTap: () {
           showModalBottomSheet(
             context: context,
@@ -128,35 +133,65 @@ class DialogFullscreen extends StatelessWidget {
             ),
           );
         },
+        child: ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          leading: Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Image.asset(
+              _getImagePath(foodInfo),
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey[100],
+                  child:
+                      const Icon(Icons.fastfood, color: Colors.grey, size: 20),
+                );
+              },
+            ),
+          ),
+          title: Text(
+            foodInfo["name_ko"] as String,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: AppColors.primaryText,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
+          trailing: const Icon(
+            Icons.chevron_right,
+            color: AppColors.tertiary,
+          ),
+        ),
       ),
     );
   }
 
+  Color _getCategoryColor(String category) {
+    switch (category) {
+      case "처리 가능":
+        return AppColors.success;
+      case "주의":
+        return AppColors.warning;
+      case "처리 불가능":
+        return AppColors.error;
+      default:
+        return AppColors.primaryText;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final sortedLabels = Map.fromEntries(
+      labels.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
+    );
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).colorScheme.background,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.close),
-      //     onPressed: () => Navigator.of(context).pop(),
-      //     color: Theme.of(context).colorScheme.onBackground,
-      //   ),
-      //   title: Text(
-      //     '음식 스캔 결과',
-      //     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-      //           color: Theme.of(context).colorScheme.onBackground,
-      //         ),
-      //   ),
-      //   centerTitle: false,
-      // ),
-      // appBar: DefaultAppBar(
-      //   title: '음식 스캔 결과',
-      //   backgroundColor: Theme.of(context).colorScheme.background,
-      //   textColor: Theme.of(context).colorScheme.onBackground,
-      //   titleSpacing: 0, // centerTitle: false 효과를 위해 titleSpacing 조정
       appBar: DefaultAppBar(
         title: "음식 스캔 결과",
         customLeading: IconButton(
@@ -166,11 +201,11 @@ class DialogFullscreen extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        itemCount: labels.length,
+        padding: const EdgeInsets.only(top: 12),
+        itemCount: sortedLabels.length,
         itemBuilder: (context, index) {
-          final category = labels.keys.elementAt(index);
-          final foodList = labels[category]?.toSet().toList() ?? [];
+          final category = sortedLabels.keys.elementAt(index);
+          final foodList = sortedLabels[category]?.toSet().toList() ?? [];
 
           if (foodList.isEmpty) return const SizedBox.shrink();
 
@@ -178,22 +213,17 @@ class DialogFullscreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
                 child: Text(
                   category,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: category == "처리 가능"
-                            ? Colors.green
-                            : category == "주의"
-                                ? Colors.orange
-                                : Colors.red,
+                        color: _getCategoryColor(category),
+                        fontWeight: FontWeight.bold,
                       ),
                 ),
               ),
-              ...foodList
-                  .map(
-                      (foodName) => _buildFoodItem(context, foodName, category))
-                  .toList(),
+              _buildFoodItemGroup(context, foodList, category),
+              const SizedBox(height: 12),
             ],
           );
         },

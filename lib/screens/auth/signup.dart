@@ -179,7 +179,6 @@ class _SignUpState extends State<SignUp> {
                 ElevatedButton(
                   onPressed: isFormFilled ? signUp : null,
                   style: ElevatedButton.styleFrom(
-                    // TODO: 비활성 상태 스타일 수정 - 배경 shade50, 글자색 200
                     backgroundColor: isFormFilled
                         ? const Color(0xFFA50034)
                         : Colors.grey.shade300,

@@ -3,7 +3,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
+import 'package:newzen/theme/app_text.dart';
 import '../../components/appbar_default.dart';
+import '../../theme/app_colors.dart';
 import 'detection_label.dart';
 import 'dialog_helper.dart';
 
@@ -22,6 +24,8 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
   int imageHeight = 1;
   int imageWidth = 1;
   bool yoloModelLoaded = false;
+  bool isLoading = true; // 로딩 상태 추가
+  bool hasDetections = false; // 감지 결과 유무 상태 추가
   List<Map<String, dynamic>> yoloResults = [];
   Map<String, List<String>> categorizedLabels = {
     "처리 가능": [],
@@ -41,41 +45,86 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
   }
 
   Future<void> _loadYoloModel() async {
-    await vision.loadYoloModel(
-      labels: 'assets/models/food_waste_detect_label.txt',
-      modelPath: 'assets/models/food_waste_detect_yolo11.tflite',
-      modelVersion: "yolov8",
-      quantization: false,
-      numThreads: 2,
-      useGpu: true,
-    );
-    setState(() {
-      yoloModelLoaded = true;
-    });
+    try {
+      await vision.loadYoloModel(
+        labels: 'assets/models/food_waste_detect_label.txt',
+        modelPath: 'assets/models/food_waste_detect_yolo11.tflite',
+        modelVersion: "yolov8",
+        quantization: false,
+        numThreads: 2,
+        useGpu: true,
+      );
+      setState(() {
+        yoloModelLoaded = true;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      _showErrorDialog('모델 로드 실패', '음식물 인식 모델을 불러오는데 실패했습니다.');
+    }
   }
 
   Future<void> _runYoloOnImage() async {
     if (imageFile == null) return;
 
-    Uint8List bytes = await imageFile!.readAsBytes();
-    final image = await decodeImageFromList(bytes);
-    final results = await vision.yoloOnImage(
-      bytesList: bytes,
-      imageHeight: image.height,
-      imageWidth: image.width,
-      iouThreshold: 0.8,
-      confThreshold: 0.4,
-      classThreshold: 0.5,
-    );
+    try {
+      Uint8List bytes = await imageFile!.readAsBytes();
+      final image = await decodeImageFromList(bytes);
+      final results = await vision.yoloOnImage(
+        bytesList: bytes,
+        imageHeight: image.height,
+        imageWidth: image.width,
+        iouThreshold: 0.8,
+        confThreshold: 0.4,
+        classThreshold: 0.5,
+      );
 
-    if (results.isNotEmpty) {
       setState(() {
         imageHeight = image.height;
         imageWidth = image.width;
         yoloResults = results;
-        _categorizeLabels();
+        hasDetections = results.isNotEmpty;
+        isLoading = false;
+        if (hasDetections) {
+          _categorizeLabels();
+        }
       });
+
+      if (!hasDetections) {
+        _showErrorDialog(
+          '음식물 미감지',
+          '이미지에서 음식물을 찾을 수 없습니다.\n다른 이미지로 다시 시도해주세요.',
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      _showErrorDialog('이미지 처리 실패', '이미지 분석 중 오류가 발생했습니다.');
     }
+  }
+
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                // 오류 상황에서 이전 화면으로 돌아가기
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _categorizeLabels() {
@@ -102,6 +151,7 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
   }
 
   List<Widget> displayYOLODetectionOverImage(Size screen) {
+    if (!hasDetections) return [];
     final List<String> processable = yesFood;
     final List<String> caution = cautionFood;
 
@@ -122,11 +172,11 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
     return yoloResults.map((result) {
       Color boxColor;
       if (processable.contains(result['tag'])) {
-        boxColor = Colors.greenAccent;
+        boxColor = AppColors.success;
       } else if (caution.contains(result['tag'])) {
-        boxColor = Colors.orangeAccent;
+        boxColor = AppColors.warning;
       } else {
-        boxColor = Colors.redAccent;
+        boxColor = AppColors.error;
       }
 
       return Stack(
@@ -174,24 +224,48 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            imageFile != null
-                ? Image.file(imageFile!)
-                : const Center(child: Text("이미지를 로드할 수 없습니다.")),
-            ...displayYOLODetectionOverImage(size),
-            Positioned(
-              bottom: 20,
-              left: 20,
-              right: 20,
-              child: ElevatedButton(
-                onPressed: () {
-                  showLabelResultDialog(
-                    context,
-                    categorizedLabels, // 전달할 라벨 데이터
-                  );
-                },
-                child: const Text("스캔 결과 확인하기"),
-              ),
-            ),
+            if (imageFile != null)
+              Image.file(imageFile!)
+            else
+              const Center(child: Text("이미지를 로드할 수 없습니다.")),
+            if (isLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              )
+            else ...[
+              ...displayYOLODetectionOverImage(size),
+              if (hasDetections)
+                Positioned(
+                  bottom: 20,
+                  left: 20,
+                  right: 20,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showLabelResultDialog(
+                        context,
+                        categorizedLabels,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      "음식물 분류 확인하기",
+                      style: AppTypography.getTextTheme().bodyLarge?.copyWith(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                ),
+            ],
           ],
         ),
       ),
