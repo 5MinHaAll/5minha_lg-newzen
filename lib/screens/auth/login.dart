@@ -114,8 +114,8 @@ class _LoginState extends State<Login> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Image.asset(
-                    'assets/images/login/lge_logo_kr.png',
-                    height: 50,
+                    'assets/images/login/lge_logo_kr_new.png',
+                    height: 40,
                   ),
                 ),
 

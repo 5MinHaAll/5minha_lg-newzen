@@ -22,12 +22,13 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: 32),
               // LG Logo
               Align(
                 alignment: Alignment.centerLeft,
                 child: Image.asset(
-                  'assets/images/login/lge_logo_kr.png',
-                  height: 50,
+                  'assets/images/login/lge_logo_kr_new.png',
+                  height: 40,
                 ),
               ),
 
@@ -82,7 +83,10 @@ class WelcomeScreen extends StatelessWidget {
               // Confirm Button
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Login()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFA50034),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../components/device_card.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_text.dart';
 import 'device/device_on.dart';
 import '../components/appbar_home.dart';
 import '../components/bottom_nav_bar.dart';
@@ -36,6 +37,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
+    final textTheme = Theme.of(context).textTheme;
 
     return Container(
       decoration: const BoxDecoration(
@@ -56,126 +58,148 @@ class _HomeState extends State<Home> {
         appBar: HomeAppBar(userName: widget.userName),
         body: SafeArea(
           bottom: false,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-              bottom: kBottomNavigationBarHeight + bottomPadding + 16,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GridView(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 1.3,
-                  ),
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                  bottom: kBottomNavigationBarHeight + bottomPadding + 200,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DeviceCard(
-                      icon: 'assets/images/home/newzen.png',
-                      title: '음식물 처리기',
-                      isOn: isNewzenOn,
-                      onTogglePower: () {
-                        setState(() {
-                          isNewzenOn = !isNewzenOn;
-                        });
-                      },
-                      onIconTap: isNewzenOn
-                          ? () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const DeviceOn(),
-                                ),
-                              );
-                            }
-                          : null,
+                    GridView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 1.3,
+                      ),
+                      children: [
+                        DeviceCard(
+                          icon: 'assets/images/home/newzen.png',
+                          title: '음식물 처리기',
+                          isOn: isNewzenOn,
+                          onTogglePower: () {
+                            setState(() {
+                              isNewzenOn = !isNewzenOn;
+                            });
+                          },
+                          onIconTap: isNewzenOn
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const DeviceOn(),
+                                    ),
+                                  );
+                                }
+                              : null,
+                        ),
+                        DeviceCard(
+                          icon: 'assets/images/home/fridge.png',
+                          title: '냉장고',
+                          isOn: isFridgeOn,
+                          onTogglePower: () {
+                            setState(() {
+                              isFridgeOn = !isFridgeOn;
+                            });
+                          },
+                          onIconTap: isFridgeOn ? () {} : null,
+                        ),
+                        DeviceCard(
+                          icon: 'assets/images/home/tiiun.png',
+                          title: '틔운 미니',
+                          isOn: isTiiunOn,
+                          onTogglePower: () {
+                            setState(() {
+                              isTiiunOn = !isTiiunOn;
+                            });
+                          },
+                          onIconTap: isTiiunOn ? () {} : null,
+                        ),
+                        DeviceCard(
+                          icon: 'assets/images/home/microwave.png',
+                          title: '전자레인지',
+                          isOn: isMicrowaveOn,
+                          onTogglePower: () {
+                            setState(() {
+                              isMicrowaveOn = !isMicrowaveOn;
+                            });
+                          },
+                          onIconTap: isMicrowaveOn ? () {} : null,
+                        ),
+                      ],
                     ),
-                    DeviceCard(
-                      icon: 'assets/images/home/fridge.png',
-                      title: '냉장고',
-                      isOn: isFridgeOn,
-                      onTogglePower: () {
-                        setState(() {
-                          isFridgeOn = !isFridgeOn;
-                        });
-                      },
-                      onIconTap: isFridgeOn ? () {} : null,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "스마트 루틴",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Icon(Icons.chevron_right,
+                              size: 24, color: Colors.black54),
+                        ],
+                      ),
                     ),
-                    DeviceCard(
-                      icon: 'assets/images/home/tiiun.png',
-                      title: '틔운 미니',
-                      isOn: isTiiunOn,
-                      onTogglePower: () {
-                        setState(() {
-                          isTiiunOn = !isTiiunOn;
-                        });
-                      },
-                      onIconTap: isTiiunOn ? () {} : null,
-                    ),
-                    DeviceCard(
-                      icon: 'assets/images/home/microwave.png',
-                      title: '전자레인지',
-                      isOn: isMicrowaveOn,
-                      onTogglePower: () {
-                        setState(() {
-                          isMicrowaveOn = !isMicrowaveOn;
-                        });
-                      },
-                      onIconTap: isMicrowaveOn ? () {} : null,
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2 - 22,
+                      // TODO: height 수정 필요
+                      child: AspectRatio(
+                        aspectRatio: 2.6,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            leading: const CircleAvatar(
+                              backgroundColor: Color(0xFFFFE8CC),
+                              child: Icon(Icons.timer, color: Colors.orange),
+                            ),
+                            title: Text(
+                              "루틴 알아보기",
+                              style: textTheme.titleSmall?.copyWith(
+                                color: AppColors.secondaryText,
+                                // fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20), // 상단 여백을 8로 설정
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "스마트 루틴",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(Icons.chevron_right,
-                          size: 24, color: Colors.black54), // chevron 아이콘 추가
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    leading: const CircleAvatar(
-                      backgroundColor: Color(0xFFFFE8CC),
-                      child: Icon(Icons.timer, color: Colors.orange),
-                    ),
-                    title: const Text("루틴 알아보기"),
-                  ),
-                ),
-                // 3d_man 이미지
-                const SizedBox(height: 0),
-                Image.asset(
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: kBottomNavigationBarHeight + bottomPadding,
+                child: Image.asset(
                   'assets/images/home/3d_man.png',
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         floatingActionButton: Container(
