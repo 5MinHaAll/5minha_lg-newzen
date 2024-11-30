@@ -167,7 +167,7 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("탐지 결과"),
+        title: const Text("스캔 결과"),
       ),
       body: SafeArea(
         child: Stack(
@@ -188,7 +188,7 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
                     categorizedLabels, // 전달할 라벨 데이터
                   );
                 },
-                child: const Text("처리 가능 여부 확인"),
+                child: const Text("스캔 결과 확인하기"),
               ),
             ),
           ],

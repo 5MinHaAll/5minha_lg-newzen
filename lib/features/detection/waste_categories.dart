@@ -6,175 +6,200 @@ const wasteCategories = {
       "name_ko": "사과",
       "category": "과일",
       "status": "처리 가능",
-      "details": "물기를 제거하고 적정량을 투입하세요."
+      "details": "물기를 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Banana",
       "name_ko": "바나나",
       "category": "과일",
       "status": "처리 가능",
-      "details": "껍질을 제거하고 적정량을 투입하세요."
+      "details": "껍질을 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Bread",
       "name_ko": "빵",
       "category": "가공식품",
       "status": "처리 가능",
-      "details": "적정량을 유지하며 투입하세요."
+      "details": "적정량을 유지하며 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Bun",
       "name_ko": "번",
       "category": "가공식품",
       "status": "처리 가능",
-      "details": "적정량을 유지하며 투입하세요."
+      "details": "적정량을 유지하며 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Chicken-skin",
       "name_ko": "닭껍질",
       "category": "육류",
       "status": "처리 가능",
-      "details": "기름기를 제거하고 적정량을 투입하세요."
+      "details": "기름기를 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Congee",
       "name_ko": "죽",
       "category": "곡물",
       "status": "처리 가능",
-      "details": "물기를 적당히 조절하여 투입하세요."
+      "details": "물기를 적당히 조절하여 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Cucumber",
       "name_ko": "오이",
       "category": "채소",
       "status": "처리 가능",
-      "details": "적당한 크기로 잘라 투입하세요."
+      "details": "적당한 크기로 잘라 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Orange",
       "name_ko": "오렌지",
       "category": "과일",
       "status": "처리 가능",
-      "details": "껍질을 제거하고 적정량을 투입하세요."
+      "details": "껍질을 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Pear",
       "name_ko": "배",
       "category": "과일",
       "status": "처리 가능",
-      "details": "물기를 제거하고 적정량을 투입하세요."
+      "details": "물기를 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Pear-peel",
       "name_ko": "배 껍질",
       "category": "과일",
       "status": "처리 가능",
-      "details": "얇게 벗긴 껍질을 적정량 투입하세요."
+      "details": "얇게 벗긴 껍질을 적정량 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Tomato",
       "name_ko": "토마토",
       "category": "채소",
       "status": "처리 가능",
-      "details": "물기를 제거하고 적정량을 투입하세요."
+      "details": "물기를 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Vegetable",
       "name_ko": "채소",
       "category": "채소",
       "status": "처리 가능",
-      "details": "적당한 크기로 잘라 투입하세요."
+      "details": "적당한 크기로 잘라 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Vegetable-root",
       "name_ko": "뿌리채소",
       "category": "채소",
       "status": "처리 가능",
-      "details": "깨끗이 씻어서 적당한 크기로 잘라 투입하세요."
+      "details": "깨끗이 씻어서 적당한 크기로 잘라 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Fish",
       "name_ko": "생선",
       "category": "수산물",
       "status": "처리 가능",
-      "details": "뼈, 내장을 제거하고 적정량을 투입하세요."
+      "details": "뼈, 내장을 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Meat",
       "name_ko": "고기",
       "category": "육류",
       "status": "처리 가능",
-      "details": "기름기를 제거하고 적정량을 투입하세요."
+      "details": "기름기를 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Egg-hard",
       "name_ko": "삶은 계란",
       "category": "계란류",
       "status": "처리 가능",
-      "details": "껍질을 제거하고 적정량을 투입하세요."
+      "details": "껍질을 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Egg-scramble",
       "name_ko": "스크램블 에그",
       "category": "계란류",
       "status": "처리 가능",
-      "details": "기름기를 제거하고 적정량을 투입하세요."
+      "details": "기름기를 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Egg-steam",
       "name_ko": "찐 계란",
       "category": "계란류",
       "status": "처리 가능",
-      "details": "껍질을 제거하고 적정량을 투입하세요."
+      "details": "껍질을 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Egg-yolk",
       "name_ko": "계란 노른자",
       "category": "계란류",
       "status": "처리 가능",
-      "details": "적정량을 유지하며 투입하세요."
+      "details": "적정량을 유지하며 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Tofu",
       "name_ko": "두부",
       "category": "가공식품",
       "status": "처리 가능",
-      "details": "물기를 제거하고 적정량을 투입하세요."
+      "details": "물기를 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Rice",
       "name_ko": "밥",
       "category": "곡물",
       "status": "처리 가능",
-      "details": "적정량을 유지하며 투입하세요."
+      "details": "적정량을 유지하며 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Noodle",
       "name_ko": "면",
       "category": "면류",
       "status": "처리 가능",
-      "details": "국물을 제거하고 적정량을 투입하세요."
+      "details": "국물을 제거하고 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Pasta",
       "name_ko": "파스타",
       "category": "면류",
       "status": "처리 가능",
-      "details": "소스를 최소화하여 적정량을 투입하세요."
+      "details": "소스를 최소화하여 적정량을 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Mushroom",
       "name_ko": "버섯",
       "category": "채소",
       "status": "처리 가능",
-      "details": "깨끗이 씻어서 적당한 크기로 잘라 투입하세요."
+      "details": "깨끗이 씻어서 적당한 크기로 잘라 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Pancake",
       "name_ko": "팬케이크",
       "category": "가공식품",
       "status": "처리 가능",
-      "details": "적정량을 유지하며 투입하세요."
+      "details": "적정량을 유지하며 투입하세요.",
+      "imgNumber": "000"
     }
   ],
   "caution": [
@@ -183,49 +208,56 @@ const wasteCategories = {
       "name_ko": "사과 심",
       "category": "과일",
       "status": "주의 필요",
-      "details": "잘게 잘라서 소량만 투입하세요."
+      "details": "잘게 잘라서 소량만 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Banana-peel",
       "name_ko": "바나나 껍질",
       "category": "과일",
       "status": "주의 필요",
-      "details": "잘게 잘라서 소량만 투입하세요."
+      "details": "잘게 잘라서 소량만 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Orange-peel",
       "name_ko": "오렌지 껍질",
       "category": "과일",
       "status": "주의 필요",
-      "details": "잘게 잘라서 소량만 투입하세요."
+      "details": "잘게 잘라서 소량만 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Potato",
       "name_ko": "감자",
       "category": "채소",
       "status": "주의 필요",
-      "details": "잘게 잘라서 소량만 투입하세요."
+      "details": "잘게 잘라서 소량만 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Shrimp",
       "name_ko": "새우",
       "category": "수산물",
       "status": "주의 필요",
-      "details": "껍질을 제거하고 소량만 투입하세요."
+      "details": "껍질을 제거하고 소량만 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "High-fiber Vegetables",
       "name_ko": "섬유질 많은 채소",
       "category": "채소",
       "status": "주의 필요",
-      "details": "잘게 잘라서 소량만 투입하세요."
+      "details": "잘게 잘라서 소량만 투입하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Drink",
       "name_ko": "음료/국물",
       "category": "액체",
       "status": "주의 필요",
-      "details": "소량씩 천천히 투입하세요."
+      "details": "소량씩 천천히 투입하세요.",
+      "imgNumber": "000"
     }
   ],
   "nonProcessable": [
@@ -234,42 +266,48 @@ const wasteCategories = {
       "name_ko": "뼈",
       "category": "육류",
       "status": "처리 불가",
-      "details": "일반 쓰레기로 분리배출하세요."
+      "details": "일반 쓰레기로 분리배출하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Bone-fish",
       "name_ko": "생선 뼈",
       "category": "수산물",
       "status": "처리 불가",
-      "details": "일반 쓰레기로 분리배출하세요."
+      "details": "일반 쓰레기로 분리배출하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Mussel-shell",
       "name_ko": "조개껍데기",
       "category": "수산물",
       "status": "처리 불가",
-      "details": "일반 쓰레기로 분리배출하세요."
+      "details": "일반 쓰레기로 분리배출하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Egg-shell",
       "name_ko": "달걀 껍질",
       "category": "계란류",
       "status": "처리 불가",
-      "details": "일반 쓰레기로 분리배출하세요."
+      "details": "일반 쓰레기로 분리배출하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Shrimp-shell",
       "name_ko": "새우 껍질",
       "category": "수산물",
       "status": "처리 불가",
-      "details": "일반 쓰레기로 분리배출하세요."
+      "details": "일반 쓰레기로 분리배출하세요.",
+      "imgNumber": "000"
     },
     {
       "name": "Other-waste",
       "name_ko": "기타 쓰레기",
       "category": "기타",
       "status": "처리 불가",
-      "details": "일반 쓰레기로 분리배출하세요."
+      "details": "일반 쓰레기로 분리배출하세요.",
+      "imgNumber": "000"
     }
   ],
   "guidelines": {

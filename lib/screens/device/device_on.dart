@@ -445,10 +445,10 @@ class _DeviceOnState extends State<DeviceOn> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildToggleButton("절전", Icons.energy_savings_leaf, Colors.teal),
-              _buildToggleButton("제습", Icons.waves, Colors.orange),
-              _buildToggleButton("탈취", Icons.cleaning_services, Colors.red),
-              _buildToggleButton("배양", Icons.biotech, Colors.pinkAccent),
+              _buildToggleButton("일반", Icons.energy_savings_leaf, Colors.teal),
+              _buildToggleButton("세척", Icons.waves, Colors.orange),
+              _buildToggleButton("절전", Icons.cleaning_services, Colors.red),
+              _buildToggleButton("외출", Icons.biotech, Colors.pinkAccent),
             ],
           ),
           const SizedBox(height: 20),

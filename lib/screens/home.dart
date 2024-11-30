@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/device_card.dart';
+import '../theme/app_colors.dart';
 import 'device/device_on.dart';
 import '../components/appbar_home.dart';
 import '../components/bottom_nav_bar.dart';
@@ -68,6 +69,7 @@ class _HomeState extends State<Home> {
                 GridView(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 12,
@@ -130,12 +132,22 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 0),
-                const Text(
-                  "스마트 루틴",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(top: 20), // 상단 여백을 8로 설정
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "스마트 루틴",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(Icons.chevron_right,
+                          size: 24, color: Colors.black54), // chevron 아이콘 추가
+                    ],
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -153,17 +165,15 @@ class _HomeState extends State<Home> {
                       child: Icon(Icons.timer, color: Colors.orange),
                     ),
                     title: const Text("루틴 알아보기"),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   ),
                 ),
-                // TODO: 3d_man 이미지 삽입해보기
-                // // 3d_man 이미지
-                // const SizedBox(height: 0),
-                // Image.asset(
-                //   'assets/images/home/3d_man.png',
-                //   width: double.infinity,
-                //   fit: BoxFit.cover,
-                // ),
+                // 3d_man 이미지
+                const SizedBox(height: 0),
+                Image.asset(
+                  'assets/images/home/3d_man.png',
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ],
             ),
           ),

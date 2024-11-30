@@ -19,16 +19,15 @@ class Functions extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 45),
-
             Stack(
               children: [
                 _buildFeatureCard(
                   context,
-                  "미생물 관리",
-                  "",
+                  "음식물 분류 가이드",
+                  "투입 가능한 음식물을 확인해보세요. ",
                   Icons.arrow_forward_ios,
                   theme.colorScheme.primaryContainer,
-                      () {
+                  () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => Info()),
                     );
@@ -40,19 +39,21 @@ class Functions extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const YoloLiveScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const YoloLiveScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.secondary,
                       foregroundColor: theme.colorScheme.onSecondary,
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 8.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                     child: Text(
-                      "처리 가능한 음식물",
+                      "스캔해서 확인하기",
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.onSecondary,
                       ),
@@ -62,14 +63,32 @@ class Functions extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 45),
-
+            _buildFeatureCard(
+              context,
+              "미생물 관리",
+              "내 제품과 미생물 관리 방법을 확인해보세요.",
+              null,
+              theme.colorScheme.primaryContainer,
+              () {
+                // TODO: snackbar 삭제
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: const Text('미생물 정보 페이지를 확인합니다.'),
+                      backgroundColor: theme.colorScheme.secondary,
+                    ),
+                  );
+              },
+            ),
+            const SizedBox(height: 45),
             _buildFeatureCard(
               context,
               "소모품 정보",
               "내 제품에 필요한 소모품을 확인해보세요.",
               null,
               theme.colorScheme.primaryContainer,
-                  () {
+              () {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
@@ -81,14 +100,13 @@ class Functions extends StatelessWidget {
               },
             ),
             const SizedBox(height: 45),
-
             _buildFeatureCard(
               context,
               "에너지 모니터링",
               "전력 사용량",
               Icons.arrow_forward_ios,
               theme.colorScheme.secondaryContainer,
-                  () {
+              () {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
@@ -100,7 +118,24 @@ class Functions extends StatelessWidget {
               },
             ),
             const SizedBox(height: 45),
-
+            _buildFeatureCard(
+              context,
+              "가전세척 서비스 신청하기",
+              "LG전자의 전문적인 가전세척 서비스를 신청하실 수 있어요.",
+              Icons.arrow_forward_ios,
+              theme.colorScheme.secondaryContainer,
+              () {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: const Text('신청 페이지로 이동합니다.'),
+                      backgroundColor: theme.colorScheme.secondary,
+                    ),
+                  );
+              },
+            ),
+            const SizedBox(height: 45),
             Row(
               children: [
                 Expanded(
@@ -110,7 +145,7 @@ class Functions extends StatelessWidget {
                     "최근 진단 결과 없음",
                     null,
                     theme.colorScheme.secondaryContainer,
-                        () {
+                    () {
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
                         ..showSnackBar(
@@ -130,7 +165,7 @@ class Functions extends StatelessWidget {
                     "사용법이 궁금하신가요?",
                     null,
                     theme.colorScheme.secondaryContainer,
-                        () {
+                    () {
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
                         ..showSnackBar(
@@ -151,13 +186,13 @@ class Functions extends StatelessWidget {
   }
 
   Widget _buildFeatureCard(
-      BuildContext context,
-      String title,
-      String subtitle,
-      IconData? icon,
-      Color backgroundColor,
-      VoidCallback onTap,
-      ) {
+    BuildContext context,
+    String title,
+    String subtitle,
+    IconData? icon,
+    Color backgroundColor,
+    VoidCallback onTap,
+  ) {
     final theme = Theme.of(context);
 
     return GestureDetector(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_colors.dart';
+
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userName;
 
@@ -24,9 +26,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(width: 4),
           const Icon(
-            Icons.keyboard_arrow_down,
-            size: 20,
-            color: Color(0xFF4F4F4F),
+            Icons.expand_more, size: 20, color: AppColors.tertiary,
+            // size: 20,
+            // color: Color(0xFF4F4F4F),
           ),
         ],
       ),
