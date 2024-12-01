@@ -196,7 +196,6 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: progress indicator로 바꾸기
     final Size size = MediaQuery.of(context).size;
     if (!isLoaded) {
       return const Scaffold(

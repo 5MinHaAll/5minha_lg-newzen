@@ -158,31 +158,32 @@ class _HomeState extends State<Home> {
                     const SizedBox(height: 12),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 2 - 22,
-                      // TODO: height 수정 필요
-                      child: AspectRatio(
-                        aspectRatio: 2.6,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            leading: const CircleAvatar(
+                      child: Container(
+                        height: 56,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 6, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const CircleAvatar(
+                              radius: 14, // CircleAvatar 크기
                               backgroundColor: Color(0xFFFFE8CC),
-                              child: Icon(Icons.timer, color: Colors.orange),
+                              child: Icon(Icons.timer,
+                                  color: Colors.orange, size: 18), // 아이콘 크기
                             ),
-                            title: Text(
+                            const SizedBox(width: 10), // 아이콘과 텍스트 사이 간격
+                            Text(
                               "루틴 알아보기",
                               style: textTheme.titleSmall?.copyWith(
                                 color: AppColors.secondaryText,
-                                // fontSize: 13,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ),
