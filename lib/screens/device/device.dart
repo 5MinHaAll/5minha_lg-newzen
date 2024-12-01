@@ -266,9 +266,12 @@ class _DeviceOnState extends State<DeviceOn> {
                   },
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundColor: Colors.grey[200],
-                    child: const Icon(Icons.recycling,
-                        size: 50, color: Colors.teal),
+                    backgroundColor: Colors.lightBlueAccent,
+                    child: Image.asset(
+                      'assets/images/home/newzen.png',
+                      height: 90,
+                      width: 90,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -338,12 +341,12 @@ class _DeviceOnState extends State<DeviceOn> {
 
           // 모든 운영 제어 버튼 (토글 형태)
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildToggleButton("일반", Icons.energy_savings_leaf, Colors.teal),
+              // _buildToggleButton("일반", Icons.energy_savings_leaf, Colors.teal),
               _buildToggleButton("세척", Icons.waves, Colors.orange),
-              _buildToggleButton("절전", Icons.cleaning_services, Colors.red),
-              _buildToggleButton("외출", Icons.biotech, Colors.pinkAccent),
+              _buildToggleButton("장기외출", Icons.door_front_door, Colors.red),
+              _buildToggleButton("외출", Icons.work, Colors.pinkAccent),
             ],
           ),
           const SizedBox(height: 20),
@@ -513,12 +516,30 @@ class _DeviceOnState extends State<DeviceOn> {
         });
       },
       child: Container(
-        width: 70,
-        height: 100,
+        width: 80,
+        height: 80,
         decoration: BoxDecoration(
-          color: isActive ? color.withOpacity(0.2) : Colors.grey[200],
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isActive ? color : Colors.grey, width: 2),
+          color: isActive ? color.withOpacity(0.8) : Colors.grey[300],
+          shape: BoxShape.circle, // 동글동글한 원형으로 변경
+          gradient: isActive
+              ? LinearGradient(
+            colors: [color.withOpacity(0.6), color],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+              : LinearGradient(
+            colors: [Colors.white!, Colors.grey[300]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isActive ? color.withOpacity(0.5) : Colors.grey.withOpacity(0.4),
+              blurRadius: 12, // 더 부드럽고 확산된 그림자
+              spreadRadius: 3,
+              offset: Offset(3, 6), // 그림자 위치
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
