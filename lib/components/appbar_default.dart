@@ -30,10 +30,10 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     final theme = Theme.of(context);
 
     TextStyle? getTitleStyle() {
-      final baseStyle = AppTypography.getTextTheme().titleLarge?.copyWith(
-            color: textColor ?? AppColors.primaryText,
-            fontWeight: fontWeight,
-          );
+      final baseStyle = AppTypography.titleLarge.copyWith(
+        // color: textColor ?? AppColors.primaryText,
+        fontWeight: fontWeight,
+      );
 
       if (useGoogleFonts) {
         return GoogleFonts.roboto(textStyle: baseStyle);

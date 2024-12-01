@@ -1,3 +1,4 @@
+// demo_fab_manager.dart
 import 'package:flutter/material.dart';
 import '../../components/custom_alert.dart';
 import '../../theme/app_colors.dart';
@@ -247,15 +248,15 @@ class DemoFabManager extends ChangeNotifier {
   void _showWarningDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return CustomAlert(
-          title: "경고",
-          content: "이 음식물은 처리할 수 없습니다.",
-          onConfirm: () {
-            print("경고창 닫힘");
-          },
-        );
-      },
+      barrierDismissible: false,
+      builder: (_) => CustomAlert(
+        title: "경고",
+        content: "이 음식물은 처리할 수 없습니다.",
+        onConfirm: () {
+          _isExpanded = false;
+          print("경고창 닫힘");
+        },
+      ),
     );
   }
 }

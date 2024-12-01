@@ -257,11 +257,10 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
                     ),
                     child: Text(
                       "음식물 분류 확인하기",
-                      style: AppTypography.getTextTheme().bodyLarge?.copyWith(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: AppTypography.bodyLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

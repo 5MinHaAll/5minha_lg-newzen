@@ -40,10 +40,10 @@ class TabAppBar extends StatelessWidget implements PreferredSizeWidget {
     final theme = Theme.of(context);
 
     TextStyle? getTitleStyle() {
-      final baseStyle = AppTypography.getTextTheme().titleLarge?.copyWith(
-            color: textColor ?? AppColors.primaryText,
-            fontWeight: fontWeight,
-          );
+      final baseStyle = AppTypography.titleLarge?.copyWith(
+        color: textColor ?? AppColors.primaryText,
+        fontWeight: fontWeight,
+      );
 
       if (useGoogleFonts) {
         return GoogleFonts.roboto(textStyle: baseStyle);
@@ -77,10 +77,10 @@ class TabAppBar extends StatelessWidget implements PreferredSizeWidget {
         unselectedLabelColor: AppColors.tertiaryText,
         indicatorColor: AppColors.primaryText,
         dividerColor: const Color(0xFFCAD0DC),
-        labelStyle: AppTypography.getTextTheme().titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-        unselectedLabelStyle: AppTypography.getTextTheme().titleMedium,
+        labelStyle: AppTypography.titleMedium.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelStyle: AppTypography.titleMedium,
         tabs: tabs.map((tab) => Tab(text: tab)).toList(),
       ),
     );

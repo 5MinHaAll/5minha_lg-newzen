@@ -1,57 +1,82 @@
 import 'package:flutter/material.dart';
+import '../theme/app_text.dart';
+import '../theme/app_colors.dart';
 
 class CustomAlert extends StatelessWidget {
-  final String title; // 알림창 제목
-  final String content; // 알림창 내용
-  final VoidCallback onConfirm; // 확인 버튼 콜백
+  final String title;
+  final String content;
+  final VoidCallback onConfirm;
+  final Color? textColor;
+  final FontWeight? fontWeight;
 
   const CustomAlert({
     Key? key,
     required this.title,
     required this.content,
     required this.onConfirm,
+    this.textColor,
+    this.fontWeight,
   }) : super(key: key);
 
   @override
+  // TODO: DialogTheme 적용 여부 확인
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final ThemeData theme = ThemeData(
+      dialogTheme: DialogTheme(
+          titleTextStyle: AppTypography.titleMedium.copyWith(
+            color: textColor ?? AppColors.primaryText,
+            fontWeight: AppTypography.bold,
+          ),
+          contentTextStyle: AppTypography.bodyLarge.copyWith(
+            color: textColor ?? AppColors.primaryText,
+            fontWeight: AppTypography.semibold,
+          )),
+    );
+
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 제목
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            // 내용
+            // Title
+            Text(title),
+            const SizedBox(height: 8),
+            // Content
             Text(
               content,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
+              textAlign: TextAlign.start,
             ),
-            const SizedBox(height: 24),
-            // 확인 버튼
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // 알림창 닫기
-                onConfirm(); // 확인 버튼 콜백 실행
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            const SizedBox(height: 16),
+            // Confirm Button
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  onConfirm();
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  "확인",
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: AppColors.success,
+                        fontWeight: AppTypography.semibold,
+                      ),
                 ),
               ),
-              child: const Text("확인", style: TextStyle(color: Colors.white),),
             ),
           ],
         ),

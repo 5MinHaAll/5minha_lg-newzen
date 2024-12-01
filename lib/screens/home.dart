@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../components/device_card.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text.dart';
-import 'device/device_on.dart';
+import 'device/device.dart';
 import '../components/appbar_home.dart';
 import '../components/bottom_nav_bar.dart';
 
