@@ -19,8 +19,9 @@ class AppColors {
   static const Color heritageRed = Color(0xFFA50034);
 
   // Semantic Colors
-  static const Color success = Color(0xFF296D80);
-  static const Color error = Color(0xFFD12D07);
+  static const Color success = Color(0xFF30AD6B);
+  static const Color error = Color(0xFFEB4141);
   static const Color warning = Color(0xFFEA9703);
   static const Color info = Color(0xFF556273);
+  static const Color infoLight = Color(0xFF296D80);
 }

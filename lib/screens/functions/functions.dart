@@ -18,90 +18,7 @@ class Functions extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 12),
-            _buildFeatureSection(
-              context,
-              [
-                _FeatureItem(
-                  icon: CupertinoIcons.doc_text,
-                  title: "음식물 분류 가이드",
-                  subtitle: "투입 가능한 음식물을 확인해보세요",
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const InfoFood()),
-                    );
-                  },
-                  actionButton: _buildScanButton(context),
-                ),
-                _FeatureItem(
-                  icon: CupertinoIcons.waveform_path_ecg,
-                  title: "미생물 관리",
-                  subtitle: "내 제품과 미생물 관리 방법을 확인해보세요",
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const InfoMicrobe()),
-                    );
-                  },
-                ),
-                _FeatureItem(
-                  icon: CupertinoIcons.cart,
-                  title: "소모품 정보",
-                  subtitle: "내 제품에 필요한 소모품을 확인해보세요",
-                  onTap: () {
-                    // TODO: 웹링크 추가
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            _buildFeatureSection(
-              context,
-              [
-                _FeatureItem(
-                  icon: CupertinoIcons.chart_bar,
-                  title: "에너지 모니터링",
-                  subtitle: "전력 사용량을 확인해보세요",
-                  onTap: () {},
-                ),
-                _FeatureItem(
-                  icon: CupertinoIcons.sparkles,
-                  title: "가전세척 서비스 신청하기",
-                  subtitle: "LG전자의 전문적인 가전세척 서비스를 신청하실 수 있어요",
-                  onTap: () {
-                    // TODO: 웹링크 추가
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _buildSmallFeatureCard(
-                      context,
-                      CupertinoIcons.device_phone_portrait,
-                      "스마트 진단",
-                      "최근 진단 결과 없음",
-                      onTap: () {},
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _buildSmallFeatureCard(
-                      context,
-                      CupertinoIcons.book,
-                      "제품 사용설명서",
-                      "사용법이 궁금하신가요?",
-                      onTap: () {
-                        // TODO: 웹링크 추가
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            ..._buildFeatureBoxes(context),
             const SizedBox(height: kBottomNavigationBarHeight + 16),
           ],
         ),
@@ -109,7 +26,104 @@ class Functions extends StatelessWidget {
     );
   }
 
-  Widget _buildFeatureSection(BuildContext context, List<_FeatureItem> items) {
+  List<Widget> _buildFeatureBoxes(BuildContext context) {
+    return [
+      _buildFeatureBox(
+        context,
+        _FeatureItem(
+          iconPath: 'assets/icons/functions/ic_scantox_foodbag.png',
+          title: "음식물 분류 가이드",
+          subtitle: "투입 가능한 음식물을 확인해보세요",
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const InfoFood()),
+            );
+          },
+          actionButton: _buildScanButton(context),
+        ),
+      ),
+      const SizedBox(height: 12),
+      _buildFeatureBox(
+        context,
+        _FeatureItem(
+          iconPath: 'assets/icons/functions/ic_microbe_mgt.png',
+          title: "미생물 활용 가이드",
+          subtitle: "내 제품과 미생물 관리 방법을 확인해보세요",
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const InfoMicrobe()),
+            );
+          },
+        ),
+      ),
+      const SizedBox(height: 12),
+      _buildFeatureBox(
+        context,
+        _FeatureItem(
+          iconPath: 'assets/icons/functions/ic-option-shopping@3x.png',
+          title: "소모품 정보",
+          subtitle: "내 제품에 필요한 소모품을 확인해보세요",
+          onTap: () {
+            // TODO: 웹링크 추가
+          },
+        ),
+      ),
+      const SizedBox(height: 24),
+      _buildFeatureBox(
+        context,
+        _FeatureItem(
+          iconPath: 'assets/icons/functions/ic_energy_monitoring.png',
+          title: "에너지 모니터링",
+          subtitle: "전력 사용량을 확인해보세요",
+          onTap: () {},
+        ),
+      ),
+      const SizedBox(height: 12),
+      _buildFeatureBox(
+        context,
+        _FeatureItem(
+          icon: CupertinoIcons.sparkles,
+          iconColor: Colors.yellow,
+          title: "가전세척 서비스 신청하기",
+          subtitle: "LG전자의 전문적인 가전세척 서비스를 신청하실 수 있어요",
+          onTap: () {
+            // TODO: 웹링크 추가
+          },
+        ),
+      ),
+      const SizedBox(height: 24),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: [
+            Expanded(
+              child: _buildSmallFeatureCard(
+                context,
+                "스마트 진단",
+                "최근 진단 결과 없음",
+                iconPath: 'assets/icons/functions/ic_smart_diagnosis.png',
+                onTap: () {},
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildSmallFeatureCard(
+                context,
+                "제품 사용설명서",
+                "사용법이 궁금하신가요?",
+                iconPath: 'assets/icons/functions/ic_user_manual.png',
+                onTap: () {
+                  // TODO: 웹링크 추가
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  Widget _buildFeatureBox(BuildContext context, _FeatureItem item) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
@@ -117,89 +131,112 @@ class Functions extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: items.asMap().entries.map((entry) {
-          final int idx = entry.key;
-          final item = entry.value;
-          final bool isLast = idx == items.length - 1;
-
-          return Column(
-            children: [
-              _buildFeatureListTile(context, item),
-              if (!isLast)
-                const Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Color(0xFFEFF1F5),
-                  indent: 16,
-                  endIndent: 16,
-                ),
-            ],
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildFeatureListTile(BuildContext context, _FeatureItem item) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: item.onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Icon(
-                item.icon,
-                size: 24,
-                color: AppColors.tertiary,
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: item.onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Text(
-                      item.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: AppColors.primaryText,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                    if (item.subtitle != null) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        item.subtitle!,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.secondaryText,
-                            ),
+                    _buildFeatureIcon(item),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        item.title,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: AppColors.primaryText,
+                                  fontWeight: FontWeight.w500,
+                                ),
                       ),
-                    ],
+                    ),
+                    const Icon(
+                      Icons.chevron_right,
+                      color: AppColors.tertiary,
+                    ),
                   ],
                 ),
-              ),
-              if (item.actionButton != null)
-                item.actionButton!
-              else
-                const Icon(
-                  Icons.chevron_right,
-                  color: AppColors.tertiary,
-                ),
-            ],
+                if (item.subtitle != null) ...[
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const SizedBox(width: 40),
+                      Expanded(
+                        child: Text(
+                          item.subtitle!,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.secondaryText,
+                                  ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (item.actionButton != null) ...[
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      item.actionButton!,
+                    ],
+                  ),
+                ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  Widget _buildFeatureIcon(_FeatureItem item) {
+    if (item.iconPath != null) {
+      return SizedBox(
+        width: 24,
+        height: 24,
+        child: Image.asset(
+          item.iconPath!,
+          fit: BoxFit.contain,
+          color: item.iconColor ?? AppColors.tertiary,
+        ),
+      );
+    } else {
+      return Icon(
+        item.icon,
+        size: 24,
+        color: item.iconColor ?? AppColors.tertiary,
+      );
+    }
+  }
+
   Widget _buildSmallFeatureCard(
     BuildContext context,
-    IconData icon,
     String title,
     String subtitle, {
+    IconData? icon,
+    String? iconPath,
     required VoidCallback onTap,
   }) {
+    Widget iconWidget;
+    if (iconPath != null) {
+      iconWidget = SizedBox(
+        width: 24,
+        height: 24,
+        child: Image.asset(
+          iconPath,
+          fit: BoxFit.contain,
+          color: AppColors.tertiary,
+        ),
+      );
+    } else {
+      iconWidget = Icon(icon, color: AppColors.tertiary);
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: AppColors.primaryBackground,
@@ -215,7 +252,7 @@ class Functions extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(icon, color: AppColors.tertiary),
+                iconWidget,
                 const SizedBox(height: 8),
                 Text(
                   title,
@@ -266,17 +303,22 @@ class Functions extends StatelessWidget {
 }
 
 class _FeatureItem {
-  final IconData icon;
+  final IconData? icon;
+  final String? iconPath;
   final String title;
   final String? subtitle;
   final VoidCallback onTap;
   final Widget? actionButton;
+  final Color? iconColor;
 
   _FeatureItem({
-    required this.icon,
+    this.icon,
+    this.iconPath,
     required this.title,
     this.subtitle,
     required this.onTap,
     this.actionButton,
-  });
+    this.iconColor,
+  }) : assert(icon != null || iconPath != null,
+            'Either icon or iconPath must be provided');
 }

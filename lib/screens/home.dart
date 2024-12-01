@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../components/device_card.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text.dart';
-import 'device/device.dart';
+import '../screens/device/device.dart';
 import '../components/appbar_home.dart';
 import '../components/bottom_nav_bar.dart';
 
@@ -221,9 +221,9 @@ class _HomeState extends State<Home> {
             shape: const CircleBorder(),
             onPressed: () {},
             child: Image.asset(
-              'assets/icons/home/ic_ai_chat.png',
-              width: 24,
-              height: 24,
+              'assets/icons/home/ic_fab.png',
+              width: 32,
+              height: 32,
             ),
           ),
         ),
