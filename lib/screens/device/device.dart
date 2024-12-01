@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newzen/features/byproduct/byproduct_manager.dart';
 import '../../components/appbar_default.dart';
+import '../../components/sliding_segment_control.dart';
 import '../../data/generate_data.dart';
 import '../../features/device/device_operation.dart';
 import '../../features/device/demo_fab_manager.dart';
@@ -151,28 +152,37 @@ class _DeviceOnState extends State<DeviceOn> {
             backgroundColor: AppColors.secondaryBackground,
             fontWeight: FontWeight.bold,
           ),
-          body: Column(
+          body: Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CupertinoSegmentedControl(
-                  children: _segments,
-                  groupValue: _selectedIndex,
-                  onValueChanged: (int index) {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
-                  },
-                  selectedColor: theme.colorScheme.primary,
-                  unselectedColor: theme.colorScheme.surface,
-                  borderColor: theme.colorScheme.primary,
-                  pressedColor: theme.colorScheme.primary.withOpacity(0.1),
-                ),
+              CustomScrollView(
+                controller: _scrollController,
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: _selectedIndex == 0
+                        ? _buildMainContent()
+                        : const Functions(),
+                  ),
+                  // 하단에 SlidingSegmentControl 높이만큼 여백 추가
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: kBottomNavigationBarHeight),
+                  ),
+                ],
               ),
-              Expanded(
-                child: _selectedIndex == 0
-                    ? _buildMainContent()
-                    : const Functions(),
+              // SlidingSegmentControl을 하단에 고정
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: SlidingSegmentControl(
+                  selectedIndex: _selectedIndex,
+                  onValueChanged: (int? index) {
+                    if (index != null) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    }
+                  },
+                ),
               ),
             ],
           ),
