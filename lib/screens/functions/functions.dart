@@ -170,7 +170,7 @@ class Functions extends StatelessWidget {
                         style:
                             Theme.of(context).textTheme.titleMedium?.copyWith(
                                   color: AppColors.primaryText,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                 ),
                       ),
                     ),
@@ -250,7 +250,6 @@ class Functions extends StatelessWidget {
         child: Image.asset(
           iconPath,
           fit: BoxFit.contain,
-          // color 속성 제거
         ),
       );
     } else {
@@ -278,7 +277,7 @@ class Functions extends StatelessWidget {
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppColors.primaryText,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600, // w500에서 w600으로 변경
                       ),
                 ),
                 const SizedBox(height: 4),
@@ -422,7 +421,7 @@ class ConsumableInfo extends StatelessWidget {
                         style:
                             Theme.of(context).textTheme.titleMedium?.copyWith(
                                   color: AppColors.primaryText,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                 ),
                       ),
                     ),
