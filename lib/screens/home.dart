@@ -3,6 +3,8 @@ import '../components/device_card.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text.dart';
 import '../screens/device/device.dart';
+import '../screens/device/device_foodon.dart';
+
 import '../components/appbar_home.dart';
 import '../components/bottom_nav_bar.dart';
 
@@ -24,7 +26,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isNewzenOn = false;
   bool isFridgeOn = false;
-  bool isTiiunOn = false;
+  bool isFoodOnOn = false;
   bool isMicrowaveOn = false;
   int _currentIndex = 0;
 
@@ -114,15 +116,24 @@ class _HomeState extends State<Home> {
                           onIconTap: isFridgeOn ? () {} : null,
                         ),
                         DeviceCard(
-                          icon: 'assets/images/home/tiiun.png',
-                          title: '틔운 미니',
-                          isOn: isTiiunOn,
+                          icon: 'assets/images/home/foodon.png',
+                          title: '푸디온',
+                          isOn: isFoodOnOn,
                           onTogglePower: () {
                             setState(() {
-                              isTiiunOn = !isTiiunOn;
+                              isFoodOnOn = !isFoodOnOn;
                             });
                           },
-                          onIconTap: isTiiunOn ? () {} : null,
+                          onIconTap: isFoodOnOn
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const DeviceOn(),
+                                    ),
+                                  );
+                                }
+                              : null,
                         ),
                         DeviceCard(
                           icon: 'assets/images/home/microwave.png',

@@ -27,6 +27,7 @@ class HomeBottomNavBar extends StatelessWidget {
           currentIndex: currentIndex,
           onTap: onTap,
           items: const [
+            // TODO: 아이콘 수정
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
               activeIcon: Icon(Icons.home),
