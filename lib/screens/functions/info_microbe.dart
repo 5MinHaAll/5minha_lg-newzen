@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../../components/appbar_tab.dart';
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+import '../../theme/app_text.dart';
+
 class InfoMicrobe extends StatefulWidget {
   const InfoMicrobe({Key? key}) : super(key: key);
 
@@ -44,9 +47,9 @@ class _InfoMicrobeState extends State<InfoMicrobe>
                   Expanded(
                     child: Text(
                       title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: AppTypography.titleMedium.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -54,14 +57,14 @@ class _InfoMicrobeState extends State<InfoMicrobe>
             else
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: AppTypography.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             const SizedBox(height: 12),
             Text(
               content,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: AppTypography.bodyMedium,
             ),
           ],
         ),
@@ -69,22 +72,27 @@ class _InfoMicrobeState extends State<InfoMicrobe>
     );
   }
 
-  Widget _buildModeCard(String title, String description, IconData icon) {
+  Widget _buildModeCard(String title, String description, IconData icon,
+      {Color? iconColor}) {
     return Card(
       elevation: 0,
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-          child: Icon(icon, color: Theme.of(context).primaryColor),
+          backgroundColor:
+              (iconColor ?? Theme.of(context).primaryColor).withOpacity(0.1),
+          child: Icon(icon, color: iconColor ?? Theme.of(context).primaryColor),
         ),
         title: Text(
           title,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: AppTypography.titleSmall.copyWith(
+            fontWeight: FontWeight.bold,
+            color: AppColors.tertiaryText,
+          ),
         ),
         subtitle: Text(
           description,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: AppTypography.bodySmall,
         ),
       ),
     );
@@ -96,14 +104,14 @@ class _InfoMicrobeState extends State<InfoMicrobe>
       children: [
         Text(
           "미생물은 음식물 처리의 핵심입니다. 건강한 미생물 환경을 유지하면 처리 효율이 높아지고 악취도 줄일 수 있습니다.",
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 24),
 
         // 미생물 활성화 관리 섹션
         Text(
           "미생물 활성화 관리",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -128,7 +136,7 @@ class _InfoMicrobeState extends State<InfoMicrobe>
         const SizedBox(height: 24),
         Text(
           "부산물 관리",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -148,7 +156,7 @@ class _InfoMicrobeState extends State<InfoMicrobe>
         const SizedBox(height: 24),
         Text(
           "작동 모드",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -156,22 +164,26 @@ class _InfoMicrobeState extends State<InfoMicrobe>
         _buildModeCard(
           "일반 모드",
           "일상적인 음식물 처리를 위한 기본 모드입니다.",
-          Icons.home,
+          Icons.play_arrow,
+          iconColor: AppColors.secondary,
         ),
         _buildModeCard(
           "외출 모드",
           "집을 비울 때 사용하는 강력한 발효 모드입니다.",
           Icons.directions_walk,
+          iconColor: Colors.orange,
         ),
         _buildModeCard(
           "절전 모드",
           "장기간 미사용 시 미생물 유지를 위한 모드입니다.",
-          Icons.power_settings_new,
+          Icons.eco,
+          iconColor: Colors.green,
         ),
         _buildModeCard(
           "세척 모드",
           "월 1회 이상 기기 내부 청소 시 사용하는 모드입니다.",
-          Icons.cleaning_services,
+          Icons.waves,
+          iconColor: Colors.blue,
         ),
       ],
     );
@@ -187,7 +199,10 @@ class _InfoMicrobeState extends State<InfoMicrobe>
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             Row(
@@ -246,7 +261,9 @@ class _InfoMicrobeState extends State<InfoMicrobe>
               children: [
                 Text(
                   "미생물 활성도",
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 16),
                 ClipRRect(
@@ -259,11 +276,22 @@ class _InfoMicrobeState extends State<InfoMicrobe>
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  "현재 상태: 양호",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).primaryColor,
-                      ),
+                Row(
+                  children: [
+                    Text(
+                      "현재 상태: ",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.primaryText,
+                          ),
+                    ),
+                    Text(
+                      "양호",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ],
                 ),
               ],
             ),

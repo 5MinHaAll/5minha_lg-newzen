@@ -167,11 +167,10 @@ class Functions extends StatelessWidget {
                     Expanded(
                       child: Text(
                         item.title,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: AppColors.primaryText,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.w500,
+                            ),
                       ),
                     ),
                     const Icon(
@@ -181,7 +180,7 @@ class Functions extends StatelessWidget {
                   ],
                 ),
                 if (item.subtitle != null) ...[
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Row(
                     children: [
                       const SizedBox(width: 40),
@@ -189,7 +188,7 @@ class Functions extends StatelessWidget {
                         child: Text(
                           item.subtitle!,
                           style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppColors.secondaryText,
                                   ),
                         ),
@@ -275,15 +274,15 @@ class Functions extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.primaryText,
-                        fontWeight: FontWeight.w600, // w500에서 w600으로 변경
+                        fontWeight: FontWeight.w500,
                       ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.secondaryText,
                       ),
                 ),
@@ -305,9 +304,9 @@ class Functions extends StatelessWidget {
       style: FilledButton.styleFrom(
         backgroundColor: AppColors.secondaryBackground,
         foregroundColor: AppColors.primary,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(200.0),
         ),
       ),
       child: Row(
@@ -321,9 +320,9 @@ class Functions extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             "스캔해서 확인하기",
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.primary,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ),
           ),
         ],
@@ -418,11 +417,10 @@ class ConsumableInfo extends StatelessWidget {
                     Expanded(
                       child: Text(
                         item.title,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: AppColors.primaryText,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.w500,
+                            ),
                       ),
                     ),
                     const Icon(
@@ -432,7 +430,7 @@ class ConsumableInfo extends StatelessWidget {
                   ],
                 ),
                 if (item.subtitle != null) ...[
-                  const SizedBox(height: 4),
+                  // const SizedBox(height: 4),
                   Row(
                     children: [
                       const SizedBox(width: 40),
@@ -440,7 +438,7 @@ class ConsumableInfo extends StatelessWidget {
                         child: Text(
                           item.subtitle!,
                           style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppColors.secondaryText,
                                   ),
                         ),
@@ -495,7 +493,9 @@ class ConsumableInfo extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.primaryText,
+                      fontWeight: FontWeight.w600),
                 ),
                 Text(
                   '($code)',
@@ -503,19 +503,21 @@ class ConsumableInfo extends StatelessWidget {
                         color: AppColors.secondaryText,
                       ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Row(
                   children: [
                     Text(
                       discountRate,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.error,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: AppColors.heritageRed,
                           ),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       price,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: AppColors.primaryText,
+                          ),
                     ),
                   ],
                 ),

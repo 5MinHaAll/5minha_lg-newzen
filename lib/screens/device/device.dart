@@ -363,9 +363,9 @@ class _DeviceOnState extends State<DeviceOn> {
                   underline: Container(),
                   items: const [
                     DropdownMenuItem(value: "일반", child: Text("일반")),
-                    DropdownMenuItem(value: "세척", child: Text("세척")),
-                    DropdownMenuItem(value: "절전", child: Text("절전")),
                     DropdownMenuItem(value: "외출", child: Text("외출")),
+                    DropdownMenuItem(value: "절전", child: Text("절전")),
+                    DropdownMenuItem(value: "세척", child: Text("세척")),
                   ],
                   onChanged: (String? newValue) {
                     if (newValue != null) {
@@ -386,9 +386,9 @@ class _DeviceOnState extends State<DeviceOn> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildModeIconButton(
-                      mode: "세척",
-                      icon: Icons.waves, // 또는 Image.asset 사용
-                      activeColor: Colors.blue,
+                      mode: "외출",
+                      icon: Icons.directions_walk, // 또는 Image.asset 사용
+                      activeColor: Colors.orange,
                     ),
                     _buildModeIconButton(
                       mode: "절전",
@@ -396,9 +396,9 @@ class _DeviceOnState extends State<DeviceOn> {
                       activeColor: Colors.green,
                     ),
                     _buildModeIconButton(
-                      mode: "외출",
-                      icon: Icons.directions_walk, // 또는 Image.asset 사용
-                      activeColor: Colors.orange,
+                      mode: "세척",
+                      icon: Icons.waves, // 또는 Image.asset 사용
+                      activeColor: Colors.blue,
                     ),
                   ],
                 ),
