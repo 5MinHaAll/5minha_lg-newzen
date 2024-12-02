@@ -19,7 +19,7 @@ class SlidingSegmentControl extends StatelessWidget {
     return Container(
       height: 56,
       color: AppColors.secondaryBackground,
-      padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 72, vertical: 12),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(height / 2),
@@ -28,7 +28,7 @@ class SlidingSegmentControl extends StatelessWidget {
         child: CupertinoSlidingSegmentedControl<int>(
           groupValue: selectedIndex,
           onValueChanged: onValueChanged,
-          backgroundColor: const Color(0xFFF5F6F8),
+          backgroundColor: AppColors.primaryBackground,
           thumbColor: const Color(0xFF405474),
           padding: const EdgeInsets.all(2), // 내부 패딩 줄임
           children: {
@@ -44,7 +44,7 @@ class SlidingSegmentControl extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 28, // 높이 줄임
-      padding: const EdgeInsets.symmetric(horizontal: 12), // 좌우 패딩 추가
+      padding: const EdgeInsets.symmetric(horizontal: 8), // 좌우 패딩 추가
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14), // height의 절반
       ),
