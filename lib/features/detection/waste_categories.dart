@@ -17,6 +17,7 @@ const wasteCategories = {
       "details": "껍질을 제거하고 적정량을 투입하세요.",
       "imgNumber": "02"
     },
+    //바나나필 추가 필요
     {
       "name": "Bread",
       "name_ko": "빵",
