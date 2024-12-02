@@ -157,9 +157,9 @@ class DialogFullscreen extends StatelessWidget {
           ),
           title: Text(
             foodInfo["name_ko"] as String,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.primaryText,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
           ),
           trailing: const Icon(
