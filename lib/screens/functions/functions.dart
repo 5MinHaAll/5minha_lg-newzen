@@ -31,7 +31,7 @@ class Functions extends StatelessWidget {
       _buildFeatureBox(
         context,
         _FeatureItem(
-          iconPath: 'assets/icons/functions/ic_scantox_foodbag.png',
+          iconPath: 'assets/icons/functions/ic_info_square.png',
           title: "음식물 분류 가이드",
           subtitle: "투입 가능한 음식물을 확인해보세요",
           onTap: () {
@@ -60,7 +60,7 @@ class Functions extends StatelessWidget {
       _buildFeatureBox(
         context,
         _FeatureItem(
-          iconPath: 'assets/icons/functions/ic-option-shopping@3x.png',
+          iconPath: 'assets/icons/functions/ic_shopping.png',
           title: "소모품 정보",
           subtitle: "내 제품에 필요한 소모품을 확인해보세요",
           onTap: () {
@@ -72,7 +72,7 @@ class Functions extends StatelessWidget {
       _buildFeatureBox(
         context,
         _FeatureItem(
-          iconPath: 'assets/icons/functions/ic_energy_monitoring.png',
+          icon: CupertinoIcons.chart_bar_alt_fill,
           title: "에너지 모니터링",
           subtitle: "전력 사용량을 확인해보세요",
           onTap: () {},
@@ -111,7 +111,7 @@ class Functions extends StatelessWidget {
                 context,
                 "제품 사용설명서",
                 "사용법이 궁금하신가요?",
-                iconPath: 'assets/icons/functions/ic_user_manual.png',
+                iconPath: 'assets/icons/functions/ic_manual_big.png',
                 onTap: () {
                   // TODO: 웹링크 추가
                 },
@@ -202,14 +202,14 @@ class Functions extends StatelessWidget {
         child: Image.asset(
           item.iconPath!,
           fit: BoxFit.contain,
-          color: item.iconColor ?? AppColors.tertiary,
+          // color: item.iconColor ?? AppColors.tertiary,
         ),
       );
     } else {
       return Icon(
         item.icon,
         size: 24,
-        color: item.iconColor ?? AppColors.tertiary,
+        // color: item.iconColor ?? AppColors.tertiary,
       );
     }
   }

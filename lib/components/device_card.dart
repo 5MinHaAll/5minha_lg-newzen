@@ -77,8 +77,8 @@ class DeviceCard extends StatelessWidget {
                   onTap: onTogglePower,
                   child: Image.asset(
                     isOn
-                        ? 'assets/icons/tuc/btn_appliance_power_on_nor.png'
-                        : 'assets/icons/tuc/btn_appliance_power_off_nor.png',
+                        ? 'assets/icons/home/ic_power_on.png'
+                        : 'assets/icons/home/ic_power_off.png',
                     width: 32,
                     height: 32,
                   ),

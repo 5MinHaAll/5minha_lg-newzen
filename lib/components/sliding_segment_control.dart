@@ -17,7 +17,7 @@ class SlidingSegmentControl extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 56,
-      color: Colors.white,
+      color: AppColors.secondaryBackground,
       padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
       child: CupertinoSlidingSegmentedControl<int>(
         groupValue: selectedIndex,
