@@ -332,7 +332,7 @@ class _DeviceOnState extends State<DeviceOn> {
                     );
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 12),
               ],
             ),
           ),
@@ -345,22 +345,30 @@ class _DeviceOnState extends State<DeviceOn> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8),
+          // const SizedBox(height: 8),
 
           // 메뉴와 버튼을 포함하는 Row
           Row(
             children: [
               // 드롭다운 메뉴
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: DropdownButton<String>(
-                  value: _activeMode, // 이미 non-nullable String으로 선언되어 있음
+                  value: _activeMode,
                   underline: Container(),
+                  icon: Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: const Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                  style: AppTypography.titleMedium.copyWith(
+                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  dropdownColor: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
                   items: const [
                     DropdownMenuItem(value: "일반", child: Text("일반")),
                     DropdownMenuItem(value: "외출", child: Text("외출")),
@@ -378,7 +386,7 @@ class _DeviceOnState extends State<DeviceOn> {
                 ),
               ),
 
-              const SizedBox(width: 20),
+              const SizedBox(width: 30),
 
               // 버튼 그룹
               Expanded(
@@ -406,7 +414,7 @@ class _DeviceOnState extends State<DeviceOn> {
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
 
           // 부산물통 용량 상태
           Text(
@@ -628,15 +636,15 @@ class _DeviceOnState extends State<DeviceOn> {
                   const SizedBox(height: 8),
                   Text(
                     title,
-                    style: AppTypography.labelMedium.copyWith(
-                      fontWeight: FontWeight.bold,
+                    style: AppTypography.titleSmall.copyWith(
+                      fontWeight: FontWeight.w600,
                       color: AppColors.primaryText,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  // const SizedBox(height: 4),
                   Text(
                     value,
-                    style: AppTypography.labelLarge.copyWith(
+                    style: AppTypography.titleMedium.copyWith(
                       fontWeight: FontWeight.bold,
                       color: color,
                     ),
@@ -689,7 +697,7 @@ class _DeviceOnState extends State<DeviceOn> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "배양토 상태",
+                          "상세 정보",
                           style:
                               Theme.of(context).textTheme.titleLarge?.copyWith(
                                     fontWeight: FontWeight.bold,
@@ -706,13 +714,23 @@ class _DeviceOnState extends State<DeviceOn> {
                           padding: const EdgeInsets.all(16),
                           child: Column(
                             children: [
+                              Text(
+                                "배양토",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                      color: AppColors.primaryText,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
                               Image.asset(
                                 'assets/images/device/potting_soil.png',
                                 height: 48,
                                 width: 48,
                               ),
                               const SizedBox(height: 16),
-                              _buildStatusRow(
+                              _buildPottingSoilStatusRow(
                                 "온도",
                                 "${data?['temperature'] ?? '알 수 없음'}°C",
                                 data?['temperatureStatus'] ?? "",
@@ -795,7 +813,7 @@ class _DeviceOnState extends State<DeviceOn> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "교반통 상태",
+                          "상세 정보",
                           style:
                               Theme.of(context).textTheme.titleLarge?.copyWith(
                                     fontWeight: FontWeight.bold,
@@ -812,13 +830,23 @@ class _DeviceOnState extends State<DeviceOn> {
                           padding: const EdgeInsets.all(16),
                           child: Column(
                             children: [
+                              Text(
+                                "교반통",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                      color: AppColors.primaryText,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
                               Image.asset(
                                 'assets/images/device/mixing_tank.png',
                                 height: 48,
                                 width: 48,
                               ),
                               const SizedBox(height: 16),
-                              _buildStatusRow(
+                              _buildMixingTankStatusRow(
                                 "온도",
                                 "${data?['temperature'] ?? '알 수 없음'}°C",
                                 data?['temperatureStatus'] ?? "",
@@ -838,7 +866,7 @@ class _DeviceOnState extends State<DeviceOn> {
                                 context,
                               ),
                               const SizedBox(height: 16),
-                              _buildStatusRow(
+                              _buildMixingTankStatusRow(
                                 "높이",
                                 "${data?['volume'] ?? '알 수 없음'}",
                                 data?['volumeStatus'] ?? "",
@@ -904,9 +932,24 @@ class _DeviceOnState extends State<DeviceOn> {
     }
   }
 
+  // TODO: 여긴가?
   // 상태 행을 구성하는 새로운 위젯
   Widget _buildStatusRow(String label, String value, String status,
       Color statusColor, BuildContext context) {
+    // 아이콘 매핑
+    String getIconPath(String label) {
+      switch (label) {
+        case "온도":
+          return 'assets/icons/device/ic_temp.png';
+        case "습도":
+          return 'assets/icons/device/ic_humi.png';
+        case "pH":
+          return 'assets/icons/device/ic_ph.png';
+        default:
+          return '';
+      }
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -916,12 +959,22 @@ class _DeviceOnState extends State<DeviceOn> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.primaryText,
-                  fontWeight: FontWeight.bold,
-                ),
+          Row(
+            children: [
+              Image.asset(
+                getIconPath(label),
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.primaryText,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
           ),
           Row(
             children: [
@@ -953,54 +1006,105 @@ class _DeviceOnState extends State<DeviceOn> {
     );
   }
 
-  Widget _buildModalRow(String label, String value, IconData icon,
-      String status, Color color, double screenWidth) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          flex: 3,
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: screenWidth * 0.04, // 동적 텍스트 크기
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Text(
-            value,
-            style: TextStyle(
-              fontSize: screenWidth * 0.04,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Expanded(
-          flex: 4,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+  // 배양토용 상태 행 위젯
+  Widget _buildPottingSoilStatusRow(String label, String value, String status,
+      Color statusColor, BuildContext context) {
+    String getIconPath(String label) {
+      switch (label) {
+        case "온도":
+          return 'assets/icons/device/ic_temp.png';
+        case "습도":
+          return 'assets/icons/device/ic_humi.png';
+        case "pH":
+          return 'assets/icons/device/ic_ph.png';
+        default:
+          return '';
+      }
+    }
+
+    return _buildBaseStatusRow(
+        label, value, status, statusColor, context, getIconPath(label));
+  }
+
+// 교반통용 상태 행 위젯
+  Widget _buildMixingTankStatusRow(String label, String value, String status,
+      Color statusColor, BuildContext context) {
+    String getIconPath(String label) {
+      switch (label) {
+        case "온도":
+          return 'assets/icons/device/ic_temp.png';
+        case "습도":
+          return 'assets/icons/device/ic_humi.png';
+        case "높이":
+          return 'assets/icons/device/ic_soil.png';
+        default:
+          return '';
+      }
+    }
+
+    return _buildBaseStatusRow(
+        label, value, status, statusColor, context, getIconPath(label));
+  }
+
+  // 공통 베이스 상태 행 위젯
+  Widget _buildBaseStatusRow(String label, String value, String status,
+      Color statusColor, BuildContext context, String iconPath) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEFF1F5),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
             children: [
-              Icon(
-                icon,
-                color: color,
-                size: screenWidth * 0.05, // 동적 아이콘 크기
+              Image.asset(
+                iconPath,
+                width: iconPath.contains('ic_humi')
+                    ? 20
+                    : 24, // ic_humi일 경우 더 작은 크기 적용
+                height: iconPath.contains('ic_humi') ? 20 : 24,
+                fit: BoxFit.contain, // 비율 유지하면서 크기에 맞추기
               ),
-              SizedBox(width: screenWidth * 0.02), // 간격 동적 설정
+              const SizedBox(width: 8),
               Text(
-                status,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.04,
-                  fontWeight: FontWeight.bold,
-                  color: color,
+                label,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.primaryText,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                value,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.primaryText,
+                    ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  status,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: statusColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
