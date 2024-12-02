@@ -109,11 +109,24 @@ class _InfoFoodState extends State<InfoFood>
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(
-            child: Image.asset(
-              'assets/icons/food/${food['imgNumber']}.png',
-              width: 32,
-              height: 32,
-            ),
+            child: food['number'] != null && food['fileName'] != null
+                ? Image.asset(
+                    'assets/images/functions/info_food/${food['number']}-${food['fileName']}.png',
+                    width: 32,
+                    height: 32,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.restaurant,
+                        size: 32,
+                        color: Colors.grey,
+                      );
+                    },
+                  )
+                : Icon(
+                    Icons.restaurant,
+                    size: 32,
+                    color: Colors.grey,
+                  ),
           ),
         ),
         title: Text(

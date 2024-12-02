@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../features/detection/yolo_live_screen.dart';
 import '../../components/sliding_segment_control.dart';
 import 'info_food.dart';
@@ -9,6 +10,31 @@ import '../../theme/app_colors.dart';
 class Functions extends StatelessWidget {
   const Functions({Key? key}) : super(key: key);
 
+  Future<void> _launchURL(BuildContext context, String url) async {
+    try {
+      final canLaunch = await canLaunchUrlString(url);
+      if (canLaunch) {
+        await launchUrlString(
+          url,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('URL을 실행할 수 없습니다.')),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('오류가 발생했습니다: $e')),
+        );
+      }
+      debugPrint('URL 실행 오류: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +43,7 @@ class Functions extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 12),
+            // const SizedBox(height: 16),
             ..._buildFeatureBoxes(context),
             const SizedBox(height: kBottomNavigationBarHeight + 16),
           ],
@@ -31,7 +57,7 @@ class Functions extends StatelessWidget {
       _buildFeatureBox(
         context,
         _FeatureItem(
-          iconPath: 'assets/icons/functions/ic_info_square.png',
+          iconPath: 'assets/icons/functions/ic_osusume_usage.png',
           title: "음식물 분류 가이드",
           subtitle: "투입 가능한 음식물을 확인해보세요",
           onTap: () {
@@ -42,7 +68,7 @@ class Functions extends StatelessWidget {
           actionButton: _buildScanButton(context),
         ),
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: 16),
       _buildFeatureBox(
         context,
         _FeatureItem(
@@ -56,29 +82,22 @@ class Functions extends StatelessWidget {
           },
         ),
       ),
-      const SizedBox(height: 12),
-      _buildFeatureBox(
-        context,
-        _FeatureItem(
-          iconPath: 'assets/icons/functions/ic_shopping.png',
-          title: "소모품 정보",
-          subtitle: "내 제품에 필요한 소모품을 확인해보세요",
-          onTap: () {
-            // TODO: 웹링크 추가
-          },
-        ),
+      const SizedBox(height: 16),
+      ConsumableInfo(
+        onTap: (url) => _launchURL(context, url),
       ),
-      const SizedBox(height: 24),
+      const SizedBox(height: 16),
       _buildFeatureBox(
         context,
         _FeatureItem(
           icon: CupertinoIcons.chart_bar_alt_fill,
+          iconColor: AppColors.primary,
           title: "에너지 모니터링",
           subtitle: "전력 사용량을 확인해보세요",
           onTap: () {},
         ),
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: 16),
       _buildFeatureBox(
         context,
         _FeatureItem(
@@ -86,12 +105,13 @@ class Functions extends StatelessWidget {
           iconColor: Colors.yellow,
           title: "가전세척 서비스 신청하기",
           subtitle: "LG전자의 전문적인 가전세척 서비스를 신청하실 수 있어요",
-          onTap: () {
-            // TODO: 웹링크 추가
-          },
+          onTap: () => _launchURL(
+            context,
+            'https://www.lge.co.kr/lg-best-care/home-appliance-cleaning?utm_source=thinq_app&af_dp=lgeapp%3A%2F%2Fgoto&utm_medium=deeplink&c=(AtW)%EA%B0%80%EC%A0%84%EC%84%B8%EC%B2%99%EC%8B%A0%EC%B2%AD(%EC%A0%84)&pid=appliancecleaning&deep_link_value=https%3A%2F%2Fwww.lge.co.kr%2Flg-best-care%2Fhome-appliance-cleaning%3Futm_source%3Dthinq_app&af_xp=referral&referrer=af_tranid%3Dyo4dOGeBbK9rNoqnpt0XqA%26utm_source%3Dthinq_app%26af_android_url%3Dhttps%3A%2F%2Fwww.lge.co.kr%2Flg-best-care%2Fhome-appliance-cleaning%26af_dp%3Dlgeapp%253A%252F%252Fgoto%26utm_medium%3Ddeeplink%26c%3D%28AtW%29%EA%B0%80%EC%A0%84%EC%84%B8%EC%B2%99%EC%8B%A0%EC%B2%AD%28%EC%A0%84%29%26pid%3Dappliancecleaning%26deep_link_value%3Dhttps%253A%252F%252Fwww.lge.co.kr%252Flg-best-care%252Fhome-appliance-cleaning%253Futm_source%253Dthinq_app%26af_ios_url%3Dhttps%3A%2F%2Fwww.lge.co.kr%2Flg-best-care%2Fhome-appliance-cleaning',
+          ),
         ),
       ),
-      const SizedBox(height: 24),
+      const SizedBox(height: 16),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
@@ -202,14 +222,14 @@ class Functions extends StatelessWidget {
         child: Image.asset(
           item.iconPath!,
           fit: BoxFit.contain,
-          // color: item.iconColor ?? AppColors.tertiary,
+          color: item.iconColor,
         ),
       );
     } else {
       return Icon(
         item.icon,
         size: 24,
-        // color: item.iconColor ?? AppColors.tertiary,
+        color: item.iconColor,
       );
     }
   }
@@ -230,7 +250,7 @@ class Functions extends StatelessWidget {
         child: Image.asset(
           iconPath,
           fit: BoxFit.contain,
-          color: AppColors.tertiary,
+          // color 속성 제거
         ),
       );
     } else {
@@ -277,26 +297,37 @@ class Functions extends StatelessWidget {
   }
 
   Widget _buildScanButton(BuildContext context) {
-    return ElevatedButton(
+    return FilledButton(
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const YoloLiveScreen()),
         );
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.secondary,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.secondaryBackground,
+        foregroundColor: AppColors.primary,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
-      child: Text(
-        "스캔해서 확인하기",
-        style: Theme.of(context)
-            .textTheme
-            .labelSmall
-            ?.copyWith(color: Colors.white),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.qr_code_scanner,
+            size: 20,
+            color: AppColors.primary,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            "스캔해서 확인하기",
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
+        ],
       ),
     );
   }
@@ -321,4 +352,186 @@ class _FeatureItem {
     this.iconColor,
   }) : assert(icon != null || iconPath != null,
             'Either icon or iconPath must be provided');
+}
+
+class ConsumableInfo extends StatelessWidget {
+  final Function(String) onTap;
+
+  const ConsumableInfo({Key? key, required this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildFeatureBox(
+      context,
+      _FeatureItem(
+        iconPath: 'assets/icons/functions/ic_shopping.png',
+        title: "소모품 정보",
+        subtitle: "내 제품에 필요한 소모품을 확인해보세요",
+        onTap: () => onTap(
+            'https://www.lge.co.kr/superCategory?superCategoryId=CT50020000'),
+      ),
+      extraContent: Column(
+        children: [
+          const SizedBox(height: 16),
+          _buildConsumableCard(
+            context: context,
+            image: 'assets/images/functions/soil_package.png',
+            name: '미생물 배양토',
+            code: 'BIO75615001',
+            discountRate: '10%',
+            price: '22,500원',
+            originalPrice: '25,000원',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureBox(BuildContext context, _FeatureItem item,
+      {Widget? extraContent}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: AppColors.primaryBackground,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: item.onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: Image.asset(
+                        item.iconPath!,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        item.title,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: AppColors.primaryText,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.chevron_right,
+                      color: AppColors.tertiary,
+                    ),
+                  ],
+                ),
+                if (item.subtitle != null) ...[
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const SizedBox(width: 40),
+                      Expanded(
+                        child: Text(
+                          item.subtitle!,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.secondaryText,
+                                  ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (extraContent != null) extraContent,
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildConsumableCard({
+    required BuildContext context,
+    required String image,
+    required String name,
+    required String code,
+    required String discountRate,
+    required String price,
+    required String originalPrice,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Image.asset(
+            image,
+            width: 80,
+            height: 80,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                width: 80,
+                height: 80,
+                color: Colors.grey[300],
+                child: const Icon(Icons.image_not_supported),
+              );
+            },
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  '($code)',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.secondaryText,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(
+                      discountRate,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: AppColors.error,
+                          ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      price,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+                Text(
+                  originalPrice,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.secondaryText,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
