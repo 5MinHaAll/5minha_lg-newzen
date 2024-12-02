@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../components/appbar_tab.dart';
 import '../../features/detection/waste_categories.dart';
+import '../../theme/app_text.dart';
 
 class InfoFood extends StatefulWidget {
   const InfoFood({Key? key}) : super(key: key);
@@ -106,32 +107,32 @@ class _InfoFoodState extends State<InfoFood>
           height: 48,
           decoration: BoxDecoration(
             color: _getStatusColor(food['status']),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
-            child: food['number'] != null && food['fileName'] != null
+            child: food['imgNumber'] != null && food['name'] != null
                 ? Image.asset(
-                    'assets/images/functions/info_food/${food['number']}-${food['fileName']}.png',
+                    'assets/images/functions/info_food/${food['imgNumber']}-${food['name'].toLowerCase()}.png',
                     width: 32,
                     height: 32,
                     errorBuilder: (context, error, stackTrace) {
                       return Icon(
                         Icons.restaurant,
-                        size: 32,
-                        color: Colors.grey,
+                        color: Colors.grey[400],
+                        size: 24,
                       );
                     },
                   )
                 : Icon(
                     Icons.restaurant,
-                    size: 32,
-                    color: Colors.grey,
+                    color: Colors.grey[400],
+                    size: 24,
                   ),
           ),
         ),
         title: Text(
           food['name_ko'],
-          style: Theme.of(context).textTheme.titleMedium,
+          style: AppTypography.titleSmall,
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
