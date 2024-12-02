@@ -191,7 +191,7 @@ class DialogFullscreen extends StatelessWidget {
     );
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: AppColors.secondaryBackground,
       appBar: DefaultAppBar(
         title: "음식 스캔 결과",
         customLeading: IconButton(
