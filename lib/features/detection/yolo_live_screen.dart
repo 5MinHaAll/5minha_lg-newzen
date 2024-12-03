@@ -4,6 +4,7 @@ import 'package:flutter_vision/flutter_vision.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:newzen/features/detection/detection_label.dart';
 import 'package:newzen/features/detection/waste_categories.dart';
+import '../../theme/app_text.dart';
 import 'detection_result_screen.dart';
 import 'dialog_helper.dart';
 
@@ -184,10 +185,15 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
           child: Text(
             // "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
             "${getNameKo(result['tag']) ?? 'Unknown'} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
-            style: const TextStyle(
-              backgroundColor: Colors.black54,
+            // style: const TextStyle(
+            //   backgroundColor: Colors.black54,
+            //   color: Colors.white,
+            //   fontSize: 18.0,
+            // ),
+            style: AppTypography.labelMedium.copyWith(
+              fontWeight: FontWeight.w400,
               color: Colors.white,
-              fontSize: 18.0,
+              backgroundColor: Colors.black54,
             ),
           ),
         ),

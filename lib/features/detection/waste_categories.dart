@@ -212,6 +212,14 @@ const wasteCategories = {
       "imgNumber": "26"
     },
     {
+      "name": "Apple-peel",
+      "name_ko": "사과 심",
+      "category": "과일",
+      "status": "주의 필요",
+      "details": "잘게 잘라서 소량만 투입하세요.",
+      "imgNumber": "99"
+    },
+    {
       "name": "Banana-peel",
       "name_ko": "바나나 껍질",
       "category": "과일",
