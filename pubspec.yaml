@@ -38,7 +38,6 @@ flutter:
     - assets/images/device/
     - assets/images/functions/
     - assets/images/functions/info_food/
-    - assets/images/functions/info_microbe/
     - assets/images/home/
     - assets/images/auth/
     - assets/icons/device/
