@@ -190,6 +190,8 @@ class DialogFullscreen extends StatelessWidget {
       labels.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
     );
 
+    final hasFood = sortedLabels.values.any((foodList) => foodList.isNotEmpty);
+
     return Scaffold(
       backgroundColor: AppColors.secondaryBackground,
       appBar: DefaultAppBar(
@@ -200,34 +202,45 @@ class DialogFullscreen extends StatelessWidget {
           color: AppColors.tertiaryText,
         ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.only(top: 12),
-        itemCount: sortedLabels.length,
-        itemBuilder: (context, index) {
-          final category = sortedLabels.keys.elementAt(index);
-          final foodList = sortedLabels[category]?.toSet().toList() ?? [];
+      body: hasFood
+          ? ListView.builder(
+              padding: const EdgeInsets.only(top: 12),
+              itemCount: sortedLabels.length,
+              itemBuilder: (context, index) {
+                final category = sortedLabels.keys.elementAt(index);
+                final foodList = sortedLabels[category]?.toSet().toList() ?? [];
 
-          if (foodList.isEmpty) return const SizedBox.shrink();
+                if (foodList.isEmpty) return const SizedBox.shrink();
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
-                child: Text(
-                  category,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: _getCategoryColor(category),
-                        fontWeight: FontWeight.bold,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+                      child: Text(
+                        category,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: _getCategoryColor(category),
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
-                ),
+                    ),
+                    _buildFoodItemGroup(context, foodList, category),
+                    const SizedBox(height: 12),
+                  ],
+                );
+              },
+            )
+          : Center(
+              child: Text(
+                "스캔된 음식이 없습니다.",
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.primaryText,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
-              _buildFoodItemGroup(context, foodList, category),
-              const SizedBox(height: 12),
-            ],
-          );
-        },
-      ),
+            ),
     );
   }
 }

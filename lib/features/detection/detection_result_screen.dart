@@ -8,6 +8,7 @@ import '../../components/appbar_default.dart';
 import '../../theme/app_colors.dart';
 import 'detection_label.dart';
 import 'dialog_helper.dart';
+import 'waste_categories.dart';
 
 class DetectionResultScreen extends StatefulWidget {
   final String imagePath;
@@ -150,6 +151,22 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
     }
   }
 
+  String? getNameKo(String tag) {
+    final categories = ['processable', 'caution', 'nonProcessable'];
+
+    for (var category in categories) {
+      final items = wasteCategories[category];
+      if (items is List<Map<String, dynamic>>) {
+        for (var item in items) {
+          if (item['name'] == tag) {
+            return item['name_ko'];
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   List<Widget> displayYOLODetectionOverImage(Size screen) {
     if (!hasDetections) return [];
     final List<String> processable = yesFood;
@@ -199,7 +216,8 @@ class _DetectionResultScreenState extends State<DetectionResultScreen> {
             left: result["box"][0] * factorX,
             top: result["box"][1] * factorY + paddingY - 20, // 박스 위로 약간 이동
             child: Text(
-              "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
+              // "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
+              "${getNameKo(result['tag']) ?? 'Unknown'} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
               style: const TextStyle(
                 backgroundColor: Colors.black54,
                 color: Colors.white,

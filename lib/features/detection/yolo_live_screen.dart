@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:newzen/features/detection/detection_label.dart';
+import 'package:newzen/features/detection/waste_categories.dart';
 import 'detection_result_screen.dart';
 import 'dialog_helper.dart';
 
@@ -140,6 +141,22 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
     }
   }
 
+  String? getNameKo(String tag) {
+    final categories = ['processable', 'caution', 'nonProcessable'];
+
+    for (var category in categories) {
+      final items = wasteCategories[category];
+      if (items is List<Map<String, dynamic>>) {
+        for (var item in items) {
+          if (item['name'] == tag) {
+            return item['name_ko'];
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   List<Widget> displayBoxesAroundRecognizedObjects(Size screen) {
     if (yoloResults.isEmpty) return [];
     double factorX = screen.width / (cameraImage?.height ?? 1);
@@ -165,7 +182,8 @@ class _YoloLiveScreenState extends State<YoloLiveScreen> {
             border: Border.all(color: boxColor, width: 2.0),
           ),
           child: Text(
-            "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
+            // "${result['tag']} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
+            "${getNameKo(result['tag']) ?? 'Unknown'} ${(result['box'][4] * 100).toStringAsFixed(0)}%",
             style: const TextStyle(
               backgroundColor: Colors.black54,
               color: Colors.white,
