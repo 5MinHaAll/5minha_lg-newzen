@@ -34,6 +34,7 @@ final List<String> cautionFood = [
   "Potato",
   "Shrimp",
   "High-fiber Vegetables",
+  "Apple-peel",
 ];
 
 final List<String> noFood = [

@@ -1,3 +1,4 @@
+// dialog_fullscreen.dart
 import 'package:flutter/material.dart';
 import '../../components/appbar_default.dart';
 import '../../theme/app_colors.dart';

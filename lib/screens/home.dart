@@ -115,26 +115,27 @@ class _HomeState extends State<Home> {
                           },
                           onIconTap: isFridgeOn ? () {} : null,
                         ),
-                        DeviceCard(
-                          icon: 'assets/images/home/foodon.png',
-                          title: '푸디온',
-                          isOn: isFoodOnOn,
-                          onTogglePower: () {
-                            setState(() {
-                              isFoodOnOn = !isFoodOnOn;
-                            });
-                          },
-                          onIconTap: isFoodOnOn
-                              ? () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const DeviceOn(),
-                                    ),
-                                  );
-                                }
-                              : null,
-                        ),
+                        // DeviceCard(
+                        //   icon: 'assets/images/home/foodon.png',
+                        //   title: '푸디온',
+                        //   isOn: isFoodOnOn,
+                        //   onTogglePower: () {
+                        //     setState(() {
+                        //       isFoodOnOn = !isFoodOnOn;
+                        //     });
+                        //   },
+                        //   // TODO: foodON
+                        //   // onIconTap: isFoodOnOn
+                        //   //     ? () {
+                        //   //         Navigator.push(
+                        //   //           context,
+                        //   //           MaterialPageRoute(
+                        //   //             builder: (context) => const DeviceOn(),
+                        //   //           ),
+                        //   //         );
+                        //   //       }
+                        //   //     : null,
+                        // ),
                         DeviceCard(
                           icon: 'assets/images/home/microwave.png',
                           title: '전자레인지',

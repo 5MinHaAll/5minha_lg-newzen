@@ -213,11 +213,11 @@ const wasteCategories = {
     },
     {
       "name": "Apple-peel",
-      "name_ko": "사과 심",
+      "name_ko": "사과 껍질",
       "category": "과일",
       "status": "주의 필요",
       "details": "잘게 잘라서 소량만 투입하세요.",
-      "imgNumber": "99"
+      "imgNumber": "39"
     },
     {
       "name": "Banana-peel",
@@ -307,7 +307,7 @@ const wasteCategories = {
       "category": "수산물",
       "status": "처리 불가",
       "details": "일반 쓰레기로 분리배출하세요.",
-      "imgNumber": "37"
+      "imgNumber": "30"
     },
     {
       "name": "Other-waste",
@@ -349,7 +349,8 @@ const wasteCategories = {
         "29": "잘게 잘라서 소량만 투입하세요.", // 감자
         "30": "껍질을 제거하고 소량만 투입하세요.", // 새우
         "31": "잘게 잘라서 소량만 투입하세요.", // 섬유질 많은 채소
-        "32": "소량씩 천천히 투입하세요." // 음료/국물
+        "32": "소량씩 천천히 투입하세요.", // 음료/국물
+        "39": "잘게 잘라서 소량만 투입하세요." // 사과 껍질
       },
       "examples": ["떡, 수박껍질, 바나나 껍질", "무, 배추, 오이, 고구마"]
     },
