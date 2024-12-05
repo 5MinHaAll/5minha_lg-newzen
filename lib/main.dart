@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
-import 'home.dart';
-import 'screens/login.dart';
+import 'screens/home.dart';
+import 'screens/auth/login.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Firebase 초기화
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
