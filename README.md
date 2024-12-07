@@ -4,44 +4,86 @@
 ![뉴젠withLGThinQMarkdown](https://github.com/user-attachments/assets/03ba17ca-60bf-47df-8e30-0b086e5257db)
 ## 목차
 
-1. [**프로젝트 개요**](#1)
-2. [**기획**](#2)
-3. [**기술 스택**](#3)
-4. [**프로젝트 구성도**](#4)
-5. [**서비스 소개**](#5)
-6. [**의의**](#6)
+1. [**프로젝트 개요**](#프로젝트-개요)
+2. [**기획**](#기획)
+3. [**기술 스택**](#기술-스택)
+4. [**프로젝트 구성도**](#프로젝트-구성도)
+5. [**서비스 소개**](#서비스-소개)
+6. [**의의**](#의의)
 
-## 1. 프로젝트 개요
+## 프로젝트 개요
 ### 진행 기간
 2024.11.07 - 2024.12.05
-<br />
+<br>
 
 ### 팀원 소개
-|                    [김근호](https://github.com/thatisme)           |                   [박윤하](https://github.com/yunha-p)                   |                    [손영균](https://github.com/wcdyg)                     |
-| :------------------------------------------------------------------------: | :----------------------------------------------------------------------: | :-----------------------------------------------------------------------: | 
-|    <img src="./assets/readme/kunho.png" width="80px;" height="80px" alt=""/>      |    <img src="./assets/readme/yunha.png" width="80px;" height="80px" alt=""/>    |   <img src="./assets/readme/yunggune.png" width="80px;" height="80px" alt=""/>   |
+<table align="center">
+  <tr>
+    <td width="40%" align="center">
+      <a href="https://github.com/thatisme">김근호</a>
+    </td>
+    <td width="40%" align="center">
+      <a href="https://github.com/yunha-p">박윤하<br>(팀장)</a>
+    </td>
+    <td width="40%" align="center">
+      <a href="https://github.com/wcdyg">손영균</a>
+    </td>
+  </tr>
+  <tr>
+    <td width="40%" align="center">
+      <img src="./assets/readme/kunho.png" width="80px;" alt="김근호"/>
+    </td>
+    <td width="40%" align="center">
+      <img src="./assets/readme/yunha.png" width="80px;" alt="박윤하"/>
+    </td>
+    <td width="40%" align="center">
+      <img src="./assets/readme/yunggune.png" width="80px;" alt="손영균"/>
+    </td>
+  </tr>
+  <tr>
+    <td width="40%" align="left">
+      - 기획<br>
+      - 데이터 수집 및 분석<br>
+      - 머신러닝 모델링<br>
+      - 백엔드/프론트엔드 개발<br>
+      - 산출물 작성<br>
+    </td>
+    <td width="40%" align="left">
+      - PM<br>
+      - 기획<br>
+      - UX/UI 설계<br>
+      - 프론트엔드 개발<br>
+      - 산출물 작성<br>
+      - 발표<br>
+    </td>
+    <td width="40%" align="left">
+      - 기획<br>
+      - 데이터 수집 및 분석<br>
+      - 데이터베이스 설계<br>
+      - 백엔드 개발<br>
+      - 산출물 작성<br>
+    </td>
+  </tr>
+</table>
 
+<br>
 
-<br />
-<div id="1"></div>
-
-## 2. 기획
+## 기획
 ### 기획 의도
 
-<br />
+<br>
 
 ### 목표
 <h4>"불쾌한 음식물 처리 경험을 상쾌한 주방 생활로!"</h4>
 뉴젠과 ThinQ의 만남으로, 위생적이고 편리한 미생물 음식물 처리 경험을 제공하여 더욱 쾌적한 주방 생활을 선사합니다.
 
-<br />
+<br>
 
 ### 타깃 고객
 
-<br />
-<div id="2"></div>
+<br>
 
-## 3. 기술 스택
+## 기술 스택
 #### 기본 사용언어
 <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=Kotlin&logoColor=white"/>
 <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
@@ -126,44 +168,42 @@
 
 ### 백엔드
 
-<br />
+<br>
 
 ### 프론트엔드
 
-<br />
+<br>
 
 ### 협업
 
-<br />
-<div id="3"></div>
+<br>
 
-## 4. 프로젝트 구성도
+## 프로젝트 구성도
 ### 시스템 아키텍처
 <div align=center>
     <img width="100%" src="./assets/readme/system_arch.png" alt="system architecture">
 </div>
-<br />
+<br>
 
 ### 유스케이스
 
-<br />
+<br>
 
 ### 서비스 흐름도
 ![image](https://github.com/user-attachments/assets/8cda29a9-7d9d-4308-bbd4-b0b478d48ef9)
 
-<br />
+<br>
 
 ### 데이터베이스 설계도
 ![LG_DX_2반_5팀_데이터베이스 drawio](https://github.com/user-attachments/assets/722db358-37e2-4272-831d-9946a0a9c5f8)
 
 
-<br />
-<div id="4"></div>
+<br>
 
-## 5. 서비스 소개
+## 서비스 소개
 ### 시연 영상
 
-<br />
+<br>
 
 ### 주요 기능
 #### 1. 회원가입
@@ -175,7 +215,7 @@
 |----------|
 |![회원가입](https://github.com/user-attachments/assets/93989f3f-bd17-47bf-a337-49a1653d583b)|
 
-#### 2. 로그인
+#### 로그인
 - 가입한 계정의 아이디와 비밀번호를 입력하면 아래 로그인 버튼이 활성화됩니다.
 - 활성화된 버튼을 클릭하면 데이터베이스에 등록된 정보인지 인증을 진행합니다. 
 - 인증을 통과할 경우 다음 화면으로 넘어갑니다.
@@ -190,14 +230,12 @@
 |![홈화면](https://github.com/user-attachments/assets/f5cad8f9-38a3-46a5-90d9-4d71d243a579)|
 
 
-<br />
-<div id="5"></div>
+<br>
 
-## 6. 의의
+## 의의
 ### 차별점
 
-<br />
+<br>
 
 ### 기대 효과
-<br />
-<div id="6"></div>
+<br>
