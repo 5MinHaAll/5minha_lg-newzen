@@ -242,13 +242,11 @@
 
 | 음식물 분류 가이드 | 미생물 활용 가이드 |
 |----------|----------|
-|![음식물 분류 가이드](https://github.com/user-attachments/assets/9c4032f1-0d7b-4227-b1be-fdd2392e6f8c)|![미생물 활용 가이드](https://github.com/user-attachments/assets/d6df2ded-23da-4a04-9430-a120feb09b1b)
-|
+|![음식물 분류 가이드](https://github.com/user-attachments/assets/9c4032f1-0d7b-4227-b1be-fdd2392e6f8c)|![미생물 활용 가이드](https://github.com/user-attachments/assets/d6df2ded-23da-4a04-9430-a120feb09b1b)|
 
 | 소모품 정보 | 가전세척 서비스 |
 |----------|----------|
-|![소모품 정보](https://github.com/user-attachments/assets/1f01292e-baef-4675-8818-d3d4d733ddfa)|![가전세척 서비스](https://github.com/user-attachments/assets/9ad7cc96-404d-4720-9be8-76b7218bf81a)
-|
+|![소모품 정보](https://github.com/user-attachments/assets/1f01292e-baef-4675-8818-d3d4d733ddfa)|![가전세척 서비스](https://github.com/user-attachments/assets/9ad7cc96-404d-4720-9be8-76b7218bf81a)|
 
 </div>
 <br>
