@@ -12,7 +12,7 @@
 3. [**기술 스택**](#기술-스택)
 4. [**프로젝트 구성도**](#프로젝트-구성도)
 5. [**서비스 소개**](#서비스-소개)
-6. [**의의**](#의의)
+6. [**트러블슈팅**](#트러블슈팅)
 
 ## 프로젝트 개요
 ### 진행 기간
@@ -79,7 +79,7 @@
 
 ## 기획
 ### 추진 배경
-- 음식물 처리기 시장은 급성장 중이며, 지자체 보조금 지원으로 가전 시장의 블루오션으로 주목받고 있는 상황
+- 음식물 처리기 시장은 급성장 중이며, 지자체 보조금 지원으로 가전 시장의 블루오션으로서 주목받고 있는 상황
 - 현재 중소기업이 시장은 선점하고 있지만, LG전자와 삼성전자 등 대기업이 본격적으로 시장 진출을 시작
 - LG전자는 2025년 미생물 하이브리드 음식물 처리기를 출시할 예정이며, 안산시 시범 사업을 통해 기술력을 검증하고 있는 상태
 <br>
@@ -115,11 +115,14 @@
 <br>
 
 ## 프로젝트 구성도
-### 시스템 아키텍처
+### 서비스 컨셉
 <div align=center>
-    <img width="100%" src="./assets/readme/system_arch.png" alt="system architecture">
+
+![서비스 컨셉](https://github.com/user-attachments/assets/89e1ad25-96d0-462a-a469-68075734d947)
+
 </div>
 <br>
+
 
 ### 유스케이스
 <div align=center>
@@ -129,13 +132,20 @@
 </div>
 <br>
 
-### 서비스 흐름도
+### 서비스 흐름도 (크게보기 [![작은돋보기](https://github.com/user-attachments/assets/a5b3ab1b-488e-4cc2-8137-3e1fdd8e7be3)](https://github.com/user-attachments/assets/8cda29a9-7d9d-4308-bbd4-b0b478d48ef9))
 <div align = center>
 
 ![image](https://github.com/user-attachments/assets/8cda29a9-7d9d-4308-bbd4-b0b478d48ef9)
 
 </div>
 <br>
+
+### 시스템 아키텍처
+<div align=center>
+    <img width="100%" src="./assets/readme/system_arch.png" alt="system architecture">
+</div>
+<br>
+
 
 ### 데이터베이스 설계도
 <div align = center>
@@ -287,14 +297,36 @@ https://github.com/user-attachments/assets/39b58bb4-41b4-4c9e-b1d9-8f1be10bcb8d
 - Flutter 프레임워크에서 YOLO 검출 모델을 온디바이스로 활용할 수 있도록 지원하는 패키지들 대부분이 현재 개발중인 환경과 호환되지 않았던 문제
   - flutter_vision 패키지가 비교적 최근까지 업데이트가 이루어진 상태였지만 빌드로 돌입하면 여전히 일부 Native 환경과 충돌이 발생
   - android > settings.gradle 파일에서 "com.android.application"의 버전을 7.3.0으로 조정 후 해결
+
+    ```gradle
+    plugins{
+          ...
+          id "com.android.application" version "7.3.0" apply false
+          ...
+    }
+    ```
 - 모델링 과정에서 학습 결과물의 성능이 기대 이하로 나오는 문제
   - Fine-tuning 과정에서 휴리스틱 기법을 활용하여 최적의 Hyperparameter 값을 탐구
-  - 추가 라벨링을 통해 학습하고자 하는 음식물 이미지 데이터 추가
+  - 추가 라벨링을 통해 모델링에 부합하는 학습용 음식물 이미지 데이터 확보   
+  (Roboflow 활용)
+    ![Roboflow추가](https://github.com/user-attachments/assets/97e318bb-d404-4c3f-b526-b7ae562971d6)
     
 ## 프로젝트 소감
 
-### 😴김근호
-일단 자고 생각할 예정
+### 😊 김근호
+6개월의 결실이 되었던 프로젝트를 마무리한 후에 이렇게 글을 작성해봅니다.    
+저희는 6개월의 기간 동안 총 3번의 팀을 거쳐갔습니다.   
+그중 이번 프로젝트 팀은 저에게 있어 유난히 기억에 남을듯합니다.   
+저는 팀을 옮겨갈 때마다 매번 다짐을 하던 편이었습니다.   
+첫번째 팀에선 노력이 부족했기에 다음 팀에선 좀 더 노력하는 모습을.  
+두번째 팀에선 역량 부족을 느꼈기에 다음 팀에선 제가 잘할 수 있는 방식으로 기여하고자.  
+그렇게 2번의 다짐을 품고 이번 팀을 맞이하였습니다.   
+하지만 다짐이 무색하게 이번에도 저의 부족함을 실감하였습니다.  <!-- 너무 길어서 중략 -->   
+다행히도 유능한 팀원들을 만나게 되어 무사히 프로젝트를 마무리할 수 있었습니다.   
+팀장으로서 갖은 고충을 겪어가며 고생했던 윤하님과   
+힘든 와중에도 묵묵히 할일을 해내시던 영균님 두분에게 깊은 감사의 말씀을 전합니다.  
+또 기획까지 함께했던 도연님, 자연님에게도 감사하다는 말씀 전합니다.  
+다들 고생하신만큼 내년 그리고 앞으로도 쭉~ 승승장구하시길 기원하겠습니다!!!
 
 <!-- ## 의의
 ### 차별점
